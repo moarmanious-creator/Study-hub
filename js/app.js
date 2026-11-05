@@ -1,18 +1,18 @@
 // Student Hub — app shell: session handling, navigation, routing, global search.
-import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611051410";
-import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions } from "./store.js?v=202611051410";
-import { renderAuth, hideAuth } from "./views/auth.js?v=202611051410";
-import { renderDashboard } from "./views/dashboard.js?v=202611051410";
-import { renderCourse, openSession, openFile } from "./views/course.js?v=202611051410";
-import { renderCalendar, startReminders } from "./views/calendar.js?v=202611051410";
-import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611051410";
-import { renderDocuments, preview } from "./views/documents.js?v=202611051410";
-import { renderAnalytics, renderPlan } from "./views/analytics.js?v=202611051410";
-import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611051410";
-import { renderAccount } from "./views/account.js?v=202611051410";
-import { initAI } from "./views/ai.js?v=202611051410";
-import { ledgerCells } from "./ui.js?v=202611051410";
-import { isStudyTracked } from "./metrics.js?v=202611051410";
+import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611051508";
+import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions } from "./store.js?v=202611051508";
+import { renderAuth, hideAuth } from "./views/auth.js?v=202611051508";
+import { renderDashboard } from "./views/dashboard.js?v=202611051508";
+import { renderCourse, openSession, openFile } from "./views/course.js?v=202611051508";
+import { renderCalendar, startReminders } from "./views/calendar.js?v=202611051508";
+import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611051508";
+import { renderDocuments, preview } from "./views/documents.js?v=202611051508";
+import { renderAnalytics, renderPlan } from "./views/analytics.js?v=202611051508";
+import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611051508";
+import { renderAccount } from "./views/account.js?v=202611051508";
+import { initAI } from "./views/ai.js?v=202611051508";
+import { ledgerCells } from "./ui.js?v=202611051508";
+import { isStudyTracked } from "./metrics.js?v=202611051508";
 
 const ROUTES = {
   dashboard: ["Dashboard", renderDashboard],
@@ -150,6 +150,15 @@ function wireShell() {
   });
 }
 
+const signOutBtn = `<p style="margin-top:14px"><button class="btn" type="button" onclick="window.__hubSignOut()">Sign out</button></p>`;
+// Local sign-out works even when the account was deleted on the server; the page then reloads to the sign-in screen.
+async function signOutTo(note = "") {
+  try { if (note) sessionStorage.setItem("mlea_auth_note", note); } catch { /* storage blocked */ }
+  try { await sb.auth.signOut({ scope: "local" }); } catch { /* already signed out */ }
+  location.hash = ""; location.reload();
+}
+window.__hubSignOut = () => signOutTo();
+
 function showBanner(html) { const b = $("#banner"); b.innerHTML = html; b.hidden = false; }
 
 async function start(session) {
@@ -159,8 +168,19 @@ async function start(session) {
   $("#view").innerHTML = `<div class="loading">Loading your records…</div>`;
   try {
     const p = await loadProfile();
-    if (!p) { showBanner("Your account exists but has no profile yet. Sign out and in again, or ask the programme admin."); return; }
-    if (!p.active) { $("#view").innerHTML = `<div class="empty"><strong>This account has been deactivated.</strong>Contact the programme admin to restore access.</div>`; return; }
+    if (!p) {
+      // The saved sign-in can outlive its account (deleted by an admin). Ask the server; if the account is gone, sign out quietly.
+      const { data: u, error: ue } = await sb.auth.getUser();
+      if (ue || !u?.user) return signOutTo("That account no longer exists. Sign in with another account, or tap \"Create an account\".");
+      // A brand-new account's profile is written by a database trigger; give it a moment once.
+      await new Promise((r) => setTimeout(r, 1500));
+      if (!(await loadProfile())) {
+        $("#view").innerHTML = `<div class="empty"><strong>Your account isn't fully set up yet.</strong>Sign out and sign in again. If this keeps happening, tell the programme admin.${signOutBtn}</div>`;
+        return;
+      }
+      return start(session);
+    }
+    if (!p.active) { $("#view").innerHTML = `<div class="empty"><strong>This account has been deactivated.</strong>Contact the programme admin to restore access.${signOutBtn}</div>`; return; }
     await loadAll();
     if (!S.courses.length) showBanner(isStaff() ? `No academic data yet. Open <a href="#/data">Academic data → Import</a> and load the 2026/27 data.` : "The programme hasn't published the courses yet. Check back soon.");
     render();
@@ -202,7 +222,9 @@ async function boot() {
     started = true; start(session);
   } else if (!session) {
     const err = new URLSearchParams(location.hash.slice(1)).get("error_description");
-    renderAuth("signin", err ? "!" + err.replace(/\+/g, " ") : "");
+    let note = "";
+    try { note = sessionStorage.getItem("mlea_auth_note") || ""; sessionStorage.removeItem("mlea_auth_note"); } catch { /* storage blocked */ }
+    renderAuth("signin", err ? "!" + err.replace(/\+/g, " ") : note ? "!" + note : "");
   }
 }
 boot().catch((e) => { console.error(e); toast("The Hub failed to start. Reload the page.", "err"); });

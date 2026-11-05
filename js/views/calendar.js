@@ -1,10 +1,10 @@
 // Academic calendar: official sessions and deadlines (read-only for students) plus
 // personal study events. Month, week, day and agenda views; filters; reminders; .ics export.
-import { esc, fmtDate, fmtLong, fmtMonth, fmtTime, addDays, startOfWeek, startOfMonth, isISO, openModal, readForm, toast, errToast, cairoToISO, isoToCairo, download, confirmDialog, $, $$ } from "../lib.js?v=202611051410";
-import { S, course, allTasks, saveEvent, deleteEvent, saveTask, isStaff } from "../store.js?v=202611051410";
-import { taskStatus, DELIVERY } from "../metrics.js?v=202611051410";
-import { cvar, sessionLabel, sessionName, courseName } from "../ui.js?v=202611051410";
-import { openSession } from "./course.js?v=202611051410";
+import { esc, fmtDate, fmtLong, fmtMonth, fmtTime, addDays, startOfWeek, startOfMonth, isISO, openModal, readForm, toast, errToast, cairoToISO, isoToCairo, download, confirmDialog, $, $$ } from "../lib.js?v=202611051508";
+import { S, course, allTasks, saveEvent, deleteEvent, saveTask, isStaff } from "../store.js?v=202611051508";
+import { taskStatus, DELIVERY } from "../metrics.js?v=202611051508";
+import { cvar, sessionLabel, sessionName, courseName } from "../ui.js?v=202611051508";
+import { openSession } from "./course.js?v=202611051508";
 
 const UI = { view: "month", cursor: null, course: "all", types: new Set(["lecture", "deadline", "exam", "study", "done"]) };
 const TYPES = [["lecture", "Lectures"], ["deadline", "Deadlines"], ["exam", "Exams"], ["study", "Study sessions"], ["done", "Completed"]];

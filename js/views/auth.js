@@ -1,6 +1,6 @@
-// Sign-in, account creation (programme list only), password reset and set-password screens.
-import { esc, $ } from "../lib.js?v=202611051410";
-import { sb, siteUrl } from "../store.js?v=202611051410";
+// Sign-in, account creation (open to anyone with the link), password reset and set-password screens.
+import { esc, $ } from "../lib.js?v=202611051508";
+import { sb, siteUrl } from "../store.js?v=202611051508";
 
 const art = () => {
   const rows = [[1, 1, .5, 1, 0, .3, 0, 0], [1, .5, 1, 1, 1, 0, 0, 0], [1, 1, 1, .5, .3, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0]];
@@ -12,9 +12,11 @@ function friendly(e) {
   const m = (e?.message || String(e || "")).toLowerCase();
   if (m.includes("invalid login")) return "Email or password is incorrect.";
   if (m.includes("email not confirmed")) return "Confirm your email first: open the link we sent you, then sign in.";
-  if (m.includes("database error") || m.includes("programme list")) return "This email isn't on the programme list. Ask the programme admin to invite you.";
+  if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already exists")) return "This email already has an account. Sign in, or use \"Forgot password?\" if you don't remember the password.";
+  if (m.includes("database error")) return "The account couldn't be created just now. Wait a minute and try again; if it keeps happening, tell the programme admin.";
+  if (m.includes("failed to fetch") || m.includes("network")) return "No connection to the sign-in service. Check your internet and try again.";
   if (m.includes("password should be")) return "Use a password of at least 8 characters.";
-  if (m.includes("rate limit")) return "Too many emails were sent just now. Wait a few minutes and try again.";
+  if (m.includes("rate limit")) return "The Hub can't send more emails right now (free email limit). Try again in an hour, or ask the programme admin to create your account.";
   if (m.includes("banned") || m.includes("user is banned")) return "This account has been deactivated. Contact the programme admin.";
   return e?.message || "Something went wrong. Try again.";
 }

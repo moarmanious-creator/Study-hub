@@ -1,6 +1,6 @@
 // Account: name, password, data export, sign-out.
-import { esc, toast, errToast, download, readForm, $ } from "../lib.js?v=202611051410";
-import { S, sb, updateMyName } from "../store.js?v=202611051410";
+import { esc, toast, errToast, download, readForm, $ } from "../lib.js?v=202611051508";
+import { S, sb, updateMyName } from "../store.js?v=202611051508";
 
 export function renderAccount(view) {
   view.innerHTML = `<div class="grid two">
@@ -33,5 +33,5 @@ export function renderAccount(view) {
       study_log: S.logs, notes: S.notes, files: S.attachments.map(({ storage_path, ...a }) => a), ai_conversations: conv.data || [], ai_messages: msgs.data || [] };
     download(`student-hub-my-data-${S.today}.json`, JSON.stringify(out, null, 2), "application/json");
   });
-  $("[data-out]", view).addEventListener("click", async () => { await sb.auth.signOut(); location.hash = ""; location.reload(); });
+  $("[data-out]", view).addEventListener("click", () => window.__hubSignOut());
 }

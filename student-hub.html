@@ -432,7 +432,7 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
   <aside class="side" id="side" aria-label="Main navigation">
     <a class="brand" href="#/dashboard" aria-label="Student Hub, dashboard">
       <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect x="2" y="6" width="28" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 16h28M9 6v20M16 6v20M23 6v20" stroke="currentColor" stroke-width="1.4" opacity=".55"/><rect x="2" y="6" width="7" height="10" fill="currentColor" opacity=".9"/><rect x="9" y="6" width="7" height="10" fill="currentColor" opacity=".9"/><rect x="2" y="16" width="7" height="10" fill="currentColor" opacity=".45"/></svg>
-      <span><strong>Study</strong> Hub</span>
+      <span><strong>Student</strong> Hub</span>
     </a>
     <nav id="nav"></nav>
     <div class="side-foot" id="sideFoot"></div>
@@ -1103,7 +1103,7 @@ return { sessionOrder, loadOfficial, loadPersonal, loadAll, loadProfile, saveAtt
 
 __hub["views/auth"] = (function () {
 "use strict";
-// Sign-in, account creation (programme list only), password reset and set-password screens.
+// Sign-in, account creation (open to anyone with the link), password reset and set-password screens.
 const { esc, $ } = __hub["lib"];
 const { sb, siteUrl } = __hub["store"];
 const art = () => {
@@ -1116,9 +1116,11 @@ function friendly(e) {
   const m = (e?.message || String(e || "")).toLowerCase();
   if (m.includes("invalid login")) return "Email or password is incorrect.";
   if (m.includes("email not confirmed")) return "Confirm your email first: open the link we sent you, then sign in.";
-  if (m.includes("database error") || m.includes("programme list")) return "This email isn't on the programme list. Ask the programme admin to invite you.";
+  if (m.includes("already registered") || m.includes("already been registered") || m.includes("user already exists")) return "This email already has an account. Sign in, or use \"Forgot password?\" if you don't remember the password.";
+  if (m.includes("database error")) return "The account couldn't be created just now. Wait a minute and try again; if it keeps happening, tell the programme admin.";
+  if (m.includes("failed to fetch") || m.includes("network")) return "No connection to the sign-in service. Check your internet and try again.";
   if (m.includes("password should be")) return "Use a password of at least 8 characters.";
-  if (m.includes("rate limit")) return "Too many emails were sent just now. Wait a few minutes and try again.";
+  if (m.includes("rate limit")) return "The Hub can't send more emails right now (free email limit). Try again in an hour, or ask the programme admin to create your account.";
   if (m.includes("banned") || m.includes("user is banned")) return "This account has been deactivated. Contact the programme admin.";
   return e?.message || "Something went wrong. Try again.";
 }
@@ -3051,7 +3053,7 @@ function renderAccount(view) {
       study_log: S.logs, notes: S.notes, files: S.attachments.map(({ storage_path, ...a }) => a), ai_conversations: conv.data || [], ai_messages: msgs.data || [] };
     download(`student-hub-my-data-${S.today}.json`, JSON.stringify(out, null, 2), "application/json");
   });
-  $("[data-out]", view).addEventListener("click", async () => { await sb.auth.signOut(); location.hash = ""; location.reload(); });
+  $("[data-out]", view).addEventListener("click", () => window.__hubSignOut());
 }
 
 return { renderAccount };
@@ -3336,6 +3338,15 @@ function wireShell() {
   });
 }
 
+const signOutBtn = `<p style="margin-top:14px"><button class="btn" type="button" onclick="window.__hubSignOut()">Sign out</button></p>`;
+// Local sign-out works even when the account was deleted on the server; the page then reloads to the sign-in screen.
+async function signOutTo(note = "") {
+  try { if (note) sessionStorage.setItem("mlea_auth_note", note); } catch { /* storage blocked */ }
+  try { await sb.auth.signOut({ scope: "local" }); } catch { /* already signed out */ }
+  location.hash = ""; location.reload();
+}
+window.__hubSignOut = () => signOutTo();
+
 function showBanner(html) { const b = $("#banner"); b.innerHTML = html; b.hidden = false; }
 
 async function start(session) {
@@ -3345,8 +3356,19 @@ async function start(session) {
   $("#view").innerHTML = `<div class="loading">Loading your records…</div>`;
   try {
     const p = await loadProfile();
-    if (!p) { showBanner("Your account exists but has no profile yet. Sign out and in again, or ask the programme admin."); return; }
-    if (!p.active) { $("#view").innerHTML = `<div class="empty"><strong>This account has been deactivated.</strong>Contact the programme admin to restore access.</div>`; return; }
+    if (!p) {
+      // The saved sign-in can outlive its account (deleted by an admin). Ask the server; if the account is gone, sign out quietly.
+      const { data: u, error: ue } = await sb.auth.getUser();
+      if (ue || !u?.user) return signOutTo("That account no longer exists. Sign in with another account, or tap \"Create an account\".");
+      // A brand-new account's profile is written by a database trigger; give it a moment once.
+      await new Promise((r) => setTimeout(r, 1500));
+      if (!(await loadProfile())) {
+        $("#view").innerHTML = `<div class="empty"><strong>Your account isn't fully set up yet.</strong>Sign out and sign in again. If this keeps happening, tell the programme admin.${signOutBtn}</div>`;
+        return;
+      }
+      return start(session);
+    }
+    if (!p.active) { $("#view").innerHTML = `<div class="empty"><strong>This account has been deactivated.</strong>Contact the programme admin to restore access.${signOutBtn}</div>`; return; }
     await loadAll();
     if (!S.courses.length) showBanner(isStaff() ? `No academic data yet. Open <a href="#/data">Academic data → Import</a> and load the 2026/27 data.` : "The programme hasn't published the courses yet. Check back soon.");
     render();
@@ -3388,7 +3410,9 @@ async function boot() {
     started = true; start(session);
   } else if (!session) {
     const err = new URLSearchParams(location.hash.slice(1)).get("error_description");
-    renderAuth("signin", err ? "!" + err.replace(/\+/g, " ") : "");
+    let note = "";
+    try { note = sessionStorage.getItem("mlea_auth_note") || ""; sessionStorage.removeItem("mlea_auth_note"); } catch { /* storage blocked */ }
+    renderAuth("signin", err ? "!" + err.replace(/\+/g, " ") : note ? "!" + note : "");
   }
 }
 boot().catch((e) => { console.error(e); toast("The Hub failed to start. Reload the page.", "err"); });

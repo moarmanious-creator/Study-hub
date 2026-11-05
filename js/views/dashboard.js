@@ -1,8 +1,8 @@
 // Main student dashboard: ledger, figures, charts, priorities, upcoming items.
-import { esc, fmtDate, fmtMinutes, relDays, daysBetween, addDays, isISO, md } from "../lib.js?v=202611051410";
-import { S, allTasks } from "../store.js?v=202611051410";
-import { programmeStats, priorities, recommendations, weeklyActivity, taskStatus, FORMULAS, TASK_STATUS } from "../metrics.js?v=202611051410";
-import { courseName, cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, coursePill, deliveryTag, chart, courseColor, css, sessionWhen } from "../ui.js?v=202611051410";
+import { esc, fmtDate, fmtMinutes, relDays, daysBetween, addDays, isISO, md } from "../lib.js?v=202611051508";
+import { S, allTasks } from "../store.js?v=202611051508";
+import { programmeStats, priorities, recommendations, weeklyActivity, taskStatus, FORMULAS, TASK_STATUS } from "../metrics.js?v=202611051508";
+import { courseName, cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, coursePill, deliveryTag, chart, courseColor, css, sessionWhen } from "../ui.js?v=202611051508";
 
 export function priorityItem(p) {
   const s = p.session, t = p.task;

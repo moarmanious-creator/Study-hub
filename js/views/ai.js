@@ -1,8 +1,8 @@
 // AI Study Assistant: floating panel on every page. Conversations are stored per student
 // (private), the API key never reaches the browser, and answers label where each part comes from.
-import { esc, md, toast, errToast, $, $$ } from "../lib.js?v=202611051410";
-import { S, sb, callFunction, uploadAttachment, saveNote, session } from "../store.js?v=202611051410";
-import { sessionLabel, sessionName } from "../ui.js?v=202611051410";
+import { esc, md, toast, errToast, $, $$ } from "../lib.js?v=202611051508";
+import { S, sb, callFunction, uploadAttachment, saveNote, session } from "../store.js?v=202611051508";
+import { sessionLabel, sessionName } from "../ui.js?v=202611051508";
 
 const MODES = [["", "Ask anything"], ["explain", "Explain a lecture"], ["simplify", "Simplify a concept"], ["summarize", "Summarize materials"], ["notes", "Study notes"],
   ["exam", "Exam questions"], ["mcq", "MCQs"], ["model_answers", "Model answers"], ["maths", "Maths step by step"], ["compare", "Compare concepts"], ["gaps", "What am I missing?"], ["revision", "Revision plan"]];
