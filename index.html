@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://xuczrclkracapdeybsoh.supabase.co; connect-src 'self' https://xuczrclkracapdeybsoh.supabase.co wss://xuczrclkracapdeybsoh.supabase.co https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; frame-src 'self' blob: https://xuczrclkracapdeybsoh.supabase.co; media-src 'self' blob: https://xuczrclkracapdeybsoh.supabase.co; worker-src 'self' blob: https://cdnjs.cloudflare.com; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Student Hub</title>
+<meta name="description" content="Lectures, attendance, study progress, deadlines and an AI study assistant for students.">
+<meta name="theme-color" content="#1f5c7a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Student Hub">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/app.css?v=202611051410">
+<script>
+  // Apply the saved theme before first paint to avoid a flash.
+  try { const t = localStorage.getItem("hub-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  // Remember whether we arrived from an invitation or password-reset email before Supabase clears the link.
+  window.__authLinkType = ((location.hash + location.search).match(/type=(invite|recovery|signup|magiclink)/) || [])[1] || null;
+</script>
+</head>
+<body>
+<div id="auth" hidden></div>
+
+<div id="shell" class="shell" hidden>
+  <aside class="side" id="side" aria-label="Main navigation">
+    <a class="brand" href="#/dashboard" aria-label="Student Hub, dashboard">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect x="2" y="6" width="28" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 16h28M9 6v20M16 6v20M23 6v20" stroke="currentColor" stroke-width="1.4" opacity=".55"/><rect x="2" y="6" width="7" height="10" fill="currentColor" opacity=".9"/><rect x="9" y="6" width="7" height="10" fill="currentColor" opacity=".9"/><rect x="2" y="16" width="7" height="10" fill="currentColor" opacity=".45"/></svg>
+      <span><strong>Study</strong> Hub</span>
+    </a>
+    <nav id="nav"></nav>
+    <div class="side-foot" id="sideFoot"></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn only-mobile" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="topbar-actions">
+        <label class="search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="globalSearch" type="search" placeholder="Search lectures, tasks, files" aria-label="Search lectures, tasks and files" autocomplete="off">
+        </label>
+        <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+      <div class="search-results" id="searchResults" hidden></div>
+    </header>
+    <div class="banner" id="banner" hidden></div>
+    <main id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<button class="ai-fab" id="aiFab" hidden aria-label="Open the AI Study Assistant">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>
+  <span>Study Assistant</span>
+</button>
+<section class="ai-panel" id="aiPanel" hidden aria-label="AI Study Assistant"></section>
+
+<div id="drawer" class="drawer" hidden></div>
+<div id="modal" class="modal" hidden></div>
+<div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script src="config.js?v=202611051410"></script>
+<script type="module" src="js/app.js?v=202611051410"></script>
+</body>
+</html>
