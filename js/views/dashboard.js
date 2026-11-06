@@ -1,8 +1,10 @@
 // Main student dashboard: ledger, figures, charts, priorities, upcoming items.
-import { esc, fmtDate, fmtMinutes, relDays, daysBetween, addDays, isISO, md } from "../lib.js?v=202611051508";
-import { S, allTasks } from "../store.js?v=202611051508";
-import { programmeStats, priorities, recommendations, weeklyActivity, taskStatus, FORMULAS, TASK_STATUS } from "../metrics.js?v=202611051508";
-import { courseName, cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, coursePill, deliveryTag, chart, courseColor, css, sessionWhen } from "../ui.js?v=202611051508";
+import { esc, fmtDate, fmtLong, fmtMinutes, relDays, daysBetween, addDays, isISO, md, icon } from "../lib.js?v=202611061403";
+import { S, allTasks, allProjects } from "../store.js?v=202611061403";
+import { greeting, firstName, pendingLectures, dueSoon } from "./common.js?v=202611061403";
+
+import { programmeStats, priorities, recommendations, weeklyActivity, taskStatus, FORMULAS, TASK_STATUS } from "../metrics.js?v=202611061403";
+import { courseName, cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, coursePill, deliveryTag, chart, courseColor, css, sessionWhen } from "../ui.js?v=202611061403";
 
 export function priorityItem(p) {
   const s = p.session, t = p.task;
@@ -19,7 +21,7 @@ export function renderDashboard(view) {
   const st = programmeStats(S, today);
   const prio = priorities(S, today, tasks);
   const next = recommendations(S, today, tasks, 3);
-  const name = (S.profile?.full_name || "").split(" ")[0];
+  const name = firstName();
 
   const upcomingSessions = S.sessions.filter((s) => !s.cancelled && isISO(s.scheduled_date) && s.scheduled_date >= today && s.scheduled_date <= addDays(today, 14))
     .sort((a, b) => a.scheduled_date.localeCompare(b.scheduled_date));
@@ -34,10 +36,28 @@ export function renderDashboard(view) {
     ? `Today: ${todays.map((s) => `${esc(s.title)} (${esc(courseName(s.course_id))}, ${deliveryTag(s.delivery)})`).join("; ")}.`
     : upcomingSessions.length ? `Next lecture: ${esc(upcomingSessions[0].title)}, ${esc(relDays(upcomingSessions[0].scheduled_date, today))}.` : "No lectures scheduled in the next two weeks.";
 
+  const pending = pendingLectures().length;
+  const due = dueSoon(14).length;
+  const projActive = allProjects().filter((t) => !["completed", "submitted"].includes(t.status));
   view.innerHTML = `
-  <section class="section">
-    <h2 style="font-size:1.7rem">${name ? `Good to see you, ${esc(name)}.` : "Welcome."}</h2>
-    <p class="muted" style="margin-top:6px">${fmtDate(today, { weekday: "long", day: "numeric", month: "long" })}. ${lead}</p>
+  <section class="hero">
+    <p class="eyebrow">${esc(fmtLong(today))}</p>
+    <h2>${esc(greeting())}${name ? `, ${esc(name)}` : ""}.</h2>
+    <p>${lead}</p>
+    <div class="hero-stats">
+      <a class="hs ${pending ? "alert" : ""}" href="#/study"><b>${pending}</b><span>lecture${pending === 1 ? "" : "s"} to study</span></a>
+      <a class="hs ${due ? "alert" : ""}" href="#/assignments"><b>${due}</b><span>deadline${due === 1 ? "" : "s"} in 14 days</span></a>
+      <a class="hs" href="#/projects"><b>${projActive.length}</b><span>project${projActive.length === 1 ? "" : "s"} in progress</span></a>
+      <a class="hs" href="#/analytics"><b>${st.overall == null ? "—" : st.overall + "%"}</b><span>overall progress</span></a>
+    </div>
+  </section>
+
+  <section class="section tiles" aria-label="Quick access">
+    <a class="tile" href="#/study">${icon.study}<b>Study</b><span>Lectures to study and your plan</span></a>
+    <a class="tile" href="#/assignments">${icon.tasks}<b>Assignments</b><span>Coursework and deadlines</span></a>
+    <a class="tile" href="#/projects">${icon.project}<b>Projects</b><span>Presentations and papers</span></a>
+    <a class="tile" href="#/documents">${icon.docs}<b>Documents &amp; materials</b><span>Readings, slides, your files and notes</span></a>
+    <button class="tile" type="button" data-ai-open>${icon.spark}<b>AI Study Assistant</b><span>Explain, summarise, quiz me</span></button>
   </section>
 
   ${pinned.length ? `<section class="section">${pinned.map((a) => `<div class="sheet" style="margin-bottom:10px"><div class="spread"><h3>${esc(a.title)}</h3>${a.course_id ? coursePill(a.course_id) : `<span class="pill info">Programme</span>`}</div><div class="small" style="margin-top:6px">${md(a.body)}</div><div class="muted small">${fmtDate(a.created_at.slice(0, 10))}</div></div>`).join("")}</section>` : ""}
@@ -55,15 +75,15 @@ export function renderDashboard(view) {
     </div>${ledgerKey()}</div>
   </section>
 
-  <section class="section">
-    <div class="figs" role="list">
+  <details class="section more"><summary>All figures and how they're calculated</summary>
+    <div class="figs" role="list" style="margin-top:10px">
       ${[["Courses", st.courses], ["Scheduled sessions", st.sessions], ["Sessions held so far", st.held], ["Attended", fmtN(st.attended)], ["Watched as recording", st.recWatched],
          ["Missed or not marked", st.missed, st.missed > 0], ["Fully studied", st.studied], ["In progress", st.inProgress], ["Not studied yet", st.notStudied, st.notStudied > 0],
          ["Pending assignments", pendingAssign], ["Pending presentations", pendingPres], ["Study time left (est.)", fmtMinutes(st.remaining)], ["Overall progress", st.overall == null ? "—" : st.overall + "%"]]
         .map(([l, v, alert]) => `<div class="fig ${alert ? "alert" : ""}" role="listitem"><b>${v}</b><span>${l}</span></div>`).join("")}
     </div>
-    <details class="more small" style="margin-top:8px"><summary>How these figures are calculated</summary><p class="muted" style="margin-top:6px">${esc(FORMULAS.attendance)}<br>${esc(FORMULAS.study)}<br>${esc(FORMULAS.overall)}<br>${esc(FORMULAS.remaining)}</p></details>
-  </section>
+    <p class="muted small" style="margin-top:10px">${esc(FORMULAS.attendance)}<br>${esc(FORMULAS.study)}<br>${esc(FORMULAS.overall)}<br>${esc(FORMULAS.remaining)}</p>
+  </details>
 
   <div class="grid side-r section">
     <section class="sheet">
@@ -128,6 +148,7 @@ export function renderDashboard(view) {
     ] },
     options: { indexAxis: "y", scales: { x: { stacked: true, ticks: { precision: 0 } }, y: { stacked: true } } },
   });
+  view.querySelector("[data-ai-open]")?.addEventListener("click", () => window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })));
   void daysBetween;
 }
 const fmtN = (n) => (Number.isInteger(n) ? n : n.toFixed(1));

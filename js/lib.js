@@ -129,7 +129,7 @@ export function openModal(title, render, { wide = false } = {}) {
   host.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", close));
   untrap = trap(host, close);
   render($(".modal-body", host), $(".modal-foot", host), close);
-  setTimeout(() => ($("input,select,textarea", $(".modal-body", host)) || $("button", host))?.focus(), 30);
+  setTimeout(() => { const b = $(".modal-body", host); if (b) ($("input,select,textarea", b) || $("button", host))?.focus(); }, 30); // the dialog may already be closed
   return close;
 }
 
@@ -203,4 +203,7 @@ export const icon = {
   cohort: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>',
   bell: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/></svg>',
   user: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+  study: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5.5c3.5-1.6 6.8-1.6 10 1 3.2-2.6 6.5-2.6 10-1v13c-3.5-1.6-6.8-1.6-10 1-3.2-2.6-6.5-2.6-10-1z"/><path d="M12 6.5v13"/></svg>',
+  project: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V4"/><path d="M4 4h12l-2 4 2 4H4"/><path d="M14 21h6M17 16v5"/></svg>',
+  spark: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>',
 };

@@ -1,9 +1,10 @@
-// Assignments, presentations and personal tasks: Kanban board and list view.
+// Assignments and personal tasks: Kanban board and list view. Presentations and papers live on Projects.
 // Official items come from the syllabus; a student's progress on them is stored privately.
-import { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, $, $$ } from "../lib.js?v=202611051508";
-import { S, allTasks, saveTask, deleteTask, uploadAttachment } from "../store.js?v=202611051508";
-import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611051508";
-import { cvar, coursePill, infoRequired, srcRef } from "../ui.js?v=202611051508";
+import { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, $, $$ } from "../lib.js?v=202611061403";
+import { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } from "../store.js?v=202611061403";
+import { editAssessment } from "./admin.js?v=202611061403";
+import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061403";
+import { cvar, coursePill, infoRequired, srcRef } from "../ui.js?v=202611061403";
 
 const UI = { mode: "board", course: "all", sort: "due" };
 const COLS = ["overdue", "not_started", "in_progress", "completed", "submitted"];
@@ -14,14 +15,18 @@ export const findTask = (key) => allTasks().find((t) => tkey(t) === key);
 
 export function renderTasks(view) {
   const today = S.today;
-  const tasks = allTasks().filter((t) => UI.course === "all" || t.course_id === UI.course).filter((t) => t.official?.type !== "exam");
+  const tasks = allAssignments().filter((t) => UI.course === "all" || t.course_id === UI.course);
   const exams = allTasks().filter((t) => t.official?.type === "exam" && (UI.course === "all" || t.course_id === UI.course));
   view.innerHTML = `
+    <header class="page-head">
+      <p class="eyebrow">Assignments</p>
+      <h2>Assignments &amp; coursework</h2>
+      <p>Official assignments from the syllabi plus anything you add yourself. Drag a card or use its menu to change status. Presentations and papers are on the <a href="#/projects">Projects</a> page.</p>
+      <div class="actions"><button class="btn primary" data-new>Add assignment</button>${isStaff() ? `<button class="btn" data-publish>Publish an assignment to the class</button>` : ""}</div>
+    </header>
     <div class="cal-toolbar">
       <div class="seg" role="group" aria-label="Task view"><button data-mode="board" aria-pressed="${UI.mode === "board"}">Board</button><button data-mode="list" aria-pressed="${UI.mode === "list"}">List</button></div>
       <select class="input" data-course style="width:auto" aria-label="Course"><option value="all">All courses</option>${S.courses.map((c) => `<option value="${c.id}" ${UI.course === c.id ? "selected" : ""}>${esc(c.short_name || c.name)}</option>`).join("")}</select>
-      <span style="flex:1"></span>
-      <button class="btn primary" data-new>Add task</button>
     </div>
     <div id="tasksBody"></div>
     <section class="section" style="margin-top:26px"><div class="section-head"><div><h2>Examinations</h2><p>From the official syllabi. Exam dates are set by the faculty.</p></div></div>
@@ -58,7 +63,8 @@ export function renderTasks(view) {
   }
   $$("[data-mode]", view).forEach((b) => b.addEventListener("click", () => { UI.mode = b.dataset.mode; renderTasks(view); }));
   $("[data-course]", view).addEventListener("change", (e) => { UI.course = e.target.value; renderTasks(view); });
-  $("[data-new]", view).addEventListener("click", () => openTask({ status: "not_started", priority: "medium", completion: 0, course_id: UI.course === "all" ? null : UI.course }, () => renderTasks(view)));
+  $("[data-new]", view).addEventListener("click", () => openTask({ kind: "task", status: "not_started", priority: "medium", completion: 0, course_id: UI.course === "all" ? null : UI.course }, () => renderTasks(view)));
+  $("[data-publish]", view)?.addEventListener("click", () => editAssessment({ type: "assignment", course_id: UI.course === "all" ? null : UI.course }, async () => { await loadOfficial(); renderTasks(view); window.dispatchEvent(new CustomEvent("hub:changed")); }));
 }
 
 function card(t, today) {
@@ -85,7 +91,7 @@ export function openTask(t, after) {
   if (!t) return;
   const a = t.official;
   const isNew = !t.id && !a;
-  openModal(a ? a.title : isNew ? "Add task" : "Edit task", (body, foot, close) => {
+  openModal(a ? a.title : isNew ? "Add assignment" : "Edit assignment", (body, foot, close) => {
     const files = S.attachments.filter((x) => x.task_id && x.task_id === t.id);
     body.innerHTML = `
       ${a ? `<div class="stack" style="margin-bottom:14px"><div class="row">${coursePill(a.course_id)}<span class="pill info">Official</span><span class="small muted">${esc(a.weight || "")}</span></div><p style="margin:0">${esc(a.description || "")}</p><div class="small"><strong>Deadline:</strong> ${a.due_date ? fmtLong(a.due_date) : "Not stated in the official documents"}</div>${infoRequired(a.info_required)}${srcRef(a.source_ref)}</div>` : ""}
@@ -108,17 +114,17 @@ export function openTask(t, after) {
       for (const f of e.target.files) { try { await uploadAttachment(f, { course_id: t.course_id, task_id: t.id }); toast(`${f.name} attached`); } catch (er) { errToast(er); } }
       close(); openTask(findTask(tkey(t)) || t, after);
     });
-    foot.innerHTML = `${t.id && !a ? `<button class="btn danger" data-del style="margin-right:auto">Delete</button>` : ""}<button class="btn" data-cancel>Cancel</button><button class="btn primary" data-save>${isNew ? "Add task" : "Save changes"}</button>`;
+    foot.innerHTML = `${t.id && !a ? `<button class="btn danger" data-del style="margin-right:auto">Delete</button>` : ""}<button class="btn" data-cancel>Cancel</button><button class="btn primary" data-save>${isNew ? "Add assignment" : "Save changes"}</button>`;
     foot.querySelector("[data-cancel]").onclick = close;
     foot.querySelector("[data-del]")?.addEventListener("click", async () => {
-      if (!(await confirmDialog("Delete this task?"))) return;
+      if (!(await confirmDialog("Delete this assignment?"))) return;
       try { await deleteTask(t.id); close(); toast("Task deleted"); after && after(); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
     });
     foot.querySelector("[data-save]").onclick = async () => {
       if (!form.reportValidity()) return;
       const f = readForm(form);
       f.completion = Number(form.completion.value);
-      try { await saveTask(t, f); toast(isNew ? "Task added" : "Saved"); close(); after && after(); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
+      try { await saveTask(t, f); toast(isNew ? "Assignment added" : "Saved"); close(); after && after(); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
     };
   });
 }

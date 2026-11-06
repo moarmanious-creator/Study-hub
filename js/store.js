@@ -1,6 +1,6 @@
 // Data layer: Supabase client, loading, and every write the app makes.
 // All reads and writes go through row-level security; nothing personal is kept in the browser.
-import { todayISO, loadScript, uid } from "./lib.js?v=202611051508";
+import { todayISO, loadScript, uid } from "./lib.js?v=202611061403";
 
 const cfg = window.MLEA_CONFIG || {};
 export const configured = !!(cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && window.supabase);
@@ -135,12 +135,19 @@ export function allTasks() {
   for (const t of official) { const a = S.assessments.find((x) => x.id === t.assessment_id); if (a) { t.due_date = a.due_date; t.official = a; } }
   return [...official, ...personal];
 }
+// Official presentations and research papers are long pieces of work: they live on the Projects page.
+const PROJECT_TYPES = new Set(["presentation", "research_paper"]);
+export const isProject = (t) => (t.official ? PROJECT_TYPES.has(t.official.type) : t.kind === "project");
+export const isExam = (t) => t.official?.type === "exam";
+export const allProjects = () => allTasks().filter(isProject);
+export const allAssignments = () => allTasks().filter((t) => !isProject(t) && !isExam(t));
 export async function saveTask(task, patch) {
   const base = { ...task, ...patch };
   const row = {
     assessment_id: base.assessment_id || null, course_id: base.course_id || null, title: base.title, description: base.description || null,
     assigned_date: base.assigned_date || null, due_date: base.assessment_id ? null : base.due_date || null, status: base.status || "not_started",
     priority: base.priority || "medium", completion: base.completion ?? 0, required_attachments: base.required_attachments || null, notes: base.notes || null,
+    kind: base.kind === "project" ? "project" : "task", milestones: Array.isArray(base.milestones) ? base.milestones.slice(0, 50) : [], members: base.members || null,
   };
   if (row.status === "completed" || row.status === "submitted") row.completion = 100;
   let data;

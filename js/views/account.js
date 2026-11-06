@@ -1,6 +1,6 @@
 // Account: name, password, data export, sign-out.
-import { esc, toast, errToast, download, readForm, $ } from "../lib.js?v=202611051508";
-import { S, sb, updateMyName } from "../store.js?v=202611051508";
+import { esc, toast, errToast, download, readForm, $ } from "../lib.js?v=202611061403";
+import { S, sb, updateMyName } from "../store.js?v=202611061403";
 
 export function renderAccount(view) {
   view.innerHTML = `<div class="grid two">

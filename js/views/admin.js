@@ -1,10 +1,10 @@
 // Staff areas: Students & access (admin), Academic data (admin + coordinator),
 // Announcements, Cohort dashboard and exports. Personal student records are never shown here;
 // cohort figures come from an aggregate database function.
-import { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } from "../lib.js?v=202611051508";
-import { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial } from "../store.js?v=202611051508";
-import { DELIVERY } from "../metrics.js?v=202611051508";
-import { coursePill, sessionLabel, chart, css, courseColor, infoRequired } from "../ui.js?v=202611051508";
+import { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } from "../lib.js?v=202611061403";
+import { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial } from "../store.js?v=202611061403";
+import { DELIVERY } from "../metrics.js?v=202611061403";
+import { coursePill, sessionLabel, chart, css, courseColor, infoRequired } from "../ui.js?v=202611061403";
 
 const notAllowed = (view) => { view.innerHTML = `<div class="empty"><strong>Staff only.</strong>This page is for the programme admin and coordinators.</div>`; };
 
@@ -172,11 +172,12 @@ function editSession(s, after) {
   }, { wide: true });
 }
 
-function editAssessment(a, after) {
+export function editAssessment(a, after) {
   const isNew = !a.id;
-  openModal(isNew ? "Add assessment" : `Edit ${a.title}`, (body, foot, close) => {
+  openModal(isNew ? "Publish to the whole class" : `Edit ${a.title}`, (body, foot, close) => {
     body.innerHTML = `<form class="form-grid">
       <label class="field wide"><span>Title</span><input class="input" name="title" required value="${esc(a.title || "")}"></label>
+      ${a.course_id ? "" : `<label class="field"><span>Course</span><select class="input" name="course_id" required><option value="">Choose a course</option>${S.courses.map((c) => `<option value="${c.id}">${esc(c.short_name || c.name)}</option>`).join("")}</select></label>`}
       <label class="field"><span>Type</span><select class="input" name="type">${["assignment", "presentation", "exam", "reflection_paper", "research_paper", "quiz", "participation"].map((k) => `<option value="${k}" ${a.type === k ? "selected" : ""}>${k.replace("_", " ")}</option>`).join("")}</select></label>
       <label class="field"><span>Weight (as stated)</span><input class="input" name="weight" value="${esc(a.weight || "")}"></label>
       <label class="field"><span>Assigned on</span><input class="input" type="date" name="assigned_date" value="${esc(a.assigned_date || "")}"></label>
@@ -198,7 +199,7 @@ function editAssessment(a, after) {
     foot.querySelector("[data-s]").onclick = async () => {
       if (!form.reportValidity()) return;
       const f = readForm(form);
-      const row = { course_id: a.course_id, title: f.title, type: f.type, weight: f.weight, assigned_date: f.assigned_date, due_date: f.due_date, is_group: !!f.is_group,
+      const row = { course_id: a.course_id || f.course_id, title: f.title, type: f.type, weight: f.weight, assigned_date: f.assigned_date, due_date: f.due_date, is_group: !!f.is_group,
         max_group_size: f.max_group_size, description: f.description, info_required: lines(f.info_required), source_ref: f.source_ref };
       const { error } = isNew ? await sb.from("assessments").insert(row) : await sb.from("assessments").update(row).eq("id", a.id);
       if (error) return errToast(error);
