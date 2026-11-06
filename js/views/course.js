@@ -1,12 +1,16 @@
 // Course dashboards (one per course) and the lecture drawer where students record
 // attendance, the study checklist, notes, time and attachments.
-import { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, errToast, debounce, $, $$, md, safeUrl, confirmDialog } from "../lib.js?v=202611061458";
+import { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, errToast, debounce, $, $$, md, safeUrl, confirmDialog } from "../lib.js?v=202611061520";
 import {
   S, course, session, lecturer, lecturerName, courseSessions, saveAttendance, saveProgress, logStudy, uploadAttachment, addLink,
   signedUrl, allTasks, isStaff, uploadOfficialMaterial, addOfficialLink, deleteOfficialMaterial,
-} from "../store.js?v=202611061458";
-import { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } from "../metrics.js?v=202611061458";
-import { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } from "../ui.js?v=202611061458";
+} from "../store.js?v=202611061520";
+import { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } from "../metrics.js?v=202611061520";
+import { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } from "../ui.js?v=202611061520";
+
+import { materialKind } from "./materials.js?v=202611061520";
+// Attributes that make opening a lecture's material tick the matching study step (see lecture.js).
+const markAttrs = (m) => (m.session_id && !m.assessment_id ? `data-mark="${materialKind(m.title, m.kind)}" data-sid="${m.session_id}" data-key="m:${m.id}"` : "");
 
 let currentTab = "lectures";
 
@@ -132,7 +136,7 @@ function tabMaterials(host, c) {
   const links = courseSessions(c.id).flatMap((s) => (s.links || []).map((l) => ({ ...l, s })).concat(s.recording_url ? [{ label: "Recording", url: s.recording_url, s }] : []));
   host.innerHTML = `<div class="grid two">
     <div class="sheet"><h3>Official materials</h3><p class="muted small">Shared with every student by the programme. ${isStaff() ? `Upload new files from <a href="#/documents">Documents</a>.` : ""}</p>
-      ${mats.length ? `<ul class="plist">${mats.map((m) => `<li><span class="bar"></span><div><div class="t">${m.url ? `<a href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">${esc(m.title)}</a>` : m.storage_path ? `<button class="t" data-official-file="${m.id}">${esc(m.title)}</button>` : esc(m.title)}</div><div class="d">${esc({ paper: "Presentation paper", link: "Link", file: "File", reading: "Reading" }[m.kind])}${m.session_id ? " · " + esc(sessionLabel(session(m.session_id))) : ""}${m.size_bytes ? " · " + fmtBytes(m.size_bytes) : ""}</div></div><span></span></li>`).join("")}</ul>` : `<p class="muted">None uploaded yet.</p>`}
+      ${mats.length ? `<ul class="plist">${mats.map((m) => `<li><span class="bar"></span><div><div class="t">${m.url ? `<a href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener" ${markAttrs(m)}>${esc(m.title)}</a>` : m.storage_path ? `<button class="t" data-official-file="${m.id}" ${markAttrs(m)}>${esc(m.title)}</button>` : esc(m.title)}</div><div class="d">${esc({ paper: "Presentation paper", link: "Link", file: "File", reading: "Reading" }[m.kind])}${m.session_id ? " · " + esc(sessionLabel(session(m.session_id))) : ""}${m.size_bytes ? " · " + fmtBytes(m.size_bytes) : ""}</div></div><span></span></li>`).join("")}</ul>` : `<p class="muted">None uploaded yet.</p>`}
       ${links.length ? `<h3 style="margin-top:14px">Recording and lecture links</h3><ul class="plist">${links.map((l) => `<li><span class="bar"></span><div><a class="t" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)}</a><div class="d">${esc(sessionLabel(l.s))}</div></div><span></span></li>`).join("")}</ul>` : ""}
     </div>
     <div class="sheet"><h3>My files for this course</h3><p class="muted small">Private to you.</p>
@@ -194,7 +198,7 @@ export function openSession(id, { onChange } = {}) {
       </div>` : ""}
 
       <div class="block"><h3>Files</h3>
-        ${official.length ? `<p class="small muted">Official</p><ul class="plist">${official.map((m) => `<li><span class="bar"></span><div>${m.url ? `<a class="t" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">${esc(m.title)}</a>` : `<button class="t" data-official-file="${m.id}">${esc(m.title)}</button>`}</div><span></span></li>`).join("")}</ul>` : ""}
+        ${official.length ? `<p class="small muted">Official</p><ul class="plist">${official.map((m) => `<li><span class="bar"></span><div>${m.url ? `<a class="t" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener" ${markAttrs(m)}>${esc(m.title)}</a>` : `<button class="t" data-official-file="${m.id}" ${markAttrs(m)}>${esc(m.title)}</button>`}</div><span></span></li>`).join("")}</ul>` : ""}
         <ul class="plist">${files.map((a) => `<li><span class="bar"></span><div><button class="t" data-my-file="${a.id}">${esc(a.name)}</button><div class="d">${a.kind === "link" ? "Link" : fmtBytes(a.size_bytes)}</div></div><span></span></li>`).join("") || `<li><span></span><span class="muted small">No personal files for this lecture.</span><span></span></li>`}</ul>
         <div class="row" style="margin-top:8px"><label class="btn sm">Upload files<input type="file" multiple hidden data-upload accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.heic,.txt,.md"></label><button class="btn sm" data-addlink>Add a link</button></div>
       </div>

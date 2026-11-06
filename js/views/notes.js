@@ -1,9 +1,11 @@
-// Lecture study notes: a one-page, handwritten-style revision sheet per lecture, built by the
-// AI from the lecture's slides (or its syllabus topics when no slides are available).
-// One note per lecture is shared by the whole class; admins can regenerate it.
-import { esc, openModal, toast, errToast, loadScript, $ } from "../lib.js?v=202611061458";
-import { S, sb, callFunction, session as getSession, isStaff } from "../store.js?v=202611061458";
-import { sessionName, courseName } from "../ui.js?v=202611061458";
+// Lecture study notes, two per lecture and shared by the whole class: a one-page handwritten-style
+// revision sheet, and full notes detailed enough to study from instead of the slides. The AI builds
+// both from the lecture's slides (or its syllabus topics when no slides are available); admins can
+// regenerate them.
+import { esc, md, openModal, toast, errToast, loadScript, $, $$ } from "../lib.js?v=202611061520";
+import { S, sb, callFunction, session as getSession, isStaff } from "../store.js?v=202611061520";
+import { sessionName, courseName } from "../ui.js?v=202611061520";
+import { makeFile } from "./submit.js?v=202611061520";
 
 const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
 const JSPDF = "https://cdn.jsdelivr.net/npm/jspdf@4.1.0/dist/jspdf.umd.min.js";
@@ -21,16 +23,21 @@ function loadFonts() {
 
 export async function getNote(sessionId) {
   if (cache.has(sessionId)) return cache.get(sessionId);
-  const { data, error } = await sb.from("lecture_notes").select("content, source, generated_at").eq("session_id", sessionId).maybeSingle();
+  const { data, error } = await sb.from("lecture_notes").select("content, source, generated_at, full_md, full_generated_at").eq("session_id", sessionId).maybeSingle();
   if (error) throw error;
   cache.set(sessionId, data || null);
   return data || null;
 }
-export async function createNote(sessionId, regenerate = false) {
-  const r = await callFunction("hub-ai", { task: "study_note", session_id: sessionId, regenerate });
-  cache.set(sessionId, r.note);
-  return r.note;
+export async function createNote(sessionId, regenerate = false, part = "sheet") {
+  const r = await callFunction("hub-ai", { task: "study_note", session_id: sessionId, regenerate, part });
+  cache.set(sessionId, { ...(cache.get(sessionId) || {}), ...r.note });
+  return cache.get(sessionId);
 }
+
+// Full notes as a document page: lined paper, handwritten headings, readable body text.
+export const fullSheet = (n, s) => `<article class="hw-note hw-full">
+  <header class="hw-title"><h1><span class="a">${esc(s.title)}</span></h1><p>${esc(courseName(s.course_id))} · ${esc(sessionName(s))} · full notes</p></header>
+  <div class="hw-md">${md(n.full_md)}</div></article>`;
 
 const HL = ["#ffe58a", "#ffc2d1", "#b9dcff", "#c7efb8", "#ffd2a6"]; // highlighter colours
 // Box border and fill for each highlighter (plain rgba: the image export can't read color-mix()).
@@ -68,53 +75,81 @@ export function noteSheet(content, s) {
   </article>`;
 }
 
-export async function openStudyNote(sessionId) {
+const PART = {
+  sheet: { tab: "One-page sheet", has: (n) => n?.content, wait: "Reading the slides and laying out the page. This takes about 20–40 seconds.",
+    blurb: "A one-page handwritten-style revision sheet: the basic idea, comparisons, a step-by-step flow, key terms, an example and a one-line rule." },
+  full: { tab: "Full notes", has: (n) => n?.full_md, wait: "Going through every slide and writing it up in full. This takes about 40–90 seconds.",
+    blurb: "Complete notes, detailed enough to study from instead of the slides: every topic explained in full sentences, definitions, formulas with each symbol explained, worked examples, key terms, a summary and self-check questions." },
+};
+
+export async function openStudyNote(sessionId, part = "sheet") {
   loadFonts();
   const s = getSession(sessionId);
   if (!s) return;
-  openModal(`Study note · ${sessionName(s)}`, async (body, foot, close) => {
-    body.innerHTML = `<div class="loading">Opening the study note…</div>`;
+  let tab = part;
+  openModal(`Study notes · ${sessionName(s)}`, async (body, foot, close) => {
+    body.innerHTML = `<div class="loading">Opening the study notes…</div>`;
     foot.innerHTML = `<button class="btn" data-close-note>Close</button>`;
     foot.querySelector("[data-close-note]").onclick = close;
     let note;
     try { note = await getNote(sessionId); } catch (e) { body.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
-    const show = (n) => {
-      body.innerHTML = `<div class="hw-scroll">${noteSheet(n.content, s)}</div>
-        <p class="small muted" style="margin:10px 0 0">${n.source === "slides" ? "Made by the AI from this lecture's slides." : "Made by the AI from the syllabus topics (the slides weren't available). Check it against your lecture notes."} Shared with the whole class.</p>`;
+    const tabs = () => `<div class="tabs" role="tablist">${Object.entries(PART).map(([k, v]) => `<button class="tab" role="tab" aria-selected="${tab === k}" data-part="${k}">${v.tab}${PART[k].has(note) ? "" : " · not created yet"}</button>`).join("")}</div>`;
+    const wireTabs = () => $$("[data-part]", body).forEach((b) => b.addEventListener("click", () => { tab = b.dataset.part; draw(); }));
+    const draw = () => (PART[tab].has(note) ? show() : empty());
+    const show = () => {
+      const isFull = tab === "full";
+      body.innerHTML = `${tabs()}<div class="hw-scroll">${isFull ? fullSheet(note, s) : noteSheet(note.content, s)}</div>
+        <p class="small muted" style="margin:10px 0 0">${note.source === "slides" ? "Made by the AI from this lecture's slides." : "Made by the AI from the syllabus topics (the slides weren't available). Check it against your lecture notes."} Shared with the whole class.</p>`;
       foot.innerHTML = `${isStaff() ? `<button class="btn" data-regen style="margin-right:auto">Regenerate</button>` : ""}
-        <button class="btn" data-ask>Ask the assistant</button><button class="btn" data-png>Save image</button><button class="btn primary" data-pdf>Download PDF</button>`;
-      foot.querySelector("[data-png]").onclick = (e) => exportNote(body, s, "png", e.currentTarget);
-      foot.querySelector("[data-pdf]").onclick = (e) => exportNote(body, s, "pdf", e.currentTarget);
+        <button class="btn" data-ask>Ask the assistant</button>${isFull ? `<button class="btn" data-word>Download Word</button>` : `<button class="btn" data-png>Save image</button>`}<button class="btn primary" data-pdf>Download PDF</button>`;
+      foot.querySelector("[data-png]")?.addEventListener("click", (e) => exportNote(body, s, "png", e.currentTarget, isFull));
+      foot.querySelector("[data-pdf]").onclick = (e) => exportNote(body, s, "pdf", e.currentTarget, isFull);
+      foot.querySelector("[data-word]")?.addEventListener("click", (e) => wordNotes(note, s, e.currentTarget));
       foot.querySelector("[data-ask]").onclick = () => { close(); window.dispatchEvent(new CustomEvent("hub:ai", { detail: { course_id: s.course_id, session_id: s.id, mode: "explain" } })); };
       foot.querySelector("[data-regen]")?.addEventListener("click", () => make(true));
+      wireTabs();
     };
     const make = async (regenerate) => {
-      body.innerHTML = `<div class="loading"><strong>Writing the study note…</strong><br>Reading the slides and laying out the page. This takes about 20–40 seconds.</div>`;
+      body.innerHTML = `${tabs()}<div class="loading"><strong>Writing the ${PART[tab].tab.toLowerCase()}…</strong><br>${PART[tab].wait}</div>`;
       foot.querySelectorAll("button").forEach((b) => { b.disabled = true; });
-      try { show(await createNote(sessionId, regenerate)); toast("Study note ready"); window.dispatchEvent(new CustomEvent("hub:changed")); }
-      catch (e) { errToast(e); note ? show(note) : empty(); }
+      try { note = await createNote(sessionId, regenerate, tab); show(); toast(`${PART[tab].tab} ready`); window.dispatchEvent(new CustomEvent("hub:changed")); }
+      catch (e) { errToast(e); draw(); }
     };
     const empty = () => {
-      body.innerHTML = `<div class="empty" style="padding:30px 10px"><strong>No study note for this lecture yet.</strong>
-        The AI reads this lecture's slides (or its syllabus topics if the slides aren't available) and writes a one-page handwritten-style revision sheet: the basic idea, comparisons, a step-by-step flow, key terms, an example and a one-line rule. It's shared with the whole class, so it only needs creating once.</div>`;
-      foot.innerHTML = `<button class="btn" data-x>Close</button><button class="btn primary" data-make>Create study note</button>`;
+      body.innerHTML = `${tabs()}<div class="empty" style="padding:30px 10px"><strong>No ${PART[tab].tab.toLowerCase()} for this lecture yet.</strong>
+        ${PART[tab].blurb} It's shared with the whole class, so it only needs creating once.</div>`;
+      foot.innerHTML = `<button class="btn" data-x>Close</button><button class="btn primary" data-make>Create ${PART[tab].tab.toLowerCase()}</button>`;
       foot.querySelector("[data-x]").onclick = close;
       foot.querySelector("[data-make]").onclick = () => make(false);
+      wireTabs();
     };
-    note ? show(note) : empty();
+    draw();
   }, { wide: true });
 }
 
+// Full notes as an editable Word file (headings, bullets and paragraphs; Markdown markers removed).
+async function wordNotes(n, s, btn) {
+  btn.disabled = true;
+  try {
+    const text = String(n.full_md || "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/(^|\s)\*(\S.*?)\*/g, "$1$2").replace(/^\s*\d+\.\s+/gm, "- ").replace(/^\|.*\|\s*$/gm, (row) => row.replace(/^\||\|$/g, "").split("|").map((c) => c.trim()).filter((c) => !/^:?-{2,}:?$/.test(c)).join(" — "));
+    const blob = await makeFile("docx", { title: s.title, student: "Student Hub study notes", course: courseName(s.course_id), instructor: "", date: sessionName(s) }, text);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Full notes - ${(s.label || "Lecture")} - ${courseName(s.course_id)}.docx`.replace(/[\\/:*?"<>|]+/g, ""); a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  } catch (e) { errToast(e, "Couldn't create the Word file"); }
+  finally { btn.disabled = false; }
+}
+
 // Saves the rendered note as a PNG image or an A4 PDF (the page is split if it's long).
-async function exportNote(root, s, kind, btn) {
+async function exportNote(root, s, kind, btn, isFull = false) {
   const el = $(".hw-note", root);
   if (!el) return;
   btn.disabled = true;
   try {
     await loadScript(H2C);
     if (document.fonts?.ready) await document.fonts.ready;
-    const canvas = await window.html2canvas(el, { scale: 2, backgroundColor: null, useCORS: true });
-    const name = `Study note - ${(s.label || "Lecture")} - ${courseName(s.course_id)}`.replace(/[^\w\s.-]+/g, "").trim();
+    // Long full notes use a lower scale to stay inside the browser's canvas size limit.
+    const canvas = await window.html2canvas(el, { scale: isFull ? 1.4 : 2, backgroundColor: null, useCORS: true });
+    const name = `${isFull ? "Full notes" : "Study note"} - ${(s.label || "Lecture")} - ${courseName(s.course_id)}`.replace(/[^\w\s.-]+/g, "").trim();
     if (kind === "png") {
       const a = document.createElement("a"); a.href = canvas.toDataURL("image/png"); a.download = `${name}.png`; a.click();
     } else {

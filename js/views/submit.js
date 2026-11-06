@@ -2,9 +2,9 @@
 // from the student's own text, draft the email to the instructor (template or AI), then send
 // it with the file attached through the device's share sheet, or download it and open an
 // email that's already filled in. All free: nothing is sent through a paid mail service.
-import { esc, fmtLong, openModal, readForm, toast, errToast, loadScript, $ } from "../lib.js?v=202611061458";
-import { S, saveTask, uploadAttachment, callFunction, course as getCourse } from "../store.js?v=202611061458";
-import { TASK_STATUS } from "../metrics.js?v=202611061458";
+import { esc, fmtLong, openModal, readForm, toast, errToast, loadScript, $ } from "../lib.js?v=202611061520";
+import { S, saveTask, uploadAttachment, callFunction, course as getCourse } from "../store.js?v=202611061520";
+import { TASK_STATUS } from "../metrics.js?v=202611061520";
 
 const LIB = {
   docx: "https://cdn.jsdelivr.net/npm/docx@9.5.1/dist/index.iife.js",

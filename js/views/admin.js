@@ -1,10 +1,10 @@
 // Staff areas: Students & access (admin), Academic data (admin + coordinator),
 // Announcements, Cohort dashboard and exports. Personal student records are never shown here;
 // cohort figures come from an aggregate database function.
-import { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } from "../lib.js?v=202611061458";
-import { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial } from "../store.js?v=202611061458";
-import { DELIVERY } from "../metrics.js?v=202611061458";
-import { coursePill, sessionLabel, chart, css, courseColor, infoRequired } from "../ui.js?v=202611061458";
+import { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } from "../lib.js?v=202611061520";
+import { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial, addOfficialLink } from "../store.js?v=202611061520";
+import { DELIVERY } from "../metrics.js?v=202611061520";
+import { coursePill, sessionLabel, chart, css, courseColor, infoRequired } from "../ui.js?v=202611061520";
 
 const notAllowed = (view) => { view.innerHTML = `<div class="empty"><strong>Staff only.</strong>This page is for the programme admin and coordinators.</div>`; };
 
@@ -185,6 +185,8 @@ export function editAssessment(a, after) {
       <label class="check"><input type="checkbox" name="is_group" ${a.is_group ? "checked" : ""}> Group work</label>
       <label class="field"><span>Max group size</span><input class="input" type="number" name="max_group_size" value="${a.max_group_size ?? ""}"></label>
       <label class="field wide"><span>Description</span><textarea class="input" name="description">${esc(a.description || "")}</textarea></label>
+      <label class="field"><span>Linked lecture (optional)</span><select class="input" name="session_id"><option value="">None</option>${S.sessions.filter((x) => !x.cancelled && (!a.course_id || x.course_id === a.course_id)).sort((x, y) => (x.scheduled_date || "9999").localeCompare(y.scheduled_date || "9999")).map((x) => `<option value="${x.id}" ${a.session_id === x.id ? "selected" : ""}>${esc(course(x.course_id)?.short_name || "")}: ${esc(sessionLabel(x))}${x.scheduled_date ? " · " + fmtDate(x.scheduled_date) : ""}</option>`).join("")}</select></label>
+      ${isNew ? `<label class="field"><span>Link to the brief (optional)</span><input class="input" type="url" name="brief_url" placeholder="https://drive.google.com/…"></label>` : ""}
       <label class="field wide"><span>Information required (one per line)</span><textarea class="input" name="info_required" style="min-height:60px">${esc((a.info_required || []).join("\n"))}</textarea></label>
       <label class="field"><span>Source document</span><select class="input" name="source_ref"><option value="">None</option>${S.sources.map((d) => `<option value="${d.id}" ${a.source_ref === d.id ? "selected" : ""}>${esc(d.id)}</option>`).join("")}</select></label>
     </form>`;
@@ -200,10 +202,15 @@ export function editAssessment(a, after) {
       if (!form.reportValidity()) return;
       const f = readForm(form);
       const row = { course_id: a.course_id || f.course_id, title: f.title, type: f.type, weight: f.weight, assigned_date: f.assigned_date, due_date: f.due_date, is_group: !!f.is_group,
-        max_group_size: f.max_group_size, description: f.description, info_required: lines(f.info_required), source_ref: f.source_ref };
-      const { error } = isNew ? await sb.from("assessments").insert(row) : await sb.from("assessments").update(row).eq("id", a.id);
+        max_group_size: f.max_group_size, description: f.description, info_required: lines(f.info_required), source_ref: f.source_ref, session_id: f.session_id || null };
+      if (!row.course_id) return errToast(new Error("Choose a course"));
+      if (f.brief_url && !/^https?:\/\//i.test(f.brief_url)) return errToast(new Error("The brief link must start with https://"));
+      const { data: saved, error } = isNew ? await sb.from("assessments").insert(row).select().single() : await sb.from("assessments").update(row).eq("id", a.id).select().single();
       if (error) return errToast(error);
-      close(); toast("Saved"); after();
+      if (isNew && f.brief_url) {
+        try { await addOfficialLink({ course_id: row.course_id, assessment_id: saved.id, url: f.brief_url, title: `Brief: ${row.title}` }); } catch (er) { errToast(er); }
+      }
+      close(); toast(isNew ? "Added for every student. They'll see it in Assignments and get a notification." : "Saved for every student"); after();
     };
   }, { wide: true });
 }

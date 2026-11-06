@@ -1,12 +1,12 @@
 // Projects: long pieces of work with milestones. Official presentations and research papers
 // from the syllabi appear here automatically; students add their own, and admins can publish
 // a project to the whole class.
-import { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611061458";
-import { openSubmission } from "./submit.js?v=202611061458";
-import { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } from "../store.js?v=202611061458";
-import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061458";
-import { cvar, coursePill, infoRequired } from "../ui.js?v=202611061458";
-import { editAssessment } from "./admin.js?v=202611061458";
+import { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611061520";
+import { openSubmission } from "./submit.js?v=202611061520";
+import { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } from "../store.js?v=202611061520";
+import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061520";
+import { cvar, coursePill, infoRequired } from "../ui.js?v=202611061520";
+import { editAssessment } from "./admin.js?v=202611061520";
 
 const TYPE = { presentation: "Presentation", research_paper: "Research paper" };
 const tkey = (t) => t.id || "a:" + t.assessment_id;
@@ -26,7 +26,7 @@ export function renderProjects(view) {
       <p class="eyebrow">Projects</p>
       <h2>Presentations, papers and longer work</h2>
       <p>Break each project into milestones and tick them off; progress updates as you go. Official presentations and papers from the syllabi are already here.</p>
-      <div class="actions"><button class="btn primary" data-new>New project</button>${isStaff() ? `<button class="btn" data-publish>Publish a project to the class</button>` : ""}</div>
+      <div class="actions"><button class="btn primary" data-new>New project</button>${isStaff() ? `<button class="btn" data-publish>Add project for all students</button>` : ""}</div>
     </header>
     ${active.length ? `<div class="proj-grid">${active.map(card).join("")}</div>` : `<div class="sheet empty"><strong>No projects in progress.</strong>Add one with "New project".</div>`}
     ${done.length ? `<section class="section" style="margin-top:28px"><div class="section-head"><h2>Completed</h2></div><div class="proj-grid">${done.map(card).join("")}</div></section>` : ""}`;

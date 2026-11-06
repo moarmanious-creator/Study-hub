@@ -1,11 +1,11 @@
 // Assignments and personal tasks: Kanban board and list view. Presentations and papers live on Projects.
 // Official items come from the syllabus; a student's progress on them is stored privately.
-import { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611061458";
-import { openSubmission } from "./submit.js?v=202611061458";
-import { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } from "../store.js?v=202611061458";
-import { editAssessment } from "./admin.js?v=202611061458";
-import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061458";
-import { cvar, coursePill, infoRequired, srcRef } from "../ui.js?v=202611061458";
+import { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, icon, safeUrl, $, $$ } from "../lib.js?v=202611061520";
+import { openSubmission } from "./submit.js?v=202611061520";
+import { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } from "../store.js?v=202611061520";
+import { editAssessment } from "./admin.js?v=202611061520";
+import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061520";
+import { cvar, coursePill, infoRequired, srcRef } from "../ui.js?v=202611061520";
 
 const UI = { mode: "board", course: "all", sort: "due" };
 const COLS = ["overdue", "not_started", "in_progress", "completed", "submitted"];
@@ -23,7 +23,7 @@ export function renderTasks(view) {
       <p class="eyebrow">Assignments</p>
       <h2>Assignments &amp; coursework</h2>
       <p>Official assignments from the syllabi plus anything you add yourself. Drag a card or use its menu to change status. Presentations and papers are on the <a href="#/projects">Projects</a> page.</p>
-      <div class="actions"><button class="btn primary" data-new>Add assignment</button>${isStaff() ? `<button class="btn" data-publish>Publish an assignment to the class</button>` : ""}</div>
+      <div class="actions">${isStaff() ? `<button class="btn primary" data-publish>Add assignment for all students</button><button class="btn" data-new>Add a personal one</button>` : `<button class="btn primary" data-new>Add assignment</button>`}</div>
     </header>
     <div class="cal-toolbar">
       <div class="seg" role="group" aria-label="Task view"><button data-mode="board" aria-pressed="${UI.mode === "board"}">Board</button><button data-mode="list" aria-pressed="${UI.mode === "list"}">List</button></div>
@@ -104,7 +104,7 @@ export function openTask(t, after) {
   openModal(a ? a.title : isNew ? "Add assignment" : "Edit assignment", (body, foot, close) => {
     const files = S.attachments.filter((x) => x.task_id && x.task_id === t.id);
     body.innerHTML = `
-      ${a ? `<div class="stack" style="margin-bottom:14px"><div class="row">${coursePill(a.course_id)}<span class="pill info">Official</span><span class="small muted">${esc(a.weight || "")}</span></div><p style="margin:0">${esc(a.description || "")}</p><div class="small"><strong>Deadline:</strong> ${a.due_date ? fmtLong(a.due_date) : "Not stated in the official documents"}</div>${infoRequired(a.info_required)}${srcRef(a.source_ref)}</div>` : ""}
+      ${a ? `<div class="stack" style="margin-bottom:14px"><div class="row">${coursePill(a.course_id)}<span class="pill info">Official</span><span class="small muted">${esc(a.weight || "")}</span></div><p style="margin:0">${esc(a.description || "")}</p><div class="small"><strong>Deadline:</strong> ${a.due_date ? fmtLong(a.due_date) : "Not stated in the official documents"}</div>${infoRequired(a.info_required)}${S.materials.filter((m) => m.assessment_id === a.id && m.url).map((m) => `<a class="btn sm" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">${esc(m.title)}</a>`).join(" ")}${srcRef(a.source_ref)}</div>` : ""}
       <form class="form-grid">
         ${a ? "" : `<label class="field wide"><span>Title</span><input class="input" name="title" required value="${esc(t.title || "")}"></label>
         <label class="field"><span>Course</span><select class="input" name="course_id"><option value="">None</option>${S.courses.map((c) => `<option value="${c.id}" ${t.course_id === c.id ? "selected" : ""}>${esc(c.short_name || c.name)}</option>`).join("")}</select></label>

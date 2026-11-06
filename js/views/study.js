@@ -1,11 +1,11 @@
 // Study: lectures waiting to be studied, one card per course, and the study plan.
-import { esc, toast, errToast, $, $$ } from "../lib.js?v=202611061458";
-import { S, sb, courseSessions, isStaff } from "../store.js?v=202611061458";
-import { createNote } from "./notes.js?v=202611061458";
-import { courseStats, isStudyTracked } from "../metrics.js?v=202611061458";
-import { cvar, sessionName, sessionWhen, deliveryTag, coursePill } from "../ui.js?v=202611061458";
-import { renderPlan } from "./analytics.js?v=202611061458";
-import { pendingLectures, pendingItem, wirePending } from "./common.js?v=202611061458";
+import { esc, toast, errToast, $, $$ } from "../lib.js?v=202611061520";
+import { S, sb, courseSessions, isStaff } from "../store.js?v=202611061520";
+import { createNote } from "./notes.js?v=202611061520";
+import { courseStats, isStudyTracked } from "../metrics.js?v=202611061520";
+import { cvar, sessionName, sessionWhen, deliveryTag, coursePill } from "../ui.js?v=202611061520";
+import { renderPlan } from "./analytics.js?v=202611061520";
+import { pendingLectures, pendingItem, wirePending } from "./common.js?v=202611061520";
 
 const SHOW = { all: false };
 export function renderStudy(view) {
@@ -28,7 +28,7 @@ export function renderStudy(view) {
     </section>
 
     <section class="section">
-      <div class="section-head"><div><h2>Study notes</h2><p>A one-page, handwritten-style revision sheet for each lecture, made by the AI from its slides and shared with the whole class.</p></div>${isStaff() ? `<button class="btn" data-allnotes>Create missing notes</button>` : ""}</div>
+      <div class="section-head"><div><h2>Study notes</h2><p>For each lecture: full notes detailed enough to study from instead of the slides, and a one-page handwritten-style revision sheet. Made by the AI from the slides and shared with the whole class.</p></div>${isStaff() ? `<button class="btn" data-allnotes>Create missing notes</button>` : ""}</div>
       <div class="sheet flush"><div class="table-wrap" id="notesList"><div class="loading">Loading…</div></div></div>
     </section>
 
@@ -48,23 +48,25 @@ const heldLectures = () => S.sessions.filter((s) => isStudyTracked(s) && !s.canc
 async function drawNotes(view) {
   const box = $("#notesList", view);
   if (!box) return;
-  const { data, error } = await sb.from("lecture_notes").select("session_id, source");
+  const { data, error } = await sb.from("lecture_notes").select("session_id, source, content, full_generated_at");
   if (error) { box.innerHTML = `<div class="empty">${esc(error.message)}</div>`; return; }
-  const have = new Map((data || []).map((n) => [n.session_id, n.source]));
+  const rows = new Map((data || []).map((n) => [n.session_id, n]));
+  const have = new Map((data || []).filter((n) => n.content).map((n) => [n.session_id, n.source]));
+  const pill = (ok, label) => `<span class="pill ${ok ? "ok" : ""}">${label}${ok ? " ✓" : ""}</span>`;
   const list = heldLectures();
   box.innerHTML = list.length ? `<table class="data"><thead><tr><th>Lecture</th><th>Course</th><th>Note</th><th></th></tr></thead><tbody>${list.map((s) => `<tr>
     <td><strong>${esc(sessionName(s))}</strong></td><td>${coursePill(s.course_id)}</td>
-    <td>${have.has(s.id) ? `<span class="pill ok">Ready</span>${have.get(s.id) === "topics" ? ` <span class="small muted">from topics</span>` : ""}` : `<span class="pill">Not created yet</span>`}</td>
-    <td style="text-align:right"><button class="btn sm ${have.has(s.id) ? "primary" : ""}" data-study-note="${s.id}">${have.has(s.id) ? "Open" : "Create"}</button></td></tr>`).join("")}</tbody></table>`
+    <td>${pill(!!rows.get(s.id)?.full_generated_at, "Full notes")} ${pill(have.has(s.id), "Sheet")}${rows.get(s.id)?.source === "topics" ? ` <span class="small muted">from topics</span>` : ""}</td>
+    <td style="text-align:right;white-space:nowrap"><button class="btn sm ${rows.get(s.id)?.full_generated_at ? "primary" : ""}" data-study-note="${s.id}" data-part="full">Full notes</button> <button class="btn sm ${have.has(s.id) ? "primary" : ""}" data-study-note="${s.id}" data-part="sheet">Sheet</button></td></tr>`).join("")}</tbody></table>`
     : `<div class="empty">No lectures have taken place yet.</div>`;
   $("[data-allnotes]", view)?.addEventListener("click", async (e) => {
-    const missing = list.filter((s) => !have.has(s.id));
+    const missing = list.filter((s) => !have.has(s.id) || !rows.get(s.id)?.full_generated_at);
     if (!missing.length) return toast("Every lecture so far has a note.");
     const b = e.currentTarget; b.disabled = true;
     let done = 0;
     for (const s of missing) {
       b.textContent = `Creating ${done + 1} of ${missing.length}…`;
-      try { await createNote(s.id); done++; } catch (er) { errToast(er); break; }
+      try { await createNote(s.id, false, "full"); await new Promise((r) => setTimeout(r, 2500)); await createNote(s.id, false, "sheet"); done++; } catch (er) { errToast(er); break; }
       await new Promise((r) => setTimeout(r, 2500)); // stay well inside the free AI rate limits
     }
     toast(`${done} study note${done === 1 ? "" : "s"} created`);

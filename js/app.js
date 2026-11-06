@@ -1,25 +1,28 @@
 // Student Hub — app shell: session handling, navigation, routing, global search.
-import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611061458";
-import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions, isProject } from "./store.js?v=202611061458";
-import { renderAuth, hideAuth } from "./views/auth.js?v=202611061458";
-import { renderDashboard } from "./views/dashboard.js?v=202611061458";
-import { renderCourse, openSession, openFile } from "./views/course.js?v=202611061458";
-import { renderCalendar, startReminders } from "./views/calendar.js?v=202611061458";
-import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611061458";
-import { renderDocuments, preview } from "./views/documents.js?v=202611061458";
-import { renderAnalytics } from "./views/analytics.js?v=202611061458";
-import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611061458";
-import { renderAccount } from "./views/account.js?v=202611061458";
-import { initAI } from "./views/ai.js?v=202611061458";
-import { renderStudy } from "./views/study.js?v=202611061458";
-import { renderProjects, openProject } from "./views/projects.js?v=202611061458";
-import { maybeWelcome, showWelcome } from "./views/welcome.js?v=202611061458";
-import { pendingLectures } from "./views/common.js?v=202611061458";
-import { openStudyNote } from "./views/notes.js?v=202611061458";
-import { ledgerCells } from "./ui.js?v=202611061458";
-import { isStudyTracked } from "./metrics.js?v=202611061458";
+import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611061520";
+import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions, isProject } from "./store.js?v=202611061520";
+import { renderAuth, hideAuth } from "./views/auth.js?v=202611061520";
+import { renderDashboard } from "./views/dashboard.js?v=202611061520";
+import { renderCourse, openSession, openFile } from "./views/course.js?v=202611061520";
+import { renderCalendar, startReminders } from "./views/calendar.js?v=202611061520";
+import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611061520";
+import { renderDocuments, preview } from "./views/documents.js?v=202611061520";
+import { renderAnalytics } from "./views/analytics.js?v=202611061520";
+import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611061520";
+import { renderAccount } from "./views/account.js?v=202611061520";
+import { initAI } from "./views/ai.js?v=202611061520";
+import { renderStudy } from "./views/study.js?v=202611061520";
+import { renderProjects, openProject } from "./views/projects.js?v=202611061520";
+import { maybeWelcome, renderWelcome } from "./views/welcome.js?v=202611061520";
+import { renderLecture, markOpened } from "./views/lecture.js?v=202611061520";
+import { initNotifications, registerWorker } from "./views/notify.js?v=202611061520";
+import { pendingLectures } from "./views/common.js?v=202611061520";
+import { openStudyNote } from "./views/notes.js?v=202611061520";
+import { ledgerCells } from "./ui.js?v=202611061520";
+import { isStudyTracked } from "./metrics.js?v=202611061520";
 
 const ROUTES = {
+  welcome: ["Welcome", renderWelcome],
   dashboard: ["Dashboard", renderDashboard],
   study: ["Study", renderStudy],
   assignments: ["Assignments", renderTasks],
@@ -45,6 +48,7 @@ function nav() {
   }).join("");
   const pending = pendingLectures().length;
   $("#nav").innerHTML = `
+    ${link("welcome", "Welcome", icon.next)}
     ${link("dashboard", "Dashboard", icon.dash)}
     ${link("study", "Study", icon.study, pending ? `<span class="count hot" title="Lectures waiting to be studied">${pending}</span>` : "")}
     ${link("assignments", "Assignments", icon.tasks)}
@@ -54,7 +58,7 @@ function nav() {
     ${link("announcements", "Announcements", icon.bell, S.announcements.length ? `<span class="count">${S.announcements.length}</span>` : "")}
     ${link("analytics", "My progress", icon.chart)}
     <button class="nav-link ai-link" type="button" data-ai-nav>${icon.spark}<span>AI Study Assistant</span></button>
-    <button class="nav-link" type="button" data-welcome-nav>${icon.next}<span>Today's briefing</span></button>
+
     <div class="nav-group">Courses</div>${courseLinks || `<span class="muted small" style="padding:0 10px">No courses yet</span>`}
     ${isStaff() ? `<div class="nav-group">Programme admin</div>${isAdmin() ? link("students", "Students & access", icon.users) : ""}${link("data", "Academic data", icon.data)}${link("cohort", "Cohort dashboard", icon.cohort)}` : ""}`;
   $("#sideFoot").innerHTML = `<a class="who nav-link" href="#/account"><span class="avatar">${esc(initials(S.profile?.full_name || S.user.email))}</span><span style="min-width:0"><span style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(S.profile?.full_name || S.user.email)}</span>${S.profile?.role !== "student" ? `<span class="role-tag">${esc(S.profile.role)}</span>` : ""}</span></a>`;
@@ -64,6 +68,7 @@ function currentRoute() {
   const h = location.hash.replace(/^#\/?/, "");
   let [a, b, c] = h.split("/");
   if (a === "course" && b) return { path: `course/${b}`, course: b, tab: c };
+  if (a === "lecture" && b) return { path: `lecture/${b}`, lecture: b };
   a = ALIASES[a] || a; // old links keep working
   return { path: ROUTES[a] ? a : "dashboard" };
 }
@@ -75,7 +80,13 @@ function render() {
   try {
     const r = currentRoute();
     const view = $("#view");
-    if (r.course) {
+    if (r.lecture) {
+      const s = S.sessions.find((x) => x.id === r.lecture);
+      const c = s && S.courses.find((x) => x.id === s.course_id);
+      $("#pageTitle").textContent = c ? c.short_name || c.name : "Lecture";
+      document.title = `${s?.title || "Lecture"} · Student Hub`;
+      renderLecture(view, r.lecture);
+    } else if (r.course) {
       const c = S.courses.find((x) => x.id === r.course);
       $("#pageTitle").textContent = c ? c.short_name || c.name : "Course";
       document.title = `${c?.short_name || "Course"} · Student Hub`;
@@ -111,7 +122,7 @@ function wireShell() {
   // Projects open in their own editor wherever they're linked from.
   const openAny = (t) => (t && isProject(t) ? openProject(t, rerender) : openTask(t, rerender));
   window.addEventListener("hub:task", (e) => openAny(e.detail));
-  window.addEventListener("hub:open-session", (e) => openSession(e.detail));
+  window.addEventListener("hub:open-session", (e) => { location.hash = `#/lecture/${e.detail}`; });
   window.addEventListener("hub:preview", (e) => preview(e.detail));
   // Re-render after a drawer or dialog closes if something changed underneath it.
   let pendingRerender = false;
@@ -120,14 +131,16 @@ function wireShell() {
 
   // Delegated openers used across views.
   document.addEventListener("click", (e) => {
+    const mk = e.target.closest("[data-mark]");
+    if (mk) markOpened(mk); // the link or file still opens below / by default
     const s = e.target.closest("[data-open-session]");
-    if (s) { e.preventDefault(); return openSession(s.dataset.openSession); }
+    if (s) { e.preventDefault(); closeDrawer(); location.hash = `#/lecture/${s.dataset.openSession}`; return; }
     const sn = e.target.closest("[data-study-note]");
-    if (sn) { e.preventDefault(); closeDrawer(); return openStudyNote(sn.dataset.studyNote); }
+    if (sn) { e.preventDefault(); closeDrawer(); return openStudyNote(sn.dataset.studyNote, sn.dataset.part || "sheet"); }
     const t = e.target.closest("[data-open-task]");
     if (t) { e.preventDefault(); return openAny(findTask(t.dataset.openTask)); }
     if (e.target.closest("[data-ai-nav]")) { closeMenu(); return window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); }
-    if (e.target.closest("[data-welcome-nav]")) { closeMenu(); return showWelcome(); }
+
     const of = e.target.closest("[data-official-file]");
     if (of) { e.preventDefault(); return openFile("official", of.dataset.officialFile); }
     const mf = e.target.closest("[data-my-file]");
@@ -205,6 +218,8 @@ async function start(session) {
     if (!S.courses.length) showBanner(isStaff() ? `No academic data yet. Open <a href="#/data">Academic data → Import</a> and load the 2026/27 data.` : "The programme hasn't published the courses yet. Check back soon.");
     render();
     initAI();
+    registerWorker();
+    initNotifications();
     maybeWelcome();
     startReminders();
   } catch (e) {

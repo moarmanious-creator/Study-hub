@@ -1,8 +1,8 @@
 // Shared pieces for the welcome screen, Dashboard and Study page.
-import { esc, isISO, relDays, addDays, errToast } from "../lib.js?v=202611061458";
-import { S, saveProgress, allAssignments, allProjects } from "../store.js?v=202611061458";
-import { sessionState, isStudyTracked, CORE, taskStatus, DONE_TASK } from "../metrics.js?v=202611061458";
-import { cvar, coursePill, sessionName, deliveryTag } from "../ui.js?v=202611061458";
+import { esc, isISO, relDays, addDays, errToast } from "../lib.js?v=202611061520";
+import { S, saveProgress, allAssignments, allProjects } from "../store.js?v=202611061520";
+import { sessionState, isStudyTracked, CORE, taskStatus, DONE_TASK } from "../metrics.js?v=202611061520";
+import { cvar, coursePill, sessionName, deliveryTag } from "../ui.js?v=202611061520";
 
 export const CREST = (size = 44) => `<svg class="crest" viewBox="0 0 40 46" width="${size}" height="${Math.round(size * 1.15)}" aria-hidden="true"><path d="M20 2 37 8v14c0 11-7.4 18.6-17 22C10.4 40.6 3 33 3 22V8z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M20 6.5 33 11v11c0 8.6-5.6 14.6-13 17.6C12.6 36.6 7 30.6 7 22V11z" fill="currentColor" opacity=".12"/><path d="M11 15.5h18M11 15.5v13M29 15.5v13M11 28.5c3-1.6 6-1.6 9 0 3-1.6 6-1.6 9 0M20 15.5v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
 

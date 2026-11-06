@@ -1,6 +1,6 @@
 // Data layer: Supabase client, loading, and every write the app makes.
 // All reads and writes go through row-level security; nothing personal is kept in the browser.
-import { todayISO, loadScript, uid } from "./lib.js?v=202611061458";
+import { todayISO, loadScript, uid } from "./lib.js?v=202611061520";
 
 const cfg = window.MLEA_CONFIG || {};
 export const configured = !!(cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && window.supabase);
@@ -328,7 +328,7 @@ export async function uploadOfficialMaterial(file, meta) {
 }
 export async function addOfficialLink(meta) {
   if (!/^https?:\/\//i.test(meta.url || "")) throw new Error("Links must start with http:// or https://");
-  const row = check(await sb.from("shared_materials").insert({ course_id: meta.course_id || null, session_id: meta.session_id || null, kind: "link",
+  const row = check(await sb.from("shared_materials").insert({ course_id: meta.course_id || null, session_id: meta.session_id || null, assessment_id: meta.assessment_id || null, kind: "link",
     title: meta.title || meta.url, description: meta.description || null, url: meta.url, uploaded_by: S.user.id }).select().single());
   S.materials.push(row);
   return row;

@@ -575,6 +575,99 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
 .fmt-pick input { accent-color: var(--nile); }
 .fmt-pick label:has(input:checked) { border-color: var(--nile); box-shadow: 0 0 0 1px var(--nile); }
 
+/* ── Lecture page ── */
+.lecture-page { max-width: 1120px; }
+.lp-crumbs { color: var(--ink-3); margin-bottom: 10px; }
+.lp-crumbs a { color: var(--ink-2); }
+.lp-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; border-left: 4px solid var(--course); padding-left: 16px; margin-bottom: 16px; }
+.lp-head h2 { font-family: var(--display); font-size: 2.3rem; line-height: 1.08; }
+.lp-meta { color: var(--ink-2); font-size: .92rem; margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.lp-status { flex: none; text-align: center; border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 10px 16px; background: var(--sheet); min-width: 110px; }
+.lp-status b { display: block; font-family: var(--display); font-size: 1.5rem; }
+.lp-status span { font-size: .78rem; color: var(--ink-3); }
+.lp-status.ok { border-color: var(--sage); } .lp-status.ok b { color: var(--sage); }
+.lp-status.mid b { color: var(--brass); }
+.lp-steps { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 6px 0 4px; }
+.lp-steps .step { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 8px; border-radius: 999px; border: 1px solid var(--rule); background: var(--sheet); cursor: pointer; font-weight: 600; font-size: .9rem; user-select: none; }
+.lp-steps .step input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.lp-steps .step .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--rule-2); color: var(--ink-2); font-size: .82rem; }
+.lp-steps .step.on { border-color: var(--sage); background: var(--sage-2); color: var(--sage); }
+.lp-steps .step.on .n { background: var(--sage); color: #fff; }
+.lp-steps .step:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.lp-hint { margin: 2px 0 18px; }
+.lp-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.lp-main, .lp-side { display: grid; gap: 16px; }
+@media (max-width: 960px) { .lp-grid { grid-template-columns: 1fr; } .lp-head h2 { font-size: 1.8rem; } }
+.mats { display: grid; gap: 8px; margin-top: 10px; }
+.mat { display: grid; grid-template-columns: 42px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--rule); border-radius: var(--r-md); text-decoration: none; color: var(--ink); background: var(--paper); }
+.mat:hover { border-color: var(--gold); }
+.mat .mi { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; background: var(--nile); color: #f4efe4; font-size: 1.1rem; }
+.mat .mt b { display: block; line-height: 1.3; }
+.mat .mt small { color: var(--ink-3); }
+.lp-topics { margin: 6px 0 0; padding-left: 18px; }
+.lp-note { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-color: var(--gold); background: var(--brass-2); }
+.att-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+.att-pick button { border: 1px solid var(--rule); background: var(--sheet); border-radius: var(--r-sm); padding: 8px; cursor: pointer; font-weight: 500; color: var(--ink-2); }
+.att-pick button[aria-pressed="true"] { background: var(--nile); border-color: var(--nile); color: #fdf9f0; }
+.ai-quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.lp-more summary { cursor: pointer; font-weight: 600; }
+.lp-pager { display: flex; justify-content: space-between; gap: 10px; margin-top: 22px; }
+
+/* ── Welcome page ── */
+.welcome-page .wp-hero { border-radius: var(--r-lg); padding: 30px 32px; color: #e9e4d8; background: radial-gradient(120% 120% at 0% 0%, #2a3d6b 0%, #172443 50%, #0f1830 100%); border: 1px solid #0f1830; position: relative; overflow: hidden; }
+.welcome-page .wp-hero::after { content: ""; position: absolute; right: -50px; bottom: -70px; width: 260px; height: 260px; border-radius: 50%; border: 1px solid rgba(201, 168, 90, .3); box-shadow: 0 0 0 30px rgba(201, 168, 90, .05); }
+.welcome-page .crest { color: var(--gold); }
+.welcome-page .wp-hero .eyebrow { color: var(--gold); margin-top: 12px; }
+.welcome-page .wp-hero h2 { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); color: #f7f2e7; line-height: 1.05; }
+.welcome-page .lead { color: #c9ccd8; margin: 10px 0 0; max-width: 62ch; }
+.wp-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; position: relative; z-index: 1; }
+.wp-actions .btn:not(.gold) { background: transparent; color: #e9e4d8; border-color: rgba(255, 255, 255, .3); }
+.wp-alerts { display: grid; gap: 8px; margin-top: 16px; }
+.wp-alert { text-align: left; border: 1px solid var(--rule); border-left: 4px solid var(--gold); background: var(--sheet); border-radius: var(--r-md); padding: 10px 14px; cursor: pointer; font: inherit; color: var(--ink); }
+.wp-alert.lv3 { border-left-color: var(--brick); }
+.wp-alert b { display: block; }
+.wp-alert span { font-size: .88rem; color: var(--ink-2); }
+.wp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+@media (max-width: 860px) { .wp-grid { grid-template-columns: 1fr; } .welcome-page .wp-hero { padding: 22px 20px; } }
+.wp-intro { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.wp-intro div { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 14px; font-size: .88rem; color: var(--ink-2); }
+.wp-intro svg { color: var(--brass); display: block; margin-bottom: 6px; }
+.wp-intro b { display: block; color: var(--ink); font-family: var(--serif); font-size: 1.02rem; }
+@media (max-width: 700px) { .wp-intro { grid-template-columns: 1fr; } }
+
+/* ── Notifications ── */
+.icon-btn.bell { position: relative; }
+.icon-btn.bell .badge { position: absolute; top: 2px; right: 0; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--brick); color: #fff; font-size: .7rem; font-weight: 700; display: grid; place-items: center; }
+.bell-panel { position: absolute; right: 28px; top: 60px; width: min(420px, calc(100vw - 32px)); max-height: 70vh; overflow: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r-lg); box-shadow: var(--shadow); z-index: 40; }
+@media (max-width: 900px) { .bell-panel { right: 16px; top: 54px; } }
+.bp-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+.bp-head h2 { font-size: 1.1rem; }
+.bp-list { list-style: none; margin: 0; padding: 6px; }
+.bp-list li button { display: grid; gap: 3px; width: 100%; text-align: left; border: 0; background: none; padding: 10px 10px 10px 14px; border-left: 3px solid var(--course, var(--gold)); border-radius: 4px; cursor: pointer; font: inherit; color: var(--ink); margin-bottom: 4px; }
+.bp-list li button:hover { background: var(--rule-2); }
+.bp-list li.lv3 button { border-left-color: var(--brick); }
+.bp-list b { font-size: .92rem; }
+.bp-list span { font-size: .84rem; color: var(--ink-2); }
+.bp-list .pill { justify-self: start; }
+.bp-foot { padding: 10px 16px 14px; border-top: 1px solid var(--rule); }
+
+/* Full lecture notes: lined paper with handwritten headings, readable body. */
+.hw-full .hw-md { font-size: 17px; line-height: 28px; }
+.hw-full .hw-md h2 { font-family: "Caveat", cursive; font-size: 1.9rem; font-weight: 700; margin: 22px 0 6px; display: inline-block; padding: 0 6px; background: linear-gradient(transparent 40%, #ffe58a 40%, #ffe58a 90%, transparent 90%); }
+.hw-full .hw-md h2:nth-of-type(4n+2) { background: linear-gradient(transparent 40%, #ffc2d1 40%, #ffc2d1 90%, transparent 90%); }
+.hw-full .hw-md h2:nth-of-type(4n+3) { background: linear-gradient(transparent 40%, #b9dcff 40%, #b9dcff 90%, transparent 90%); }
+.hw-full .hw-md h2:nth-of-type(4n+4) { background: linear-gradient(transparent 40%, #c7efb8 40%, #c7efb8 90%, transparent 90%); }
+.hw-full .hw-md h3 { font-family: "Caveat", cursive; font-size: 1.45rem; color: #2d5b9a; margin: 14px 0 2px; }
+.hw-full .hw-md p { margin: 0 0 10px; }
+.hw-full .hw-md strong { color: #c0436b; font-weight: 400; text-decoration: underline; text-decoration-color: rgba(192, 67, 107, .45); text-underline-offset: 3px; }
+.hw-full .hw-md ul, .hw-full .hw-md ol { margin: 0 0 10px; padding-left: 24px; }
+.hw-full .hw-md table { border-collapse: collapse; margin: 6px 0 14px; width: 100%; }
+.hw-full .hw-md th, .hw-full .hw-md td { border: 1.5px solid #9fb6d6; padding: 3px 8px; text-align: left; vertical-align: top; }
+.hw-full .hw-md th { background: rgba(185, 220, 255, .32); font-family: "Caveat", cursive; font-size: 1.25rem; }
+.hw-full .hw-md code, .hw-full .hw-md pre { font-family: inherit; background: rgba(255, 229, 138, .3); padding: 0 4px; border-radius: 3px; }
+.hw-full .hw-md pre { padding: 8px 12px; white-space: pre-wrap; }
+.hw-full .hw-md blockquote { margin: 6px 0 12px; padding: 6px 12px; border-left: 3px solid #e8b931; background: rgba(255, 229, 138, .25); }
+
 </style>
 <script>
   // Apply the saved theme before first paint to avoid a flash.
@@ -607,11 +700,16 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input id="globalSearch" type="search" placeholder="Search lectures, tasks, files" aria-label="Search lectures, tasks and files" autocomplete="off">
         </label>
+        <button class="icon-btn bell" id="bellBtn" hidden aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="badge" hidden>0</span>
+        </button>
         <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         </button>
       </div>
       <div class="search-results" id="searchResults" hidden></div>
+      <div class="bell-panel" id="bellPanel" hidden role="dialog" aria-label="Notifications"></div>
     </header>
     <div class="banner" id="banner" hidden></div>
     <main id="view" tabindex="-1"></main>
@@ -1209,7 +1307,7 @@ async function uploadOfficialMaterial(file, meta) {
 }
 async function addOfficialLink(meta) {
   if (!/^https?:\/\//i.test(meta.url || "")) throw new Error("Links must start with http:// or https://");
-  const row = check(await sb.from("shared_materials").insert({ course_id: meta.course_id || null, session_id: meta.session_id || null, kind: "link",
+  const row = check(await sb.from("shared_materials").insert({ course_id: meta.course_id || null, session_id: meta.session_id || null, assessment_id: meta.assessment_id || null, kind: "link",
     title: meta.title || meta.url, description: meta.description || null, url: meta.url, uploaded_by: S.user.id }).select().single());
   S.materials.push(row);
   return row;
@@ -1961,6 +2059,19 @@ const fmtN = (n) => (Number.isInteger(n) ? n : n.toFixed(1));
 return { priorityItem, renderDashboard };
 })();
 
+__hub["views/materials"] = (function () {
+"use strict";
+// Which study step a lecture material ticks when it's opened (shared by the lecture and course pages).
+function materialKind(title = "", kind = "") {
+  if (/record|video|watch/i.test(title)) return "recording";
+  if (/assign|homework|problem set|exercise/i.test(title)) return "assignment";
+  if (kind === "reading" || kind === "paper" || /book|paper|reading|chapter|article|case/i.test(title)) return "reading";
+  return "slides";
+}
+
+return { materialKind };
+})();
+
 __hub["views/course"] = (function () {
 "use strict";
 // Course dashboards (one per course) and the lecture drawer where students record
@@ -1969,6 +2080,10 @@ const { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, e
 const { S, course, session, lecturer, lecturerName, courseSessions, saveAttendance, saveProgress, logStudy, uploadAttachment, addLink, signedUrl, allTasks, isStaff, uploadOfficialMaterial, addOfficialLink, deleteOfficialMaterial } = __hub["store"];
 const { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } = __hub["metrics"];
 const { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } = __hub["ui"];
+const { materialKind } = __hub["views/materials"];
+// Attributes that make opening a lecture's material tick the matching study step (see lecture.js).
+const markAttrs = (m) => (m.session_id && !m.assessment_id ? `data-mark="${materialKind(m.title, m.kind)}" data-sid="${m.session_id}" data-key="m:${m.id}"` : "");
+
 let currentTab = "lectures";
 
 function renderCourse(view, cid, tab) {
@@ -2093,7 +2208,7 @@ function tabMaterials(host, c) {
   const links = courseSessions(c.id).flatMap((s) => (s.links || []).map((l) => ({ ...l, s })).concat(s.recording_url ? [{ label: "Recording", url: s.recording_url, s }] : []));
   host.innerHTML = `<div class="grid two">
     <div class="sheet"><h3>Official materials</h3><p class="muted small">Shared with every student by the programme. ${isStaff() ? `Upload new files from <a href="#/documents">Documents</a>.` : ""}</p>
-      ${mats.length ? `<ul class="plist">${mats.map((m) => `<li><span class="bar"></span><div><div class="t">${m.url ? `<a href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">${esc(m.title)}</a>` : m.storage_path ? `<button class="t" data-official-file="${m.id}">${esc(m.title)}</button>` : esc(m.title)}</div><div class="d">${esc({ paper: "Presentation paper", link: "Link", file: "File", reading: "Reading" }[m.kind])}${m.session_id ? " · " + esc(sessionLabel(session(m.session_id))) : ""}${m.size_bytes ? " · " + fmtBytes(m.size_bytes) : ""}</div></div><span></span></li>`).join("")}</ul>` : `<p class="muted">None uploaded yet.</p>`}
+      ${mats.length ? `<ul class="plist">${mats.map((m) => `<li><span class="bar"></span><div><div class="t">${m.url ? `<a href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener" ${markAttrs(m)}>${esc(m.title)}</a>` : m.storage_path ? `<button class="t" data-official-file="${m.id}" ${markAttrs(m)}>${esc(m.title)}</button>` : esc(m.title)}</div><div class="d">${esc({ paper: "Presentation paper", link: "Link", file: "File", reading: "Reading" }[m.kind])}${m.session_id ? " · " + esc(sessionLabel(session(m.session_id))) : ""}${m.size_bytes ? " · " + fmtBytes(m.size_bytes) : ""}</div></div><span></span></li>`).join("")}</ul>` : `<p class="muted">None uploaded yet.</p>`}
       ${links.length ? `<h3 style="margin-top:14px">Recording and lecture links</h3><ul class="plist">${links.map((l) => `<li><span class="bar"></span><div><a class="t" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)}</a><div class="d">${esc(sessionLabel(l.s))}</div></div><span></span></li>`).join("")}</ul>` : ""}
     </div>
     <div class="sheet"><h3>My files for this course</h3><p class="muted small">Private to you.</p>
@@ -2155,7 +2270,7 @@ function openSession(id, { onChange } = {}) {
       </div>` : ""}
 
       <div class="block"><h3>Files</h3>
-        ${official.length ? `<p class="small muted">Official</p><ul class="plist">${official.map((m) => `<li><span class="bar"></span><div>${m.url ? `<a class="t" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">${esc(m.title)}</a>` : `<button class="t" data-official-file="${m.id}">${esc(m.title)}</button>`}</div><span></span></li>`).join("")}</ul>` : ""}
+        ${official.length ? `<p class="small muted">Official</p><ul class="plist">${official.map((m) => `<li><span class="bar"></span><div>${m.url ? `<a class="t" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener" ${markAttrs(m)}>${esc(m.title)}</a>` : `<button class="t" data-official-file="${m.id}" ${markAttrs(m)}>${esc(m.title)}</button>`}</div><span></span></li>`).join("")}</ul>` : ""}
         <ul class="plist">${files.map((a) => `<li><span class="bar"></span><div><button class="t" data-my-file="${a.id}">${esc(a.name)}</button><div class="d">${a.kind === "link" ? "Link" : fmtBytes(a.size_bytes)}</div></div><span></span></li>`).join("") || `<li><span></span><span class="muted small">No personal files for this lecture.</span><span></span></li>`}</ul>
         <div class="row" style="margin-top:8px"><label class="btn sm">Upload files<input type="file" multiple hidden data-upload accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.heic,.txt,.md"></label><button class="btn sm" data-addlink>Add a link</button></div>
       </div>
@@ -2748,7 +2863,7 @@ __hub["views/admin"] = (function () {
 // Announcements, Cohort dashboard and exports. Personal student records are never shown here;
 // cohort figures come from an aggregate database function.
 const { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } = __hub["lib"];
-const { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial } = __hub["store"];
+const { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial, addOfficialLink } = __hub["store"];
 const { DELIVERY } = __hub["metrics"];
 const { coursePill, sessionLabel, chart, css, courseColor, infoRequired } = __hub["ui"];
 const notAllowed = (view) => { view.innerHTML = `<div class="empty"><strong>Staff only.</strong>This page is for the programme admin and coordinators.</div>`; };
@@ -2930,6 +3045,8 @@ function editAssessment(a, after) {
       <label class="check"><input type="checkbox" name="is_group" ${a.is_group ? "checked" : ""}> Group work</label>
       <label class="field"><span>Max group size</span><input class="input" type="number" name="max_group_size" value="${a.max_group_size ?? ""}"></label>
       <label class="field wide"><span>Description</span><textarea class="input" name="description">${esc(a.description || "")}</textarea></label>
+      <label class="field"><span>Linked lecture (optional)</span><select class="input" name="session_id"><option value="">None</option>${S.sessions.filter((x) => !x.cancelled && (!a.course_id || x.course_id === a.course_id)).sort((x, y) => (x.scheduled_date || "9999").localeCompare(y.scheduled_date || "9999")).map((x) => `<option value="${x.id}" ${a.session_id === x.id ? "selected" : ""}>${esc(course(x.course_id)?.short_name || "")}: ${esc(sessionLabel(x))}${x.scheduled_date ? " · " + fmtDate(x.scheduled_date) : ""}</option>`).join("")}</select></label>
+      ${isNew ? `<label class="field"><span>Link to the brief (optional)</span><input class="input" type="url" name="brief_url" placeholder="https://drive.google.com/…"></label>` : ""}
       <label class="field wide"><span>Information required (one per line)</span><textarea class="input" name="info_required" style="min-height:60px">${esc((a.info_required || []).join("\n"))}</textarea></label>
       <label class="field"><span>Source document</span><select class="input" name="source_ref"><option value="">None</option>${S.sources.map((d) => `<option value="${d.id}" ${a.source_ref === d.id ? "selected" : ""}>${esc(d.id)}</option>`).join("")}</select></label>
     </form>`;
@@ -2945,10 +3062,15 @@ function editAssessment(a, after) {
       if (!form.reportValidity()) return;
       const f = readForm(form);
       const row = { course_id: a.course_id || f.course_id, title: f.title, type: f.type, weight: f.weight, assigned_date: f.assigned_date, due_date: f.due_date, is_group: !!f.is_group,
-        max_group_size: f.max_group_size, description: f.description, info_required: lines(f.info_required), source_ref: f.source_ref };
-      const { error } = isNew ? await sb.from("assessments").insert(row) : await sb.from("assessments").update(row).eq("id", a.id);
+        max_group_size: f.max_group_size, description: f.description, info_required: lines(f.info_required), source_ref: f.source_ref, session_id: f.session_id || null };
+      if (!row.course_id) return errToast(new Error("Choose a course"));
+      if (f.brief_url && !/^https?:\/\//i.test(f.brief_url)) return errToast(new Error("The brief link must start with https://"));
+      const { data: saved, error } = isNew ? await sb.from("assessments").insert(row).select().single() : await sb.from("assessments").update(row).eq("id", a.id).select().single();
       if (error) return errToast(error);
-      close(); toast("Saved"); after();
+      if (isNew && f.brief_url) {
+        try { await addOfficialLink({ course_id: row.course_id, assessment_id: saved.id, url: f.brief_url, title: `Brief: ${row.title}` }); } catch (er) { errToast(er); }
+      }
+      close(); toast(isNew ? "Added for every student. They'll see it in Assignments and get a notification." : "Saved for every student"); after();
     };
   }, { wide: true });
 }
@@ -3132,7 +3254,7 @@ __hub["views/tasks"] = (function () {
 "use strict";
 // Assignments and personal tasks: Kanban board and list view. Presentations and papers live on Projects.
 // Official items come from the syllabus; a student's progress on them is stored privately.
-const { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } = __hub["lib"];
+const { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, icon, safeUrl, $, $$ } = __hub["lib"];
 const { openSubmission } = __hub["views/submit"];
 const { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } = __hub["store"];
 const { editAssessment } = __hub["views/admin"];
@@ -3154,7 +3276,7 @@ function renderTasks(view) {
       <p class="eyebrow">Assignments</p>
       <h2>Assignments &amp; coursework</h2>
       <p>Official assignments from the syllabi plus anything you add yourself. Drag a card or use its menu to change status. Presentations and papers are on the <a href="#/projects">Projects</a> page.</p>
-      <div class="actions"><button class="btn primary" data-new>Add assignment</button>${isStaff() ? `<button class="btn" data-publish>Publish an assignment to the class</button>` : ""}</div>
+      <div class="actions">${isStaff() ? `<button class="btn primary" data-publish>Add assignment for all students</button><button class="btn" data-new>Add a personal one</button>` : `<button class="btn primary" data-new>Add assignment</button>`}</div>
     </header>
     <div class="cal-toolbar">
       <div class="seg" role="group" aria-label="Task view"><button data-mode="board" aria-pressed="${UI.mode === "board"}">Board</button><button data-mode="list" aria-pressed="${UI.mode === "list"}">List</button></div>
@@ -3235,7 +3357,7 @@ function openTask(t, after) {
   openModal(a ? a.title : isNew ? "Add assignment" : "Edit assignment", (body, foot, close) => {
     const files = S.attachments.filter((x) => x.task_id && x.task_id === t.id);
     body.innerHTML = `
-      ${a ? `<div class="stack" style="margin-bottom:14px"><div class="row">${coursePill(a.course_id)}<span class="pill info">Official</span><span class="small muted">${esc(a.weight || "")}</span></div><p style="margin:0">${esc(a.description || "")}</p><div class="small"><strong>Deadline:</strong> ${a.due_date ? fmtLong(a.due_date) : "Not stated in the official documents"}</div>${infoRequired(a.info_required)}${srcRef(a.source_ref)}</div>` : ""}
+      ${a ? `<div class="stack" style="margin-bottom:14px"><div class="row">${coursePill(a.course_id)}<span class="pill info">Official</span><span class="small muted">${esc(a.weight || "")}</span></div><p style="margin:0">${esc(a.description || "")}</p><div class="small"><strong>Deadline:</strong> ${a.due_date ? fmtLong(a.due_date) : "Not stated in the official documents"}</div>${infoRequired(a.info_required)}${S.materials.filter((m) => m.assessment_id === a.id && m.url).map((m) => `<a class="btn sm" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener">${esc(m.title)}</a>`).join(" ")}${srcRef(a.source_ref)}</div>` : ""}
       <form class="form-grid">
         ${a ? "" : `<label class="field wide"><span>Title</span><input class="input" name="title" required value="${esc(t.title || "")}"></label>
         <label class="field"><span>Course</span><select class="input" name="course_id"><option value="">None</option>${S.courses.map((c) => `<option value="${c.id}" ${t.course_id === c.id ? "selected" : ""}>${esc(c.short_name || c.name)}</option>`).join("")}</select></label>
@@ -3733,12 +3855,14 @@ return { initAI };
 
 __hub["views/notes"] = (function () {
 "use strict";
-// Lecture study notes: a one-page, handwritten-style revision sheet per lecture, built by the
-// AI from the lecture's slides (or its syllabus topics when no slides are available).
-// One note per lecture is shared by the whole class; admins can regenerate it.
-const { esc, openModal, toast, errToast, loadScript, $ } = __hub["lib"];
+// Lecture study notes, two per lecture and shared by the whole class: a one-page handwritten-style
+// revision sheet, and full notes detailed enough to study from instead of the slides. The AI builds
+// both from the lecture's slides (or its syllabus topics when no slides are available); admins can
+// regenerate them.
+const { esc, md, openModal, toast, errToast, loadScript, $, $$ } = __hub["lib"];
 const { S, sb, callFunction, session: getSession, isStaff } = __hub["store"];
 const { sessionName, courseName } = __hub["ui"];
+const { makeFile } = __hub["views/submit"];
 const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
 const JSPDF = "https://cdn.jsdelivr.net/npm/jspdf@4.1.0/dist/jspdf.umd.min.js";
 const cache = new Map(); // session_id -> note row (or null when there is none yet)
@@ -3755,16 +3879,21 @@ function loadFonts() {
 
 async function getNote(sessionId) {
   if (cache.has(sessionId)) return cache.get(sessionId);
-  const { data, error } = await sb.from("lecture_notes").select("content, source, generated_at").eq("session_id", sessionId).maybeSingle();
+  const { data, error } = await sb.from("lecture_notes").select("content, source, generated_at, full_md, full_generated_at").eq("session_id", sessionId).maybeSingle();
   if (error) throw error;
   cache.set(sessionId, data || null);
   return data || null;
 }
-async function createNote(sessionId, regenerate = false) {
-  const r = await callFunction("hub-ai", { task: "study_note", session_id: sessionId, regenerate });
-  cache.set(sessionId, r.note);
-  return r.note;
+async function createNote(sessionId, regenerate = false, part = "sheet") {
+  const r = await callFunction("hub-ai", { task: "study_note", session_id: sessionId, regenerate, part });
+  cache.set(sessionId, { ...(cache.get(sessionId) || {}), ...r.note });
+  return cache.get(sessionId);
 }
+
+// Full notes as a document page: lined paper, handwritten headings, readable body text.
+const fullSheet = (n, s) => `<article class="hw-note hw-full">
+  <header class="hw-title"><h1><span class="a">${esc(s.title)}</span></h1><p>${esc(courseName(s.course_id))} · ${esc(sessionName(s))} · full notes</p></header>
+  <div class="hw-md">${md(n.full_md)}</div></article>`;
 
 const HL = ["#ffe58a", "#ffc2d1", "#b9dcff", "#c7efb8", "#ffd2a6"]; // highlighter colours
 // Box border and fill for each highlighter (plain rgba: the image export can't read color-mix()).
@@ -3802,53 +3931,81 @@ function noteSheet(content, s) {
   </article>`;
 }
 
-async function openStudyNote(sessionId) {
+const PART = {
+  sheet: { tab: "One-page sheet", has: (n) => n?.content, wait: "Reading the slides and laying out the page. This takes about 20–40 seconds.",
+    blurb: "A one-page handwritten-style revision sheet: the basic idea, comparisons, a step-by-step flow, key terms, an example and a one-line rule." },
+  full: { tab: "Full notes", has: (n) => n?.full_md, wait: "Going through every slide and writing it up in full. This takes about 40–90 seconds.",
+    blurb: "Complete notes, detailed enough to study from instead of the slides: every topic explained in full sentences, definitions, formulas with each symbol explained, worked examples, key terms, a summary and self-check questions." },
+};
+
+async function openStudyNote(sessionId, part = "sheet") {
   loadFonts();
   const s = getSession(sessionId);
   if (!s) return;
-  openModal(`Study note · ${sessionName(s)}`, async (body, foot, close) => {
-    body.innerHTML = `<div class="loading">Opening the study note…</div>`;
+  let tab = part;
+  openModal(`Study notes · ${sessionName(s)}`, async (body, foot, close) => {
+    body.innerHTML = `<div class="loading">Opening the study notes…</div>`;
     foot.innerHTML = `<button class="btn" data-close-note>Close</button>`;
     foot.querySelector("[data-close-note]").onclick = close;
     let note;
     try { note = await getNote(sessionId); } catch (e) { body.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
-    const show = (n) => {
-      body.innerHTML = `<div class="hw-scroll">${noteSheet(n.content, s)}</div>
-        <p class="small muted" style="margin:10px 0 0">${n.source === "slides" ? "Made by the AI from this lecture's slides." : "Made by the AI from the syllabus topics (the slides weren't available). Check it against your lecture notes."} Shared with the whole class.</p>`;
+    const tabs = () => `<div class="tabs" role="tablist">${Object.entries(PART).map(([k, v]) => `<button class="tab" role="tab" aria-selected="${tab === k}" data-part="${k}">${v.tab}${PART[k].has(note) ? "" : " · not created yet"}</button>`).join("")}</div>`;
+    const wireTabs = () => $$("[data-part]", body).forEach((b) => b.addEventListener("click", () => { tab = b.dataset.part; draw(); }));
+    const draw = () => (PART[tab].has(note) ? show() : empty());
+    const show = () => {
+      const isFull = tab === "full";
+      body.innerHTML = `${tabs()}<div class="hw-scroll">${isFull ? fullSheet(note, s) : noteSheet(note.content, s)}</div>
+        <p class="small muted" style="margin:10px 0 0">${note.source === "slides" ? "Made by the AI from this lecture's slides." : "Made by the AI from the syllabus topics (the slides weren't available). Check it against your lecture notes."} Shared with the whole class.</p>`;
       foot.innerHTML = `${isStaff() ? `<button class="btn" data-regen style="margin-right:auto">Regenerate</button>` : ""}
-        <button class="btn" data-ask>Ask the assistant</button><button class="btn" data-png>Save image</button><button class="btn primary" data-pdf>Download PDF</button>`;
-      foot.querySelector("[data-png]").onclick = (e) => exportNote(body, s, "png", e.currentTarget);
-      foot.querySelector("[data-pdf]").onclick = (e) => exportNote(body, s, "pdf", e.currentTarget);
+        <button class="btn" data-ask>Ask the assistant</button>${isFull ? `<button class="btn" data-word>Download Word</button>` : `<button class="btn" data-png>Save image</button>`}<button class="btn primary" data-pdf>Download PDF</button>`;
+      foot.querySelector("[data-png]")?.addEventListener("click", (e) => exportNote(body, s, "png", e.currentTarget, isFull));
+      foot.querySelector("[data-pdf]").onclick = (e) => exportNote(body, s, "pdf", e.currentTarget, isFull);
+      foot.querySelector("[data-word]")?.addEventListener("click", (e) => wordNotes(note, s, e.currentTarget));
       foot.querySelector("[data-ask]").onclick = () => { close(); window.dispatchEvent(new CustomEvent("hub:ai", { detail: { course_id: s.course_id, session_id: s.id, mode: "explain" } })); };
       foot.querySelector("[data-regen]")?.addEventListener("click", () => make(true));
+      wireTabs();
     };
     const make = async (regenerate) => {
-      body.innerHTML = `<div class="loading"><strong>Writing the study note…</strong><br>Reading the slides and laying out the page. This takes about 20–40 seconds.</div>`;
+      body.innerHTML = `${tabs()}<div class="loading"><strong>Writing the ${PART[tab].tab.toLowerCase()}…</strong><br>${PART[tab].wait}</div>`;
       foot.querySelectorAll("button").forEach((b) => { b.disabled = true; });
-      try { show(await createNote(sessionId, regenerate)); toast("Study note ready"); window.dispatchEvent(new CustomEvent("hub:changed")); }
-      catch (e) { errToast(e); note ? show(note) : empty(); }
+      try { note = await createNote(sessionId, regenerate, tab); show(); toast(`${PART[tab].tab} ready`); window.dispatchEvent(new CustomEvent("hub:changed")); }
+      catch (e) { errToast(e); draw(); }
     };
     const empty = () => {
-      body.innerHTML = `<div class="empty" style="padding:30px 10px"><strong>No study note for this lecture yet.</strong>
-        The AI reads this lecture's slides (or its syllabus topics if the slides aren't available) and writes a one-page handwritten-style revision sheet: the basic idea, comparisons, a step-by-step flow, key terms, an example and a one-line rule. It's shared with the whole class, so it only needs creating once.</div>`;
-      foot.innerHTML = `<button class="btn" data-x>Close</button><button class="btn primary" data-make>Create study note</button>`;
+      body.innerHTML = `${tabs()}<div class="empty" style="padding:30px 10px"><strong>No ${PART[tab].tab.toLowerCase()} for this lecture yet.</strong>
+        ${PART[tab].blurb} It's shared with the whole class, so it only needs creating once.</div>`;
+      foot.innerHTML = `<button class="btn" data-x>Close</button><button class="btn primary" data-make>Create ${PART[tab].tab.toLowerCase()}</button>`;
       foot.querySelector("[data-x]").onclick = close;
       foot.querySelector("[data-make]").onclick = () => make(false);
+      wireTabs();
     };
-    note ? show(note) : empty();
+    draw();
   }, { wide: true });
 }
 
+// Full notes as an editable Word file (headings, bullets and paragraphs; Markdown markers removed).
+async function wordNotes(n, s, btn) {
+  btn.disabled = true;
+  try {
+    const text = String(n.full_md || "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/(^|\s)\*(\S.*?)\*/g, "$1$2").replace(/^\s*\d+\.\s+/gm, "- ").replace(/^\|.*\|\s*$/gm, (row) => row.replace(/^\||\|$/g, "").split("|").map((c) => c.trim()).filter((c) => !/^:?-{2,}:?$/.test(c)).join(" — "));
+    const blob = await makeFile("docx", { title: s.title, student: "Student Hub study notes", course: courseName(s.course_id), instructor: "", date: sessionName(s) }, text);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `Full notes - ${(s.label || "Lecture")} - ${courseName(s.course_id)}.docx`.replace(/[\\/:*?"<>|]+/g, ""); a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  } catch (e) { errToast(e, "Couldn't create the Word file"); }
+  finally { btn.disabled = false; }
+}
+
 // Saves the rendered note as a PNG image or an A4 PDF (the page is split if it's long).
-async function exportNote(root, s, kind, btn) {
+async function exportNote(root, s, kind, btn, isFull = false) {
   const el = $(".hw-note", root);
   if (!el) return;
   btn.disabled = true;
   try {
     await loadScript(H2C);
     if (document.fonts?.ready) await document.fonts.ready;
-    const canvas = await window.html2canvas(el, { scale: 2, backgroundColor: null, useCORS: true });
-    const name = `Study note - ${(s.label || "Lecture")} - ${courseName(s.course_id)}`.replace(/[^\w\s.-]+/g, "").trim();
+    // Long full notes use a lower scale to stay inside the browser's canvas size limit.
+    const canvas = await window.html2canvas(el, { scale: isFull ? 1.4 : 2, backgroundColor: null, useCORS: true });
+    const name = `${isFull ? "Full notes" : "Study note"} - ${(s.label || "Lecture")} - ${courseName(s.course_id)}`.replace(/[^\w\s.-]+/g, "").trim();
     if (kind === "png") {
       const a = document.createElement("a"); a.href = canvas.toDataURL("image/png"); a.download = `${name}.png`; a.click();
     } else {
@@ -3870,7 +4027,7 @@ async function exportNote(root, s, kind, btn) {
   finally { btn.disabled = false; }
 }
 
-return { getNote, createNote, noteSheet, openStudyNote };
+return { getNote, createNote, noteSheet, openStudyNote, fullSheet };
 })();
 
 __hub["views/study"] = (function () {
@@ -3904,7 +4061,7 @@ function renderStudy(view) {
     </section>
 
     <section class="section">
-      <div class="section-head"><div><h2>Study notes</h2><p>A one-page, handwritten-style revision sheet for each lecture, made by the AI from its slides and shared with the whole class.</p></div>${isStaff() ? `<button class="btn" data-allnotes>Create missing notes</button>` : ""}</div>
+      <div class="section-head"><div><h2>Study notes</h2><p>For each lecture: full notes detailed enough to study from instead of the slides, and a one-page handwritten-style revision sheet. Made by the AI from the slides and shared with the whole class.</p></div>${isStaff() ? `<button class="btn" data-allnotes>Create missing notes</button>` : ""}</div>
       <div class="sheet flush"><div class="table-wrap" id="notesList"><div class="loading">Loading…</div></div></div>
     </section>
 
@@ -3924,23 +4081,25 @@ const heldLectures = () => S.sessions.filter((s) => isStudyTracked(s) && !s.canc
 async function drawNotes(view) {
   const box = $("#notesList", view);
   if (!box) return;
-  const { data, error } = await sb.from("lecture_notes").select("session_id, source");
+  const { data, error } = await sb.from("lecture_notes").select("session_id, source, content, full_generated_at");
   if (error) { box.innerHTML = `<div class="empty">${esc(error.message)}</div>`; return; }
-  const have = new Map((data || []).map((n) => [n.session_id, n.source]));
+  const rows = new Map((data || []).map((n) => [n.session_id, n]));
+  const have = new Map((data || []).filter((n) => n.content).map((n) => [n.session_id, n.source]));
+  const pill = (ok, label) => `<span class="pill ${ok ? "ok" : ""}">${label}${ok ? " ✓" : ""}</span>`;
   const list = heldLectures();
   box.innerHTML = list.length ? `<table class="data"><thead><tr><th>Lecture</th><th>Course</th><th>Note</th><th></th></tr></thead><tbody>${list.map((s) => `<tr>
     <td><strong>${esc(sessionName(s))}</strong></td><td>${coursePill(s.course_id)}</td>
-    <td>${have.has(s.id) ? `<span class="pill ok">Ready</span>${have.get(s.id) === "topics" ? ` <span class="small muted">from topics</span>` : ""}` : `<span class="pill">Not created yet</span>`}</td>
-    <td style="text-align:right"><button class="btn sm ${have.has(s.id) ? "primary" : ""}" data-study-note="${s.id}">${have.has(s.id) ? "Open" : "Create"}</button></td></tr>`).join("")}</tbody></table>`
+    <td>${pill(!!rows.get(s.id)?.full_generated_at, "Full notes")} ${pill(have.has(s.id), "Sheet")}${rows.get(s.id)?.source === "topics" ? ` <span class="small muted">from topics</span>` : ""}</td>
+    <td style="text-align:right;white-space:nowrap"><button class="btn sm ${rows.get(s.id)?.full_generated_at ? "primary" : ""}" data-study-note="${s.id}" data-part="full">Full notes</button> <button class="btn sm ${have.has(s.id) ? "primary" : ""}" data-study-note="${s.id}" data-part="sheet">Sheet</button></td></tr>`).join("")}</tbody></table>`
     : `<div class="empty">No lectures have taken place yet.</div>`;
   $("[data-allnotes]", view)?.addEventListener("click", async (e) => {
-    const missing = list.filter((s) => !have.has(s.id));
+    const missing = list.filter((s) => !have.has(s.id) || !rows.get(s.id)?.full_generated_at);
     if (!missing.length) return toast("Every lecture so far has a note.");
     const b = e.currentTarget; b.disabled = true;
     let done = 0;
     for (const s of missing) {
       b.textContent = `Creating ${done + 1} of ${missing.length}…`;
-      try { await createNote(s.id); done++; } catch (er) { errToast(er); break; }
+      try { await createNote(s.id, false, "full"); await new Promise((r) => setTimeout(r, 2500)); await createNote(s.id, false, "sheet"); done++; } catch (er) { errToast(er); break; }
       await new Promise((r) => setTimeout(r, 2500)); // stay well inside the free AI rate limits
     }
     toast(`${done} study note${done === 1 ? "" : "s"} created`);
@@ -3994,7 +4153,7 @@ function renderProjects(view) {
       <p class="eyebrow">Projects</p>
       <h2>Presentations, papers and longer work</h2>
       <p>Break each project into milestones and tick them off; progress updates as you go. Official presentations and papers from the syllabi are already here.</p>
-      <div class="actions"><button class="btn primary" data-new>New project</button>${isStaff() ? `<button class="btn" data-publish>Publish a project to the class</button>` : ""}</div>
+      <div class="actions"><button class="btn primary" data-new>New project</button>${isStaff() ? `<button class="btn" data-publish>Add project for all students</button>` : ""}</div>
     </header>
     ${active.length ? `<div class="proj-grid">${active.map(card).join("")}</div>` : `<div class="sheet empty"><strong>No projects in progress.</strong>Add one with "New project".</div>`}
     ${done.length ? `<section class="section" style="margin-top:28px"><div class="section-head"><h2>Completed</h2></div><div class="proj-grid">${done.map(card).join("")}</div></section>` : ""}`;
@@ -4074,79 +4233,409 @@ function openProject(t, after) {
 return { renderProjects, openProject, projectProgress };
 })();
 
+__hub["views/notify"] = (function () {
+"use strict";
+// Notifications: a bell in the top bar listing what needs attention (assignments due before
+// the course's next lecture, project and other deadlines, assignments or announcements newly
+// added for the class), plus optional system notifications on this phone or computer.
+// System notifications appear while the Hub is open or running in the background; there is
+// no server push, so nothing arrives while the browser is fully closed.
+const { esc, fmtDate, relDays, daysBetween, isISO, $ } = __hub["lib"];
+const { S, allAssignments, allProjects, isProject, courseSessions } = __hub["store"];
+const { taskStatus, DONE_TASK } = __hub["metrics"];
+const { coursePill, cvar, courseName } = __hub["ui"];
+const k = (name) => `mlea_${name}_${S.user?.id || "anon"}`;
+const load = (name, def) => { try { return JSON.parse(localStorage.getItem(k(name)) || "null") ?? def; } catch { return def; } };
+const save = (name, v) => { try { localStorage.setItem(k(name), JSON.stringify(v)); } catch { /* private mode */ } };
+const tkey = (t) => t.id || "a:" + t.assessment_id;
+
+// First run on a device: everything that already exists counts as seen, so only later additions show as "new".
+function knownSets() {
+  let known = load("known", null);
+  if (!known) { known = { a: S.assessments.map((a) => a.id), n: S.announcements.map((a) => a.id) }; save("known", known); }
+  return { a: new Set(known.a), n: new Set(known.n) };
+}
+function markAllKnown() { save("known", { a: S.assessments.map((a) => a.id), n: S.announcements.map((a) => a.id) }); }
+
+// The current alerts, most urgent first. Each has a stable key so it is only announced once a day.
+function alerts() {
+  const out = [];
+  const today = S.today;
+  const known = knownSets();
+  for (const t of [...allAssignments(), ...allProjects()]) {
+    if (!isISO(t.due_date) || DONE_TASK.has(taskStatus(t, today))) continue;
+    const d = daysBetween(today, t.due_date);
+    const kind = isProject(t) ? "Project" : "Assignment";
+    const next = t.course_id ? courseSessions(t.course_id).find((s) => !s.cancelled && s.scheduled_date && s.scheduled_date > today) : null;
+    const open = `data-open-task="${esc(tkey(t))}"`;
+    if (d < 0) out.push({ key: `over:${tkey(t)}`, level: 3, title: `${kind} overdue: ${t.title}`, body: `It was due ${fmtDate(t.due_date)}.`, t, open });
+    else if (next && t.due_date <= next.scheduled_date) out.push({ key: `before:${tkey(t)}:${next.id}`, level: d <= 2 ? 3 : 2, title: `${kind} due before your next ${courseName(t.course_id)} lecture`, body: `${t.title}: due ${fmtDate(t.due_date)} (${relDays(t.due_date, today)}); next lecture ${fmtDate(next.scheduled_date)}.`, t, open });
+    else if (d <= 7) out.push({ key: `soon:${tkey(t)}`, level: d <= 2 ? 3 : 1, title: `${kind} due ${relDays(t.due_date, today)}`, body: `${t.title}, ${fmtDate(t.due_date)}.`, t, open });
+  }
+  for (const a of S.assessments) {
+    if (known.a.has(a.id) || a.type === "exam") continue;
+    out.push({ key: `new:${a.id}`, level: 2, title: `New ${a.type.replace("_", " ")} for ${courseName(a.course_id)}`, body: `${a.title}${a.due_date ? `, due ${fmtDate(a.due_date)}` : ""}. Added for the whole class.`, t: { course_id: a.course_id }, open: `data-open-task="a:${a.id}"`, isNew: true });
+  }
+  for (const n of S.announcements) {
+    if (known.n.has(n.id)) continue;
+    out.push({ key: `ann:${n.id}`, level: 1, title: `Announcement: ${n.title}`, body: String(n.body || "").slice(0, 140), t: { course_id: n.course_id }, open: `data-href="#/announcements"`, isNew: true });
+  }
+  return out.sort((a, b) => b.level - a.level);
+}
+
+function initNotifications() {
+  const btn = $("#bellBtn");
+  if (!btn) return;
+  btn.hidden = false;
+  btn.addEventListener("click", (e) => { e.stopPropagation(); togglePanel(); });
+  document.addEventListener("click", (e) => { if (!e.target.closest("#bellPanel") && !e.target.closest("#bellBtn")) $("#bellPanel").hidden = true; });
+  refreshBell();
+  announce();
+  setInterval(() => { refreshBell(); announce(); }, 30 * 60 * 1000);
+  window.addEventListener("hub:changed", refreshBell);
+}
+
+function refreshBell() {
+  const list = alerts();
+  const seen = new Set(load("seen", []));
+  const unseen = list.filter((a) => !seen.has(a.key)).length;
+  const badge = $("#bellBtn .badge");
+  if (badge) { badge.textContent = unseen > 9 ? "9+" : String(unseen); badge.hidden = !unseen; }
+  $("#bellBtn")?.setAttribute("aria-label", unseen ? `Notifications, ${unseen} new` : "Notifications");
+  if (!$("#bellPanel").hidden) drawPanel(list);
+}
+
+function togglePanel() {
+  const p = $("#bellPanel");
+  p.hidden = !p.hidden;
+  if (!p.hidden) {
+    const list = alerts();
+    drawPanel(list);
+    save("seen", list.map((a) => a.key));
+    refreshBell();
+  }
+}
+
+function drawPanel(list) {
+  const p = $("#bellPanel");
+  const perm = typeof Notification === "undefined" ? "unsupported" : Notification.permission;
+  p.innerHTML = `<div class="bp-head"><h2>Notifications</h2>${list.some((a) => a.isNew) ? `<button class="btn ghost sm" data-clearnew>Clear new</button>` : ""}</div>
+    ${list.length ? `<ul class="bp-list">${list.map((a) => `<li class="lv${a.level}" style="${a.t?.course_id ? cvar(a.t.course_id) : ""}"><button ${a.open}><b>${esc(a.title)}</b><span>${esc(a.body)}</span>${a.t?.course_id ? coursePill(a.t.course_id) : ""}</button></li>`).join("")}</ul>`
+      : `<div class="empty"><strong>You're all caught up.</strong>No deadlines in the next week.</div>`}
+    <div class="bp-foot">${perm === "granted" ? `<span class="small muted">Notifications are on for this device.</span>`
+      : perm === "denied" ? `<span class="small muted">Notifications are blocked in this browser's settings.</span>`
+      : perm === "unsupported" ? `<span class="small muted">On iPhone, add the Hub to your Home Screen to get notifications.</span>`
+      : `<button class="btn sm primary" data-enable>Turn on notifications on this device</button>`}</div>`;
+  $("[data-enable]", p)?.addEventListener("click", async () => {
+    try { await Notification.requestPermission(); } catch { /* ignore */ }
+    drawPanel(alerts()); announce(true);
+  });
+  $("[data-clearnew]", p)?.addEventListener("click", () => { markAllKnown(); refreshBell(); drawPanel(alerts()); });
+  p.querySelectorAll("button[data-open-task],button[data-href]").forEach((b) => b.addEventListener("click", () => { p.hidden = true; }, { capture: true }));
+}
+
+// System notifications: each alert at most once a day per device.
+async function announce(force = false) {
+  if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+  const fired = load("fired", {});
+  const today = S.today;
+  const list = alerts().filter((a) => a.level >= 2 && (force || fired[a.key] !== today)).slice(0, 4);
+  for (const a of list) {
+    fired[a.key] = today;
+    await showSystem(a.title, a.body, a.key);
+  }
+  for (const key of Object.keys(fired)) if (fired[key] < today && daysBetween(fired[key], today) > 30) delete fired[key];
+  save("fired", fired);
+}
+
+let swReg = null;
+async function registerWorker() {
+  if (!("serviceWorker" in navigator) || !/^https?:$/.test(location.protocol)) return null;
+  try { swReg = await navigator.serviceWorker.register("sw.js"); } catch { swReg = null; }
+  return swReg;
+}
+async function showSystem(title, body, tag) {
+  const opts = { body, tag, icon: "icon.svg", badge: "icon.svg" };
+  try {
+    const reg = swReg || (await navigator.serviceWorker?.getRegistration?.());
+    if (reg) return await reg.showNotification(title, opts); // phones need the service worker route
+  } catch { /* fall back below */ }
+  try { new Notification(title, opts); } catch { /* not allowed here */ }
+}
+
+return { markAllKnown, alerts, initNotifications, refreshBell, registerWorker, showSystem };
+})();
+
 __hub["views/welcome"] = (function () {
 "use strict";
-// Welcome screen: shown once a day on opening the Hub. A personal greeting, then one simple
-// list of lectures that have taken place but aren't studied yet, and the next deadlines.
-const { esc, fmtDate, fmtLong, relDays, $ } = __hub["lib"];
+// Welcome page (#/welcome): the first page each day. A personal greeting, what's waiting to be
+// studied, the next deadlines and the latest alerts, with one tap to each part of the Hub.
+const { esc, fmtDate, fmtLong, relDays, icon, $ } = __hub["lib"];
 const { S } = __hub["store"];
 const { coursePill, cvar } = __hub["ui"];
 const { CREST, firstName, greeting, pendingLectures, pendingItem, dueSoon, wirePending } = __hub["views/common"];
+const { alerts } = __hub["views/notify"];
 const key = (k) => `mlea_${k}_${S.user?.id || "anon"}`;
 const read = (k) => { try { return localStorage.getItem(key(k)); } catch { return null; } };
 const write = (k, v) => { try { localStorage.setItem(key(k), v); } catch { /* private mode */ } };
 
-// Shows the screen unless it was already shown today on this device (or `force`).
-function maybeWelcome({ force = false } = {}) {
-  if (window.__HUB_NO_WELCOME && !force) return;
-  if (!force && read("welcome_day") === S.today) return;
-  showWelcome();
+// On the first visit of the day, open the Welcome page (unless a specific page was linked to).
+function maybeWelcome() {
+  if (window.__HUB_NO_WELCOME) return;
+  if (read("welcome_day") === S.today) return;
+  const h = location.hash.replace(/^#\/?/, "");
+  if (!h || h === "dashboard") location.hash = "#/welcome";
 }
+const showWelcome = () => { location.hash = "#/welcome"; };
 
-function showWelcome() {
+function renderWelcome(view) {
   const firstTime = !read("welcomed");
-  const name = firstName();
-  const pending = pendingLectures();
-  const due = dueSoon(14).slice(0, 3);
-  const shown = pending.slice(0, 5);
-  const host = document.createElement("div");
-  host.className = "welcome";
-  host.setAttribute("role", "dialog");
-  host.setAttribute("aria-modal", "true");
-  host.setAttribute("aria-labelledby", "welcomeTitle");
-  host.innerHTML = `<div class="welcome-inner">
-    ${CREST(48)}
-    <p class="eyebrow">${esc(fmtLong(S.today))}</p>
-    <h1 id="welcomeTitle">${firstTime ? `Welcome to Student Hub${name ? `, ${esc(name)}` : ""}.` : `${greeting()}${name ? `, ${esc(name)}` : ""}.`}</h1>
-    <p class="lead">${firstTime
-      ? "Your private study portal: every lecture, assignment, project and file for the programme in one place, with an AI study assistant beside you."
-      : pending.length ? `You have ${pending.length} lecture${pending.length === 1 ? "" : "s"} waiting to be studied.` : "You're fully up to date with every lecture so far."}</p>
-    ${firstTime ? `<div class="intro">
-      <div><b>Study</b>Tick off each lecture as you study it. The Hub tracks what's left.</div>
-      <div><b>Assignments &amp; projects</b>Official deadlines are already in. Add your own any time.</div>
-      <div><b>AI assistant</b>Ask about any lecture, get summaries, practice questions and study notes.</div>
-    </div>` : ""}
-    <div class="card">
-      <h2>Waiting for you</h2>
-      <p class="sub">${pending.length ? "Lectures that have taken place and aren't fully studied yet, oldest first." : "Nothing pending."}</p>
-      ${shown.length ? `<ul class="pending">${shown.map(pendingItem).join("")}</ul>${pending.length > shown.length ? `<p class="small muted" style="margin:10px 0 0">and ${pending.length - shown.length} more on the <a href="#/study" data-go>Study page</a>.</p>` : ""}`
-        : `<p style="margin:6px 0 0">Well done. Use the time to revise or read ahead for the next lecture.</p>`}
-      ${due.length ? `<hr class="hr"><h2 style="font-size:1.25rem">Coming deadlines</h2><ul class="pending" style="margin-top:4px">${due.map((t) => `<li style="${t.course_id ? cvar(t.course_id) : ""}"><span class="bar"></span><div><div class="t">${esc(t.title)}</div><div class="d">${coursePill(t.course_id)} · ${esc(fmtDate(t.due_date))} · ${esc(relDays(t.due_date, S.today))}</div></div><div class="acts"><button class="btn sm" data-open-task="${esc(t.id || "a:" + t.assessment_id)}">Open</button></div></li>`).join("")}</ul>` : ""}
-    </div>
-    <div class="w-actions">
-      <button class="btn gold" data-enter>Enter my dashboard</button>
-      ${shown.length ? `<button class="btn" data-start="${shown[0].s.id}">Start with the first lecture</button>` : ""}
-      <button class="btn" data-ai>Ask the AI assistant</button>
-    </div>
-  </div>`;
-  document.body.appendChild(host);
   write("welcome_day", S.today);
   write("welcomed", "1");
-  const prevFocus = document.activeElement;
-  const close = () => { host.remove(); document.removeEventListener("keydown", onKey); window.dispatchEvent(new CustomEvent("hub:changed")); prevFocus?.focus?.(); };
-  const onKey = (e) => { if (e.key === "Escape") close(); };
-  document.addEventListener("keydown", onKey);
-  $("[data-enter]", host).addEventListener("click", () => { close(); location.hash = "#/dashboard"; });
-  $("[data-go]", host)?.addEventListener("click", () => close());
-  $("[data-ai]", host).addEventListener("click", () => { close(); window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); });
-  $("[data-start]", host)?.addEventListener("click", (e) => { close(); window.dispatchEvent(new CustomEvent("hub:open-session", { detail: e.currentTarget.dataset.start })); });
-  // "Open" buttons use the app's delegated handlers; close the welcome screen first so the drawer is visible.
-  host.querySelectorAll("[data-open-session],[data-open-task],[data-study-note]").forEach((b) => b.addEventListener("click", () => close(), { capture: true }));
-  wirePending(host);
-  setTimeout(() => $("[data-enter]", host)?.focus({ preventScroll: true }), 30);
+  const name = firstName();
+  const pending = pendingLectures();
+  const shown = pending.slice(0, 5);
+  const due = dueSoon(14).slice(0, 4);
+  const notes = alerts().filter((a) => a.isNew || a.level >= 2).slice(0, 3);
+  view.innerHTML = `
+  <section class="welcome-page">
+    <div class="wp-hero">
+      ${CREST(46)}
+      <p class="eyebrow">${esc(fmtLong(S.today))}</p>
+      <h2>${firstTime ? `Welcome to Student Hub${name ? `, ${esc(name)}` : ""}.` : `${greeting()}${name ? `, ${esc(name)}` : ""}.`}</h2>
+      <p class="lead">${firstTime
+        ? "Your private study portal: every lecture, slide, assignment, project and file for the programme in one place, with an AI study assistant beside you."
+        : pending.length ? `You have ${pending.length} lecture${pending.length === 1 ? "" : "s"} waiting to be studied${due.length ? ` and ${due.length} deadline${due.length === 1 ? "" : "s"} in the next two weeks` : ""}.` : "You're fully up to date with every lecture so far."}</p>
+      <div class="wp-actions">
+        ${shown.length ? `<a class="btn gold" href="#/lecture/${shown[0].s.id}">Start with the first lecture</a>` : `<a class="btn gold" href="#/study">Go to Study</a>`}
+        <a class="btn" href="#/dashboard">My dashboard</a>
+        <button class="btn" type="button" data-ai-open>Ask the AI assistant</button>
+      </div>
+    </div>
+
+    ${notes.length ? `<div class="wp-alerts">${notes.map((a) => `<button class="wp-alert lv${a.level}" ${a.open}><b>${esc(a.title)}</b><span>${esc(a.body)}</span></button>`).join("")}</div>` : ""}
+
+    <div class="wp-grid">
+      <section class="sheet">
+        <div class="section-head"><div><h2>Waiting for you</h2><p>${pending.length ? "Lectures that have taken place and aren't fully studied yet, oldest first." : "Nothing pending."}</p></div>${pending.length > shown.length ? `<a class="btn sm" href="#/study">All ${pending.length}</a>` : ""}</div>
+        ${shown.length ? `<ul class="pending">${shown.map(pendingItem).join("")}</ul>` : `<p style="margin:0">Well done. Use the time to revise or read ahead.</p>`}
+      </section>
+      <section class="sheet">
+        <div class="section-head"><div><h2>Coming deadlines</h2><p>Assignments and projects in the next two weeks.</p></div></div>
+        ${due.length ? `<ul class="pending">${due.map((t) => `<li style="${t.course_id ? cvar(t.course_id) : ""}"><span class="bar"></span><div><div class="t">${esc(t.title)}</div><div class="d">${coursePill(t.course_id)} · ${esc(fmtDate(t.due_date))} · ${esc(relDays(t.due_date, S.today))}</div></div><div class="acts"><button class="btn sm" data-open-task="${esc(t.id || "a:" + t.assessment_id)}">Open</button></div></li>`).join("")}</ul>` : `<p class="muted" style="margin:0">No deadlines in the next two weeks.</p>`}
+      </section>
+    </div>
+
+    ${firstTime ? `<div class="wp-intro">
+      <div>${icon.study}<b>Study</b>Open a lecture, read the slides and it ticks itself off.</div>
+      <div>${icon.tasks}<b>Assignments &amp; projects</b>Deadlines, reminders, and one-tap submission to the instructor.</div>
+      <div>${icon.spark}<b>AI assistant</b>Explanations, summaries, quizzes and handwritten-style study notes.</div>
+    </div>` : ""}
+
+    <section class="tiles" aria-label="Quick access" style="margin-top:22px">
+      <a class="tile" href="#/study">${icon.study}<b>Study</b><span>Lectures, slides and notes</span></a>
+      <a class="tile" href="#/assignments">${icon.tasks}<b>Assignments</b><span>Coursework and deadlines</span></a>
+      <a class="tile" href="#/projects">${icon.project}<b>Projects</b><span>Presentations and papers</span></a>
+      <a class="tile" href="#/documents">${icon.docs}<b>Documents &amp; materials</b><span>Readings and your files</span></a>
+      <a class="tile" href="#/calendar">${icon.cal}<b>Calendar</b><span>Lectures and deadlines by date</span></a>
+    </section>
+  </section>`;
+  $("[data-ai-open]", view).addEventListener("click", () => window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })));
+  wirePending(view, { onDone: () => window.dispatchEvent(new CustomEvent("hub:changed")) });
 }
 
-return { maybeWelcome, showWelcome };
+return { maybeWelcome, renderWelcome, showWelcome };
+})();
+
+__hub["views/lecture"] = (function () {
+"use strict";
+// Lecture page: everything for one lecture on one simple page. Opening a slide marks
+// "slides read", opening a reading marks "readings done", opening a recording marks it watched.
+const { esc, fmtDate, relDays, fmtMinutes, toast, errToast, debounce, safeUrl, isISO, $, $$ } = __hub["lib"];
+const { S, session: getSession, course: getCourse, courseSessions, saveProgress, saveAttendance, logStudy, isStaff, allAssignments, allProjects, lecturerName } = __hub["store"];
+const { sessionState, CHECKLIST, CORE, ATT, isStudyTracked, taskStatus, DONE_TASK } = __hub["metrics"];
+const { sessionLabel, sessionWhen, deliveryTag, cvar, infoRequired } = __hub["ui"];
+const { openSession } = __hub["views/course"];
+const { materialKind } = __hub["views/materials"];
+// What each kind of material ticks when it's opened.
+const KIND = {
+  slides: { label: "Slides", mark: "reviewed_slides", done: "Read", icon: "▤" },
+  reading: { label: "Reading", mark: "read_materials", done: "Read", icon: "📖" },
+  recording: { label: "Recording", mark: "recording", done: "Watched", icon: "▶" },
+  assignment: { label: "Assignment brief", mark: null, done: "Opened", icon: "✎" },
+};
+
+const openedKey = () => `mlea_opened_${S.user?.id || "anon"}`;
+const opened = () => { try { return new Set(JSON.parse(localStorage.getItem(openedKey()) || "[]")); } catch { return new Set(); } };
+const remember = (k) => { try { const o = opened(); o.add(k); localStorage.setItem(openedKey(), JSON.stringify([...o].slice(-2000))); } catch { /* private mode */ } };
+
+// Called (via a delegated click handler) whenever a lecture material is opened anywhere in the Hub.
+async function markOpened(el) {
+  const sid = el.dataset.sid, kind = el.dataset.mark, key = el.dataset.key;
+  if (key) remember(key);
+  const s = getSession(sid);
+  if (!s || !KIND[kind]) return;
+  try {
+    const st = sessionState(s, S, S.today);
+    if (kind === "recording") {
+      if (!(st.att?.recording_watched)) { await saveAttendance(sid, { recording_watched: true, status: (st.att?.status || "not_yet") === "not_yet" ? "recording" : st.att.status }); toast("Recording marked as watched"); }
+    } else if (KIND[kind].mark && !st.progress?.[KIND[kind].mark]) {
+      await saveProgress(sid, { [KIND[kind].mark]: true });
+      toast(kind === "slides" ? "Slides marked as read" : "Reading marked as done");
+    }
+    window.dispatchEvent(new CustomEvent("hub:changed"));
+  } catch (e) { errToast(e); }
+}
+
+// Materials for a lecture: official files/links, the session's own links and its recording.
+function lectureMaterials(s) {
+  const list = S.materials.filter((m) => m.session_id === s.id && !m.assessment_id).map((m) => ({
+    key: `m:${m.id}`, title: m.title, kind: materialKind(m.title, m.kind), url: m.url, fileId: m.url ? null : m.id, required: m.required,
+  }));
+  (s.links || []).forEach((l, i) => list.push({ key: `l:${s.id}:${i}`, title: l.label || "Link", kind: materialKind(l.label), url: l.url }));
+  if (s.recording_url) list.push({ key: `r:${s.id}`, title: "Lecture recording", kind: "recording", url: s.recording_url });
+  const order = { slides: 0, recording: 1, reading: 2, assignment: 3 };
+  return list.sort((a, b) => order[a.kind] - order[b.kind]);
+}
+
+function materialLink(s, m, cls = "mat") {
+  const attrs = `data-mark="${m.kind}" data-sid="${s.id}" data-key="${esc(m.key)}"`;
+  return m.url
+    ? `<a class="${cls}" href="${esc(safeUrl(m.url))}" target="_blank" rel="noopener" ${attrs}>`
+    : `<a class="${cls}" href="#" data-official-file="${m.fileId}" ${attrs}>`;
+}
+
+const STEPS = [["attended_or_watched", "Attended or watched"], ["reviewed_slides", "Slides read"], ["read_materials", "Readings done"], ["prepared_notes", "Notes made"], ["understood_concepts", "Understood"]];
+
+function renderLecture(view, id) {
+  const s = getSession(id);
+  if (!s) { view.innerHTML = `<div class="empty"><strong>Lecture not found.</strong><a href="#/study">Back to Study</a></div>`; return; }
+  const c = getCourse(s.course_id);
+  const st = sessionState(s, S, S.today);
+  const p = st.progress || {};
+  const att = st.att || { status: "not_yet", recording_watched: false };
+  const list = courseSessions(s.course_id).filter((x) => !x.cancelled);
+  const i = list.findIndex((x) => x.id === s.id);
+  const prev = list[i - 1], next = list[i + 1];
+  const tracked = isStudyTracked(s);
+  const done = CORE.filter((k) => p[k]).length;
+  const mats = lectureMaterials(s);
+  const seen = opened();
+  // Deadlines for this course up to the next lecture (or the next two weeks if there's none).
+  const nextLecture = list.find((x) => x.scheduled_date && x.scheduled_date > S.today);
+  const limit = nextLecture?.scheduled_date || null;
+  const due = [...allAssignments(), ...allProjects()].filter((t) => t.course_id === s.course_id && isISO(t.due_date) && !DONE_TASK.has(taskStatus(t, S.today)) && (!limit || t.due_date <= limit))
+    .sort((a, b) => a.due_date.localeCompare(b.due_date)).slice(0, 4);
+
+  view.innerHTML = `
+  <div class="lecture-page" style="${cvar(s.course_id)}">
+    <nav class="lp-crumbs small"><a href="#/course/${esc(s.course_id)}">${esc(c?.short_name || c?.name || "Course")}</a> · <a href="#/study">Study</a></nav>
+    <header class="lp-head">
+      <div>
+        <p class="eyebrow">${esc(sessionLabel(s))} · ${esc(c?.short_name || "")}</p>
+        <h2>${esc(s.title)}</h2>
+        <div class="lp-meta">${esc(sessionWhen(s))} · ${deliveryTag(s.delivery)}${lecturerName(s.lecturer_id) ? ` · ${esc(lecturerName(s.lecturer_id))}` : ""}${s.location ? ` · ${esc(s.location)}` : ""}</div>
+      </div>
+      ${tracked ? `<div class="lp-status ${done === 5 ? "ok" : done ? "mid" : ""}"><b>${done === 5 ? "Studied" : done ? `${done} of 5` : "Not started"}</b><span>${done === 5 ? "Well done" : "study steps"}</span></div>` : ""}
+    </header>
+    ${s.info_required?.length ? infoRequired(s.info_required) : ""}
+
+    ${tracked ? `<section class="lp-steps" aria-label="Study steps">
+      ${STEPS.map(([k, l], n) => `<label class="step ${p[k] ? "on" : ""}"><input type="checkbox" data-chk="${k}" ${p[k] ? "checked" : ""}><span class="n">${p[k] ? "✓" : n + 1}</span><span>${l}</span></label>`).join("")}
+      ${done < 5 ? `<button class="btn primary" data-allstudied>Mark as studied</button>` : ""}
+    </section>
+    <p class="small muted lp-hint">Opening the slides ticks "Slides read" for you; opening a reading ticks "Readings done"; opening the recording counts as watched.</p>` : ""}
+
+    <div class="lp-grid">
+      <div class="lp-main">
+        <section class="sheet">
+          <h3>Slides &amp; materials</h3>
+          ${mats.length ? `<div class="mats">${mats.map((m) => {
+            const k = KIND[m.kind];
+            const isDone = m.kind === "slides" ? p.reviewed_slides && seen.has(m.key) : m.kind === "reading" ? p.read_materials && seen.has(m.key) : m.kind === "recording" ? att.recording_watched || att.status === "recording" : seen.has(m.key);
+            return `${materialLink(s, m)}<span class="mi" aria-hidden="true">${k.icon}</span><span class="mt"><b>${esc(m.title)}</b><small>${k.label}${m.required ? " · required" : ""}</small></span><span class="pill ${isDone ? "ok" : ""}">${isDone ? k.done : "Open"}</span></a>`;
+          }).join("")}</div>` : `<p class="muted small" style="margin:0">No slides or materials shared for this lecture yet.${isStaff() ? " Add them with “Manage shared files” below." : ""}</p>`}
+          ${s.topics?.length ? `<h3 style="margin-top:16px">Topics</h3><ul class="lp-topics">${s.topics.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+          ${s.readings ? `<p class="small" style="margin:8px 0 0"><strong>Readings:</strong> ${esc(s.readings)}</p>` : ""}
+        </section>
+
+        ${tracked ? `<section class="sheet lp-note">
+          <div><h3>Study notes</h3><p class="small muted" style="margin:2px 0 0">Full notes you can study from instead of the slides, and a one-page revision sheet.</p></div>
+          <div class="row"><button class="btn gold" data-study-note="${s.id}" data-part="full">Full notes</button><button class="btn" data-study-note="${s.id}" data-part="sheet">One-page sheet</button></div>
+        </section>` : ""}
+
+        <section class="sheet">
+          <h3>My notes</h3>
+          <textarea class="input" data-f="study_notes" placeholder="Key points, definitions, questions to ask" style="min-height:140px;margin-top:8px">${esc(p.study_notes || "")}</textarea>
+          <div class="row" style="margin-top:8px"><span class="small muted" data-saved>${p.study_notes ? "Saved" : ""}</span><span style="flex:1"></span>
+            <span class="small">Time logged: <strong>${fmtMinutes(p.actual_minutes || 0)}</strong></span>
+            <input class="input" type="number" min="5" max="600" step="5" value="30" aria-label="Minutes to log" style="width:84px" data-logmin><button class="btn sm" data-log>Log time</button></div>
+        </section>
+      </div>
+
+      <aside class="lp-side">
+        <section class="sheet">
+          <h3>Attendance</h3>
+          <div class="att-pick" role="group" aria-label="Attendance">${["physical", "online", "recording", "absent"].map((k) => `<button type="button" data-att="${k}" aria-pressed="${att.status === k}">${esc(ATT[k])}</button>`).join("")}</div>
+          <p class="small muted" style="margin:8px 0 0">Attending doesn't count as studying; tick the study steps too.</p>
+        </section>
+
+        <section class="sheet">
+          <h3>AI study assistant</h3>
+          <div class="ai-quick">
+            <button class="btn sm" data-ai="explain">Explain this lecture</button>
+            <button class="btn sm" data-ai="summarize">Summarise the slides</button>
+            <button class="btn sm" data-ai="mcq">Quiz me</button>
+            <button class="btn sm" data-ai="exam">Exam questions</button>
+          </div>
+        </section>
+
+        <section class="sheet">
+          <h3>Due ${limit ? `before the next lecture` : "soon"}</h3>
+          ${due.length ? `<ul class="pending">${due.map((t) => `<li style="${cvar(t.course_id)}"><span class="bar"></span><div><div class="t">${esc(t.title)}</div><div class="d">${esc(fmtDate(t.due_date))} · ${esc(relDays(t.due_date, S.today))}</div></div><div class="acts"><button class="btn sm" data-open-task="${esc(t.id || "a:" + t.assessment_id)}">Open</button></div></li>`).join("")}</ul>`
+            : `<p class="small muted" style="margin:0">Nothing due for this course${limit ? ` before ${esc(fmtDate(limit))}` : ""}.</p>`}
+        </section>
+
+        ${tracked ? `<details class="sheet lp-more"><summary>After studying</summary>
+          ${CHECKLIST.slice(5).map(([k, l]) => `<label class="check"><input type="checkbox" data-chk="${k}" ${p[k] ? "checked" : ""}> ${esc(l)}</label>`).join("")}
+        </details>` : ""}
+        <button class="btn ghost sm" data-manage>${isStaff() ? "Manage shared files · " : ""}My files &amp; more details</button>
+      </aside>
+    </div>
+
+    <nav class="lp-pager">
+      ${prev ? `<a class="btn" href="#/lecture/${prev.id}">← ${esc(sessionLabel(prev))}</a>` : "<span></span>"}
+      ${next ? `<a class="btn" href="#/lecture/${next.id}">${esc(sessionLabel(next))} →</a>` : "<span></span>"}
+    </nav>
+  </div>`;
+
+  const again = () => renderLecture(view, id);
+  $$("[data-chk]", view).forEach((b) => b.addEventListener("change", async () => {
+    try { await saveProgress(s.id, { [b.dataset.chk]: b.checked }); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); b.checked = !b.checked; }
+  }));
+  $("[data-allstudied]", view)?.addEventListener("click", async () => {
+    try { await saveProgress(s.id, Object.fromEntries(CORE.map((k) => [k, true]))); toast("Marked as studied"); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
+  });
+  $$("[data-att]", view).forEach((b) => b.addEventListener("click", async () => {
+    try { await saveAttendance(s.id, { status: b.dataset.att, recording_watched: b.dataset.att === "recording" ? true : att.recording_watched }); toast("Attendance saved"); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
+  }));
+  const saveNotes = debounce(async (v) => {
+    try { await saveProgress(s.id, { study_notes: v || null }); const m = $("[data-saved]", view); if (m) m.textContent = "Saved"; } catch (e) { errToast(e); }
+  }, 700);
+  $("[data-f=study_notes]", view)?.addEventListener("input", (e) => { const m = $("[data-saved]", view); if (m) m.textContent = "Saving…"; saveNotes(e.target.value); });
+  $("[data-log]", view).addEventListener("click", async () => {
+    const m = Number($("[data-logmin]", view).value);
+    if (!(m > 0 && m <= 600)) return toast("Enter between 5 and 600 minutes", "err");
+    try { await logStudy({ minutes: m, course_id: s.course_id, session_id: s.id }); toast(`Logged ${fmtMinutes(m)}`); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
+  });
+  $$("[data-ai]", view).forEach((b) => b.addEventListener("click", () => window.dispatchEvent(new CustomEvent("hub:ai", { detail: {
+    course_id: s.course_id, session_id: s.id, mode: b.dataset.ai,
+    prompt: { explain: `Explain ${sessionLabel(s)} (${s.title}) in simple English.`, summarize: `Summarise the slides of ${sessionLabel(s)} (${s.title}) as a structured outline.`, mcq: `Quiz me with 8 multiple-choice questions on ${sessionLabel(s)} (${s.title}).`, exam: `Write exam-style practice questions with model answers for ${sessionLabel(s)} (${s.title}).` }[b.dataset.ai],
+  } }))));
+  $("[data-manage]", view).addEventListener("click", () => openSession(s.id, { onChange: again }));
+}
+
+return { markOpened, lectureMaterials, materialLink, renderLecture };
 })();
 
 __hub["app"] = (function () {
@@ -4166,12 +4655,15 @@ const { renderAccount } = __hub["views/account"];
 const { initAI } = __hub["views/ai"];
 const { renderStudy } = __hub["views/study"];
 const { renderProjects, openProject } = __hub["views/projects"];
-const { maybeWelcome, showWelcome } = __hub["views/welcome"];
+const { maybeWelcome, renderWelcome } = __hub["views/welcome"];
+const { renderLecture, markOpened } = __hub["views/lecture"];
+const { initNotifications, registerWorker } = __hub["views/notify"];
 const { pendingLectures } = __hub["views/common"];
 const { openStudyNote } = __hub["views/notes"];
 const { ledgerCells } = __hub["ui"];
 const { isStudyTracked } = __hub["metrics"];
 const ROUTES = {
+  welcome: ["Welcome", renderWelcome],
   dashboard: ["Dashboard", renderDashboard],
   study: ["Study", renderStudy],
   assignments: ["Assignments", renderTasks],
@@ -4197,6 +4689,7 @@ function nav() {
   }).join("");
   const pending = pendingLectures().length;
   $("#nav").innerHTML = `
+    ${link("welcome", "Welcome", icon.next)}
     ${link("dashboard", "Dashboard", icon.dash)}
     ${link("study", "Study", icon.study, pending ? `<span class="count hot" title="Lectures waiting to be studied">${pending}</span>` : "")}
     ${link("assignments", "Assignments", icon.tasks)}
@@ -4206,7 +4699,7 @@ function nav() {
     ${link("announcements", "Announcements", icon.bell, S.announcements.length ? `<span class="count">${S.announcements.length}</span>` : "")}
     ${link("analytics", "My progress", icon.chart)}
     <button class="nav-link ai-link" type="button" data-ai-nav>${icon.spark}<span>AI Study Assistant</span></button>
-    <button class="nav-link" type="button" data-welcome-nav>${icon.next}<span>Today's briefing</span></button>
+
     <div class="nav-group">Courses</div>${courseLinks || `<span class="muted small" style="padding:0 10px">No courses yet</span>`}
     ${isStaff() ? `<div class="nav-group">Programme admin</div>${isAdmin() ? link("students", "Students & access", icon.users) : ""}${link("data", "Academic data", icon.data)}${link("cohort", "Cohort dashboard", icon.cohort)}` : ""}`;
   $("#sideFoot").innerHTML = `<a class="who nav-link" href="#/account"><span class="avatar">${esc(initials(S.profile?.full_name || S.user.email))}</span><span style="min-width:0"><span style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(S.profile?.full_name || S.user.email)}</span>${S.profile?.role !== "student" ? `<span class="role-tag">${esc(S.profile.role)}</span>` : ""}</span></a>`;
@@ -4216,6 +4709,7 @@ function currentRoute() {
   const h = location.hash.replace(/^#\/?/, "");
   let [a, b, c] = h.split("/");
   if (a === "course" && b) return { path: `course/${b}`, course: b, tab: c };
+  if (a === "lecture" && b) return { path: `lecture/${b}`, lecture: b };
   a = ALIASES[a] || a; // old links keep working
   return { path: ROUTES[a] ? a : "dashboard" };
 }
@@ -4227,7 +4721,13 @@ function render() {
   try {
     const r = currentRoute();
     const view = $("#view");
-    if (r.course) {
+    if (r.lecture) {
+      const s = S.sessions.find((x) => x.id === r.lecture);
+      const c = s && S.courses.find((x) => x.id === s.course_id);
+      $("#pageTitle").textContent = c ? c.short_name || c.name : "Lecture";
+      document.title = `${s?.title || "Lecture"} · Student Hub`;
+      renderLecture(view, r.lecture);
+    } else if (r.course) {
       const c = S.courses.find((x) => x.id === r.course);
       $("#pageTitle").textContent = c ? c.short_name || c.name : "Course";
       document.title = `${c?.short_name || "Course"} · Student Hub`;
@@ -4263,7 +4763,7 @@ function wireShell() {
   // Projects open in their own editor wherever they're linked from.
   const openAny = (t) => (t && isProject(t) ? openProject(t, rerender) : openTask(t, rerender));
   window.addEventListener("hub:task", (e) => openAny(e.detail));
-  window.addEventListener("hub:open-session", (e) => openSession(e.detail));
+  window.addEventListener("hub:open-session", (e) => { location.hash = `#/lecture/${e.detail}`; });
   window.addEventListener("hub:preview", (e) => preview(e.detail));
   // Re-render after a drawer or dialog closes if something changed underneath it.
   let pendingRerender = false;
@@ -4272,14 +4772,16 @@ function wireShell() {
 
   // Delegated openers used across views.
   document.addEventListener("click", (e) => {
+    const mk = e.target.closest("[data-mark]");
+    if (mk) markOpened(mk); // the link or file still opens below / by default
     const s = e.target.closest("[data-open-session]");
-    if (s) { e.preventDefault(); return openSession(s.dataset.openSession); }
+    if (s) { e.preventDefault(); closeDrawer(); location.hash = `#/lecture/${s.dataset.openSession}`; return; }
     const sn = e.target.closest("[data-study-note]");
-    if (sn) { e.preventDefault(); closeDrawer(); return openStudyNote(sn.dataset.studyNote); }
+    if (sn) { e.preventDefault(); closeDrawer(); return openStudyNote(sn.dataset.studyNote, sn.dataset.part || "sheet"); }
     const t = e.target.closest("[data-open-task]");
     if (t) { e.preventDefault(); return openAny(findTask(t.dataset.openTask)); }
     if (e.target.closest("[data-ai-nav]")) { closeMenu(); return window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); }
-    if (e.target.closest("[data-welcome-nav]")) { closeMenu(); return showWelcome(); }
+
     const of = e.target.closest("[data-official-file]");
     if (of) { e.preventDefault(); return openFile("official", of.dataset.officialFile); }
     const mf = e.target.closest("[data-my-file]");
@@ -4357,6 +4859,8 @@ async function start(session) {
     if (!S.courses.length) showBanner(isStaff() ? `No academic data yet. Open <a href="#/data">Academic data → Import</a> and load the 2026/27 data.` : "The programme hasn't published the courses yet. Check back soon.");
     render();
     initAI();
+    registerWorker();
+    initNotifications();
     maybeWelcome();
     startReminders();
   } catch (e) {

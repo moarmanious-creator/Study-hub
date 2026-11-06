@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Instrument+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/app.css?v=202611061458">
+<link rel="stylesheet" href="css/app.css?v=202611061520">
 <script>
   // Apply the saved theme before first paint to avoid a flash.
   try { const t = localStorage.getItem("hub-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
@@ -48,11 +48,16 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input id="globalSearch" type="search" placeholder="Search lectures, tasks, files" aria-label="Search lectures, tasks and files" autocomplete="off">
         </label>
+        <button class="icon-btn bell" id="bellBtn" hidden aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="badge" hidden>0</span>
+        </button>
         <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         </button>
       </div>
       <div class="search-results" id="searchResults" hidden></div>
+      <div class="bell-panel" id="bellPanel" hidden role="dialog" aria-label="Notifications"></div>
     </header>
     <div class="banner" id="banner" hidden></div>
     <main id="view" tabindex="-1"></main>
@@ -73,7 +78,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
-<script src="config.js?v=202611061458"></script>
-<script type="module" src="js/app.js?v=202611061458"></script>
+<script src="config.js?v=202611061520"></script>
+<script type="module" src="js/app.js?v=202611061520"></script>
 </body>
 </html>
