@@ -1,10 +1,11 @@
 // Assignments and personal tasks: Kanban board and list view. Presentations and papers live on Projects.
 // Official items come from the syllabus; a student's progress on them is stored privately.
-import { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, $, $$ } from "../lib.js?v=202611061403";
-import { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } from "../store.js?v=202611061403";
-import { editAssessment } from "./admin.js?v=202611061403";
-import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061403";
-import { cvar, coursePill, infoRequired, srcRef } from "../ui.js?v=202611061403";
+import { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611061458";
+import { openSubmission } from "./submit.js?v=202611061458";
+import { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } from "../store.js?v=202611061458";
+import { editAssessment } from "./admin.js?v=202611061458";
+import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061458";
+import { cvar, coursePill, infoRequired, srcRef } from "../ui.js?v=202611061458";
 
 const UI = { mode: "board", course: "all", sort: "due" };
 const COLS = ["overdue", "not_started", "in_progress", "completed", "submitted"];
@@ -73,10 +74,19 @@ function card(t, today) {
     <div class="kt"><button class="t" style="background:none;border:0;padding:0;text-align:left;font:inherit;cursor:pointer;color:inherit" data-open-task="${esc(tkey(t))}">${esc(t.title)}</button></div>
     <div class="km">${coursePill(t.course_id)}${t.due_date ? `<span class="${st === "overdue" ? "pill bad" : ""}">${fmtDate(t.due_date, { day: "numeric", month: "short" })}</span>` : `<span>No deadline</span>`}<span class="pill ${PRI[t.priority]?.[1] || ""}">${PRI[t.priority]?.[0] || ""}</span></div>
     ${t.completion ? `<div class="meter" style="margin-top:8px"><i style="width:${t.completion}%"></i></div>` : ""}
+    <button class="btn ghost sm" style="margin-top:6px;padding:3px 8px" data-submit-task="${esc(tkey(t))}" title="Prepare submission: make the file and email it to the instructor">${icon.send} Submit</button>
     <label class="sr" for="mv-${esc(tkey(t))}">Move to</label>
     <select id="mv-${esc(tkey(t))}" class="input" style="margin-top:8px;padding:4px 6px;font-size:.8rem" data-move="${esc(tkey(t))}">${["not_started", "in_progress", "completed", "submitted"].map((s) => `<option value="${s}" ${t.status === s ? "selected" : ""}>${TASK_STATUS[s]}</option>`).join("")}</select>
   </div>`;
 }
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest?.("[data-submit-task]");
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const t = findTask(b.dataset.submitTask);
+  if (t) openSubmission(t, () => window.dispatchEvent(new CustomEvent("hub:changed")));
+});
 
 // Delegated handler for the per-card status menu (works on phones without drag and drop).
 document.addEventListener("change", async (e) => {
@@ -114,8 +124,9 @@ export function openTask(t, after) {
       for (const f of e.target.files) { try { await uploadAttachment(f, { course_id: t.course_id, task_id: t.id }); toast(`${f.name} attached`); } catch (er) { errToast(er); } }
       close(); openTask(findTask(tkey(t)) || t, after);
     });
-    foot.innerHTML = `${t.id && !a ? `<button class="btn danger" data-del style="margin-right:auto">Delete</button>` : ""}<button class="btn" data-cancel>Cancel</button><button class="btn primary" data-save>${isNew ? "Add assignment" : "Save changes"}</button>`;
+    foot.innerHTML = `${t.id && !a ? `<button class="btn danger" data-del style="margin-right:auto">Delete</button>` : ""}<button class="btn" data-cancel>Cancel</button>${isNew ? "" : `<button class="btn" data-submit title="Make a Word, PDF or PowerPoint file and email it to the instructor">${icon.send} Prepare submission</button>`}<button class="btn primary" data-save>${isNew ? "Add assignment" : "Save changes"}</button>`;
     foot.querySelector("[data-cancel]").onclick = close;
+    foot.querySelector("[data-submit]")?.addEventListener("click", () => { close(); openSubmission(findTask(tkey(t)) || t, after); });
     foot.querySelector("[data-del]")?.addEventListener("click", async () => {
       if (!(await confirmDialog("Delete this assignment?"))) return;
       try { await deleteTask(t.id); close(); toast("Task deleted"); after && after(); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }

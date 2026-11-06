@@ -516,6 +516,65 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
 .proj .ms .done span { text-decoration: line-through; color: var(--ink-3); }
 .proj .foot { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; flex-wrap: wrap; }
 
+/* ── Handwritten study note (fixed light "paper" in both themes) ── */
+.hw-scroll { overflow-x: auto; border-radius: var(--r-md); }
+.hw-note { --ink-hw: #1f2a44; --pen-blue: #2d5b9a; --pen-pink: #c0436b; --paper-hw: #fdfbf4; --line: #dde6f3;
+  min-width: 640px; color: var(--ink-hw); font: 17px/1.45 "Patrick Hand", "Segoe Print", "Comic Sans MS", cursive;
+  background-color: var(--paper-hw); background-image: linear-gradient(90deg, transparent 38px, #f2c4c4 38px, #f2c4c4 40px, transparent 40px), repeating-linear-gradient(transparent 0 27px, var(--line) 27px 28px);
+  padding: 22px 26px 26px 54px; border-radius: 6px; box-shadow: inset 0 0 0 1px #ece6d6; }
+.hw-note h1, .hw-note .hw-head, .hw-note .hw-cmp thead th, .hw-note dt, .hw-note b { font-family: "Caveat", "Segoe Print", cursive; }
+.hw-title { text-align: center; margin-bottom: 14px; }
+.hw-title h1 { font-size: 2.6rem; line-height: 1.05; color: var(--ink-hw); font-weight: 700; }
+.hw-title h1 .a { background: linear-gradient(transparent 55%, #ffc2d1 55%, #ffc2d1 90%, transparent 90%); padding: 0 8px; }
+.hw-title p { margin: 4px 0 0; font-family: "Caveat", cursive; font-size: 1.45rem; color: var(--pen-blue); }
+.hw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
+.hw-sec.wide { grid-column: 1 / -1; }
+.hw-head { display: flex; align-items: center; gap: 8px; font-size: 1.65rem; font-weight: 700; margin-bottom: 4px; }
+.hw-num { width: 30px; height: 30px; border: 2px solid var(--pen-blue); border-radius: 50%; display: grid; place-items: center; font-size: 1.15rem; color: var(--pen-blue); flex: none; }
+.hw-hl { background: linear-gradient(transparent 35%, var(--hl) 35%, var(--hl) 92%, transparent 92%); padding: 0 6px; transform: rotate(-.6deg); display: inline-block; }
+.hw-box { border: 2px solid var(--hlb); border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px; padding: 10px 14px; background: var(--hlf); }
+.hw-p { margin: 0 0 4px; }
+.hw-quote { text-align: center; font-family: "Caveat", cursive; font-size: 1.35rem; color: var(--pen-pink); }
+.hw-ul { margin: 0; padding-left: 20px; }
+.hw-ul li::marker { content: "• "; color: var(--pen-pink); }
+.hw-cmp { width: 100%; border-collapse: collapse; }
+.hw-cmp th, .hw-cmp td { border: 1.5px solid #9fb6d6; padding: 3px 8px; text-align: left; vertical-align: top; font-weight: 400; }
+.hw-cmp thead th { font-size: 1.4rem; font-weight: 700; }
+.hw-cmp thead th.l, .hw-cmp td.l { background: rgba(255, 194, 209, .28); }
+.hw-cmp thead th.r, .hw-cmp td.r { background: rgba(185, 220, 255, .32); }
+.hw-cmp tbody th { color: var(--pen-blue); width: 22%; }
+.hw-flow-wrap { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.hw-flow { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1 1 280px; }
+.hw-step { border: 2px solid var(--pen-pink); border-radius: 4px; padding: 2px 14px; background: rgba(255, 194, 209, .25); text-align: center; min-width: 60%; }
+.hw-arrow { color: var(--pen-blue); font-size: 1.1rem; line-height: 1; }
+.hw-q { flex: 1 1 180px; border: 2px dashed var(--pen-pink); border-radius: 12px; padding: 10px 12px; color: var(--ink-hw); }
+.hw-q b { color: var(--pen-pink); font-size: 1.3rem; display: block; }
+.hw-terms { margin: 0; display: grid; gap: 6px; }
+.hw-terms dt { font-size: 1.4rem; font-weight: 700; color: var(--pen-blue); display: inline; }
+.hw-terms dt::after { content: " — "; }
+.hw-terms dd { display: inline; margin: 0; }
+.hw-steps { margin: 0; padding-left: 0; list-style: none; counter-reset: s; }
+.hw-steps li { counter-increment: s; display: flex; gap: 8px; align-items: baseline; }
+.hw-steps li::before { content: counter(s); width: 22px; height: 22px; border: 1.5px solid var(--pen-pink); color: var(--pen-pink); border-radius: 50%; display: inline-grid; place-items: center; font-size: .85rem; flex: none; }
+.hw-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px 18px; margin-top: 18px; }
+.hw-remember { display: flex; gap: 10px; border: 2px solid #e8b931; border-radius: 14px 255px 14px 225px / 225px 14px 255px 14px; background: rgba(255, 229, 138, .35); padding: 10px 14px; }
+.hw-remember b, .hw-oneline b { font-size: 1.45rem; color: #a3660b; display: block; }
+.hw-remember .bulb { font-size: 1.6rem; }
+.hw-oneline { border: 2px solid #9fb6d6; border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px; background: rgba(185, 220, 255, .3); padding: 10px 14px; }
+.hw-oneline b { color: var(--pen-blue); }
+.lecture-note-cta { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px dashed var(--gold); background: var(--brass-2); border-radius: var(--r-md); padding: 12px 14px; }
+
+/* Submission builder */
+.sub-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 820px) { .sub-grid { grid-template-columns: 1fr; } }
+.sub-grid h3 { margin-bottom: 8px; }
+.sub-grid textarea[name=content] { min-height: 260px; font-family: var(--sans); }
+.sub-grid textarea[name=email_body] { min-height: 200px; }
+.fmt-pick { display: flex; gap: 8px; flex-wrap: wrap; }
+.fmt-pick label { display: flex; gap: 8px; align-items: center; border: 1px solid var(--rule); border-radius: var(--r-md); padding: 8px 12px; cursor: pointer; background: var(--sheet); font-weight: 600; }
+.fmt-pick input { accent-color: var(--nile); }
+.fmt-pick label:has(input:checked) { border-color: var(--nile); box-shadow: 0 0 0 1px var(--nile); }
+
 </style>
 <script>
   // Apply the saved theme before first paint to avoid a flash.
@@ -812,6 +871,8 @@ const icon = {
   study: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5.5c3.5-1.6 6.8-1.6 10 1 3.2-2.6 6.5-2.6 10-1v13c-3.5-1.6-6.8-1.6-10 1-3.2-2.6-6.5-2.6-10-1z"/><path d="M12 6.5v13"/></svg>',
   project: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V4"/><path d="M4 4h12l-2 4 2 4H4"/><path d="M14 21h6M17 16v5"/></svg>',
   spark: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>',
+  send: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>',
+  note: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h12l4 4v12H4z"/><path d="M16 4v4h4M8 12h8M8 16h5"/></svg>',
 };
 
 return { todayISO, fmtDate, fmtTime, relDays, cairoToISO, isoToCairo, fmtMinutes, debounce, toast, errToast, openDrawer, openModal, confirmDialog, readForm, download, toCSV, md, loadScript, esc, $, $$, uid, TZ, isISO, daysBetween, addDays, dow, startOfWeek, startOfMonth, fmtLong, fmtMonth, pct, fmtPct, fmtBytes, initials, closeDrawer, safeUrl, icon };
@@ -1717,7 +1778,7 @@ function pendingItem({ s, st }) {
   const why = st.core > 0 ? `${st.core} of 5 study steps done` : st.recordingPending ? "Recording not watched yet" : "Not studied yet";
   return `<li style="${cvar(s.course_id)}" data-pending="${s.id}"><span class="bar"></span>
     <div><div class="t">${esc(sessionName(s))}</div><div class="d">${coursePill(s.course_id)} · ${esc(relDays(s.scheduled_date, S.today))} · ${esc(why)} · ${deliveryTag(s.delivery)}</div></div>
-    <div class="acts"><button class="btn sm" data-open-session="${s.id}">Open</button><button class="btn sm primary" data-studied="${s.id}">Mark studied</button></div></li>`;
+    <div class="acts"><button class="btn sm" data-study-note="${s.id}" title="Handwritten-style study note">Note</button><button class="btn sm" data-open-session="${s.id}">Open</button><button class="btn sm primary" data-studied="${s.id}">Mark studied</button></div></li>`;
 }
 
 // "Mark studied" ticks the five core checklist steps, which is what "fully studied" means.
@@ -2057,6 +2118,7 @@ function openSession(id, { onChange } = {}) {
     const links = [...(s.recording_url ? [{ label: "Recording", url: s.recording_url }] : []), ...(s.links || [])];
     body.innerHTML = `
       <div class="block row">${deliveryTag(s.delivery)}${s.location ? `<span class="small muted">${esc(s.location)}</span>` : ""}<span class="small muted">${esc(lecturerName(s.lecturer_id) || "Lecturer not stated")}</span>${coursePill(s.course_id)}</div>
+      ${isStudyTracked(s) ? `<div class="block lecture-note-cta"><div><strong>Study note</strong><div class="small muted">A one-page handwritten-style revision sheet for this lecture, made from its slides.</div></div><button class="btn primary sm" data-study-note="${s.id}">Open study note</button></div>` : ""}
       ${s.info_required?.length ? `<div class="block">${infoRequired(s.info_required)}</div>` : ""}
       ${s.topics?.length || s.readings ? `<div class="block"><h3>Topics</h3>${s.topics?.length ? `<ul style="margin:0;padding-left:18px">${s.topics.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}${s.readings ? `<p class="small" style="margin-top:8px"><strong>Readings:</strong> ${esc(s.readings)}</p>` : ""}${srcRef(s.source_ref)}</div>` : `<div class="block">${srcRef(s.source_ref)}</div>`}
       ${links.length ? `<div class="block"><h3>Links</h3>${links.map((l) => `<a class="btn sm" style="margin:0 6px 6px 0" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div>` : ""}
@@ -2403,6 +2465,281 @@ function addMinutes(t, m) { const [h, mm] = t.split(":").map(Number); const x = 
 void course; void saveTask;
 
 return { calendarItems, renderCalendar, editEvent, startReminders };
+})();
+
+__hub["views/submit"] = (function () {
+"use strict";
+// Prepare a submission for an assignment or project: build a Word, PDF or PowerPoint file
+// from the student's own text, draft the email to the instructor (template or AI), then send
+// it with the file attached through the device's share sheet, or download it and open an
+// email that's already filled in. All free: nothing is sent through a paid mail service.
+const { esc, fmtLong, openModal, readForm, toast, errToast, loadScript, $ } = __hub["lib"];
+const { S, saveTask, uploadAttachment, callFunction, course: getCourse } = __hub["store"];
+const { TASK_STATUS } = __hub["metrics"];
+const LIB = {
+  docx: "https://cdn.jsdelivr.net/npm/docx@9.5.1/dist/index.iife.js",
+  pptx: "https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js",
+  pdf: "https://cdn.jsdelivr.net/npm/jspdf@4.1.0/dist/jspdf.umd.min.js",
+  h2c: "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+};
+const FMT = { docx: ["Word", "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"], pdf: ["PDF", "pdf", "application/pdf"], pptx: ["PowerPoint", "pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation"] };
+const RTL = /[֐-ࣿ]/;
+const KIND = { presentation: "presentation", research_paper: "research paper", reflection_paper: "reflection paper", assignment: "assignment", quiz: "quiz" };
+
+// Instructors for a course, with emails where the programme data has them.
+function instructors(courseId) {
+  return S.courseLecturers.filter((x) => x.course_id === courseId).map((x) => S.lecturers.find((l) => l.id === x.lecturer_id)).filter(Boolean);
+}
+const lecName = (l) => `${l.title && !/professor/i.test(l.title) ? l.title + " " : l.title ? "Prof. " : ""}${l.name}`.trim();
+
+// Turns the text into blocks: "# Heading", "- bullet", or paragraph.
+function parseContent(text) {
+  const blocks = [];
+  let para = [];
+  const flush = () => { if (para.length) { blocks.push({ t: "p", text: para.join(" ") }); para = []; } };
+  for (const raw of String(text || "").split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line) { flush(); continue; }
+    if (/^#{1,3}\s+/.test(line)) { flush(); blocks.push({ t: "h", text: line.replace(/^#{1,3}\s+/, "") }); }
+    else if (/^[-*•]\s+/.test(line)) { flush(); blocks.push({ t: "li", text: line.replace(/^[-*•]\s+/, "") }); }
+    else para.push(line);
+  }
+  flush();
+  return blocks;
+}
+
+function openSubmission(t, after) {
+  const a = t.official;
+  const c = getCourse(t.course_id);
+  const lecs = instructors(t.course_id);
+  const withEmail = lecs.filter((l) => l.email);
+  const me = S.profile?.full_name || S.user.email;
+  const kind = a ? KIND[a.type] || "assignment" : t.kind === "project" ? "project" : "assignment";
+  const defFmt = a?.type === "presentation" ? "pptx" : "docx";
+  openModal(`Prepare submission · ${t.title}`, (body, foot, close) => {
+    body.innerHTML = `<form class="sub-grid" autocomplete="off">
+      <div>
+        <h3>1. Your document</h3>
+        <div class="fmt-pick" role="radiogroup" aria-label="File format">${Object.entries(FMT).map(([k, [l]]) => `<label><input type="radio" name="fmt" value="${k}" ${k === defFmt ? "checked" : ""}> ${l}</label>`).join("")}</div>
+        <div class="form-grid" style="margin-top:12px">
+          <label class="field wide"><span>Title</span><input class="input" name="title" required maxlength="200" value="${esc(t.title)}"></label>
+          <label class="field"><span>Your name</span><input class="input" name="student" required maxlength="120" value="${esc(me)}"></label>
+          <label class="field"><span>Course</span><input class="input" name="course" maxlength="160" value="${esc(c?.name || "")}"></label>
+          <label class="field wide"><span>Your work</span><textarea class="input" name="content" required placeholder="Write or paste your work here.&#10;&#10;# Introduction&#10;Start a line with # for a heading (a new slide in PowerPoint).&#10;- Start a line with - for a bullet point.">${esc(t.notes || "")}</textarea></label>
+        </div>
+        <p class="small muted" style="margin:6px 0 0">The file gets a cover page with the title, your name, the course, the instructor and today's date.</p>
+      </div>
+      <div>
+        <h3>2. Email to the instructor</h3>
+        <div class="form-grid">
+          <label class="field wide"><span>Instructor</span><select class="input" name="lec">${lecs.map((l, i) => `<option value="${i}">${esc(lecName(l))}${l.email ? ` (${esc(l.email)})` : " (no email on file)"}</option>`).join("")}<option value="other">Someone else</option></select></label>
+          <label class="field wide"><span>To</span><input class="input" type="email" name="to" multiple placeholder="instructor@example.com" value="${esc(withEmail[0]?.email || lecs.find((l) => l.email)?.email || "")}"></label>
+          <label class="field wide"><span>Subject</span><input class="input" name="subject" maxlength="200"></label>
+          <label class="field wide"><span>Message</span><textarea class="input" name="email_body"></textarea></label>
+        </div>
+        <label class="field" style="margin-top:10px"><span>Anything the email should mention? (optional)</span><input class="input" name="mention" maxlength="600" placeholder="e.g. I used the Varian textbook; sorry for the late submission"></label>
+        <div class="row" style="margin-top:8px"><button class="btn sm" type="button" data-ai-email>Write the email with AI</button><span class="small muted">The AI writes the email only; your document stays exactly as you wrote it.</span></div>
+        <label class="check" style="margin-top:10px"><input type="checkbox" name="keep" checked> Save a copy in this ${kind}'s files</label>
+      </div>
+    </form>`;
+    const form = $("form", body);
+    const lecOf = () => (form.lec.value === "other" ? null : lecs[Number(form.lec.value)]);
+    const fmt = () => form.querySelector("input[name=fmt]:checked").value;
+    const template = () => {
+      const l = lecOf();
+      form.subject.value = `${c?.short_name || c?.name || "Course"}: ${form.title.value.trim()} (${form.student.value.trim()})`;
+      form.email_body.value = `Dear ${l ? lecName(l) : "Professor"},\n\nPlease find attached my ${kind}, "${form.title.value.trim()}", for ${form.course.value.trim() || "the course"}.\n\nThank you for your time. I would be glad to answer any questions.\n\nKind regards,\n${form.student.value.trim()}`;
+    };
+    template();
+    form.lec.addEventListener("change", () => { const l = lecOf(); if (l?.email) form.to.value = l.email; else if (l) form.to.value = ""; template(); });
+    $("[data-ai-email]", body).addEventListener("click", async (e) => {
+      const b = e.currentTarget; b.disabled = true; b.textContent = "Writing…";
+      try {
+        const l = lecOf();
+        const r = await callFunction("hub-ai", { task: "email_draft", email: { title: form.title.value, course: form.course.value, instructor: l ? lecName(l) : "", student: form.student.value, kind, format: FMT[fmt()][0], note: form.mention.value.trim() } });
+        form.subject.value = r.subject; form.email_body.value = r.body; toast("Email written. Check it before sending.");
+      } catch (er) { errToast(er); }
+      finally { b.disabled = false; b.textContent = "Write the email with AI"; }
+    });
+
+    foot.innerHTML = `<button class="btn" data-x style="margin-right:auto">Cancel</button><button class="btn" data-dl>Download file only</button><button class="btn" data-gmail>Open in Gmail</button><button class="btn primary" data-send>Send by email</button>`;
+    foot.querySelector("[data-x]").onclick = close;
+    const build = async () => {
+      if (!form.reportValidity()) return null;
+      const f = readForm(form);
+      const l = lecOf();
+      const meta = { title: f.title, student: f.student, course: f.course || "", instructor: l ? lecName(l) : "", date: fmtLong(S.today) };
+      const blob = await makeFile(fmt(), meta, f.content);
+      const name = `${(c?.short_name || "Submission")} - ${f.title} - ${f.student}`.replace(/[\\/:*?"<>|]+/g, "").replace(/\s+/g, " ").slice(0, 120) + "." + FMT[fmt()][1];
+      return { file: new File([blob], name, { type: FMT[fmt()][2] }), f };
+    };
+    const keepCopy = async (file) => {
+      if (!form.keep.checked) return;
+      try {
+        let task = t;
+        if (!task.id) { await saveTask(t, {}); task = S.tasks.find((x) => x.assessment_id === t.assessment_id) || t; }
+        await uploadAttachment(file, { course_id: t.course_id, task_id: task.id });
+      } catch (er) { console.warn(er); toast("The file was made, but saving a copy in your files failed.", "err"); }
+    };
+    const busy = (on) => foot.querySelectorAll("button").forEach((b) => { b.disabled = on; });
+    const download = (file) => { const u = URL.createObjectURL(file); const x = document.createElement("a"); x.href = u; x.download = file.name; x.click(); setTimeout(() => URL.revokeObjectURL(u), 4000); };
+    const finish = (how) => {
+      foot.innerHTML = `<span class="small" style="margin-right:auto">${esc(how)}</span><button class="btn" data-x>Close</button>${t.status !== "submitted" ? `<button class="btn primary" data-sub>Mark as ${TASK_STATUS.submitted.toLowerCase()}</button>` : ""}`;
+      foot.querySelector("[data-x]").onclick = () => { close(); after && after(); };
+      foot.querySelector("[data-sub]")?.addEventListener("click", async () => {
+        try { await saveTask(t, { status: "submitted" }); toast("Marked as submitted"); close(); after && after(); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (er) { errToast(er); }
+      });
+    };
+
+    foot.querySelector("[data-dl]").onclick = async () => {
+      busy(true);
+      try { const r = await build(); if (!r) return; download(r.file); await keepCopy(r.file); toast(`${r.file.name} downloaded`); } catch (er) { errToast(er, "Couldn't create the file"); }
+      finally { busy(false); }
+    };
+    foot.querySelector("[data-gmail]").onclick = async () => {
+      busy(true);
+      // Open the tab first (browsers block pop-ups opened after a delay), then fill it in.
+      const win = window.open("", "_blank");
+      try {
+        const r = await build(); if (!r) { win?.close(); return; }
+        download(r.file); await keepCopy(r.file);
+        const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(r.f.to || "")}&su=${encodeURIComponent(r.f.subject || "")}&body=${encodeURIComponent(r.f.email_body || "")}`;
+        if (win) win.location.href = url; else window.open(url, "_blank");
+        finish(`Gmail opened with the email filled in. Attach "${r.file.name}" from your Downloads (paperclip icon), then press Send.`);
+      } catch (er) { win?.close(); errToast(er, "Couldn't create the file"); busy(false); }
+    };
+    foot.querySelector("[data-send]").onclick = async () => {
+      busy(true);
+      try {
+        const r = await build(); if (!r) { busy(false); return; }
+        if (!r.f.to) { busy(false); return errToast(new Error("Enter the instructor's email address first.")); }
+        await keepCopy(r.file);
+        const text = `To: ${r.f.to}\nSubject: ${r.f.subject}\n\n${r.f.email_body}`;
+        if (navigator.canShare && navigator.canShare({ files: [r.file] })) {
+          try {
+            await navigator.share({ files: [r.file], title: r.f.subject, text });
+            return finish("Shared. In your email app, check the recipient and subject, then send.");
+          } catch (er) { if (er?.name === "AbortError") { busy(false); return; } }
+        }
+        download(r.file);
+        location.href = `mailto:${encodeURIComponent(r.f.to).replace(/%40/g, "@").replace(/%2C/gi, ",")}?subject=${encodeURIComponent(r.f.subject || "")}&body=${encodeURIComponent(r.f.email_body || "")}`;
+        finish(`Your email app opened with the message filled in. Attach "${r.file.name}" from your Downloads, then send.`);
+      } catch (er) { errToast(er, "Couldn't create the file"); busy(false); }
+    };
+  }, { wide: true });
+}
+
+// ── File builders ─────────────────────────────────────────
+async function makeFile(kind, meta, content) {
+  const blocks = parseContent(content);
+  if (kind === "docx") return makeDocx(meta, blocks);
+  if (kind === "pptx") return makePptx(meta, blocks);
+  return makePdf(meta, blocks);
+}
+
+async function makeDocx(meta, blocks) {
+  await loadScript(LIB.docx);
+  const d = window.docx;
+  const P = (text, o = {}) => new d.Paragraph({ bidirectional: RTL.test(text), ...o, children: [new d.TextRun({ text, ...(o.run || {}) })] });
+  const cover = [
+    P("", { spacing: { before: 2400 } }),
+    P(meta.title, { heading: d.HeadingLevel.TITLE, alignment: d.AlignmentType.CENTER }),
+    P(meta.course, { alignment: d.AlignmentType.CENTER, spacing: { before: 400 }, run: { size: 28 } }),
+    P(`Submitted by: ${meta.student}`, { alignment: d.AlignmentType.CENTER, spacing: { before: 800 }, run: { size: 24 } }),
+    ...(meta.instructor ? [P(`Submitted to: ${meta.instructor}`, { alignment: d.AlignmentType.CENTER, run: { size: 24 } })] : []),
+    P(meta.date, { alignment: d.AlignmentType.CENTER, run: { size: 24 } }),
+  ];
+  const main = blocks.map((b) => b.t === "h" ? P(b.text, { heading: d.HeadingLevel.HEADING_1, spacing: { before: 240, after: 120 } })
+    : b.t === "li" ? P(b.text, { bullet: { level: 0 } })
+    : P(b.text, { spacing: { after: 160 }, alignment: RTL.test(b.text) ? d.AlignmentType.RIGHT : d.AlignmentType.JUSTIFIED }));
+  const doc = new d.Document({
+    creator: meta.student, title: meta.title,
+    styles: { default: { document: { run: { font: "Calibri", size: 24 } } } },
+    sections: [{ children: cover }, { properties: { type: d.SectionType.NEXT_PAGE }, children: main }],
+  });
+  return d.Packer.toBlob(doc);
+}
+
+async function makePptx(meta, blocks) {
+  await loadScript(LIB.pptx);
+  const pres = new window.PptxGenJS();
+  pres.layout = "LAYOUT_WIDE";
+  pres.title = meta.title; pres.author = meta.student;
+  const NAVY = "14203A", GOLD = "B8913A", INK = "1F2A44";
+  const s0 = pres.addSlide();
+  s0.background = { color: NAVY };
+  s0.addShape(pres.ShapeType.rect, { x: 0.8, y: 3.55, w: 1.2, h: 0.05, fill: { color: GOLD }, line: { color: GOLD } });
+  s0.addText(meta.title, { x: 0.8, y: 1.4, w: 11.5, h: 2, fontFace: "Georgia", fontSize: 38, color: "F7F2E7", bold: true, valign: "bottom", rtlMode: RTL.test(meta.title) });
+  s0.addText([meta.course, meta.instructor ? `Instructor: ${meta.instructor}` : "", `${meta.student} · ${meta.date}`].filter(Boolean).join("\n"), { x: 0.8, y: 3.8, w: 11.5, h: 1.8, fontFace: "Calibri", fontSize: 18, color: "D9DBE3", valign: "top" });
+  // One slide per "# Heading"; without headings, about six lines per slide.
+  const slides = [];
+  let cur = null;
+  for (const b of blocks) {
+    if (b.t === "h" || !cur || (cur.items.length >= 6 && !cur.fromHeading)) { cur = { title: b.t === "h" ? b.text : cur?.title || meta.title, items: [], fromHeading: b.t === "h" }; slides.push(cur); if (b.t === "h") continue; }
+    cur.items.push(b);
+  }
+  for (const sl of slides) {
+    const s = pres.addSlide();
+    s.background = { color: "FDFBF6" };
+    s.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: 0.18, h: 7.5, fill: { color: NAVY }, line: { color: NAVY } });
+    s.addText(sl.title, { x: 0.7, y: 0.4, w: 11.9, h: 0.9, fontFace: "Georgia", fontSize: 28, bold: true, color: NAVY, rtlMode: RTL.test(sl.title) });
+    s.addShape(pres.ShapeType.rect, { x: 0.7, y: 1.3, w: 1, h: 0.04, fill: { color: GOLD }, line: { color: GOLD } });
+    const runs = sl.items.map((b) => ({ text: b.text, options: { bullet: b.t === "li" ? { indent: 18 } : false, breakLine: true, paraSpaceAfter: 8, rtlMode: RTL.test(b.text) } }));
+    if (runs.length) s.addText(runs, { x: 0.7, y: 1.55, w: 11.9, h: 5.4, fontFace: "Calibri", fontSize: sl.items.reduce((n, b) => n + b.text.length, 0) > 700 ? 14 : 18, color: INK, valign: "top", fit: "shrink" });
+    s.addText(`${meta.student} · ${meta.course}`, { x: 0.7, y: 7.0, w: 11.9, h: 0.3, fontSize: 10, color: "8C92A5" });
+  }
+  return pres.write({ outputType: "blob" });
+}
+
+async function makePdf(meta, blocks) {
+  await loadScript(LIB.pdf);
+  const { jsPDF } = window.jspdf;
+  // The built-in PDF fonts have no Arabic letters, so Arabic text is laid out as an image of the page.
+  if (blocks.some((b) => RTL.test(b.text)) || RTL.test(meta.title)) return pdfFromHtml(meta, blocks, jsPDF);
+  const pdf = new jsPDF({ unit: "mm", format: "a4" });
+  const L = 22, W = 166, BOTTOM = 275;
+  pdf.setFont("times", "bold"); pdf.setFontSize(24);
+  pdf.text(pdf.splitTextToSize(meta.title, W), 105, 90, { align: "center" });
+  pdf.setFont("times", "normal"); pdf.setFontSize(14);
+  [meta.course, "", `Submitted by: ${meta.student}`, meta.instructor ? `Submitted to: ${meta.instructor}` : "", meta.date].filter((x, i) => x || i === 1)
+    .forEach((line, i) => pdf.text(line, 105, 125 + i * 9, { align: "center" }));
+  pdf.addPage();
+  let y = 25;
+  const need = (h) => { if (y + h > BOTTOM) { pdf.addPage(); y = 25; } };
+  for (const b of blocks) {
+    if (b.t === "h") { pdf.setFont("times", "bold"); pdf.setFontSize(15); const ls = pdf.splitTextToSize(b.text, W); need(ls.length * 7 + 4); y += 3; pdf.text(ls, L, y); y += ls.length * 7 + 2; continue; }
+    pdf.setFont("times", "normal"); pdf.setFontSize(12);
+    const ls = pdf.splitTextToSize(b.t === "li" ? b.text : b.text, b.t === "li" ? W - 6 : W);
+    for (const [i, ln] of ls.entries()) { need(6); if (b.t === "li" && i === 0) pdf.text("•", L + 1, y); pdf.text(ln, b.t === "li" ? L + 6 : L, y); y += 6; }
+    y += b.t === "li" ? 1 : 4;
+  }
+  const n = pdf.getNumberOfPages();
+  for (let i = 2; i <= n; i++) { pdf.setPage(i); pdf.setFontSize(9); pdf.setTextColor(120); pdf.text(`${meta.student} · ${meta.title}`, L, 288); pdf.text(`${i - 1} / ${n - 1}`, 188, 288, { align: "right" }); pdf.setTextColor(0); }
+  return pdf.output("blob");
+}
+
+async function pdfFromHtml(meta, blocks, jsPDF) {
+  await loadScript(LIB.h2c);
+  const host = document.createElement("div");
+  host.style.cssText = "position:fixed;left:-10000px;top:0;width:794px;background:#fff;color:#111;font:16px/1.6 'Segoe UI',Tahoma,Arial,sans-serif;padding:60px 70px;";
+  host.innerHTML = `<div style="text-align:center;margin:120px 0 180px"><h1 style="font:700 30px/1.3 Georgia,serif">${esc(meta.title)}</h1><p>${esc(meta.course)}</p><p style="margin-top:60px">Submitted by: ${esc(meta.student)}</p>${meta.instructor ? `<p>Submitted to: ${esc(meta.instructor)}</p>` : ""}<p>${esc(meta.date)}</p></div>` +
+    blocks.map((b) => b.t === "h" ? `<h2 dir="auto" style="font:700 20px/1.4 Georgia,serif;margin:22px 0 8px">${esc(b.text)}</h2>` : b.t === "li" ? `<div dir="auto" style="padding-inline-start:18px">• ${esc(b.text)}</div>` : `<p dir="auto" style="text-align:justify">${esc(b.text)}</p>`).join("");
+  document.body.appendChild(host);
+  try {
+    const canvas = await window.html2canvas(host, { scale: 2, backgroundColor: "#ffffff" });
+    const pdf = new jsPDF({ unit: "mm", format: "a4" });
+    const pageH = Math.floor(canvas.width * 297 / 210);
+    for (let y = 0, i = 0; y < canvas.height; y += pageH, i++) {
+      const part = document.createElement("canvas"); part.width = canvas.width; part.height = Math.min(pageH, canvas.height - y);
+      part.getContext("2d").drawImage(canvas, 0, -y);
+      if (i) pdf.addPage();
+      pdf.addImage(part.toDataURL("image/jpeg", 0.9), "JPEG", 0, 0, 210, part.height * 210 / canvas.width);
+    }
+    return pdf.output("blob");
+  } finally { host.remove(); }
+}
+
+return { parseContent, openSubmission, makeFile };
 })();
 
 __hub["views/admin"] = (function () {
@@ -2795,7 +3132,8 @@ __hub["views/tasks"] = (function () {
 "use strict";
 // Assignments and personal tasks: Kanban board and list view. Presentations and papers live on Projects.
 // Official items come from the syllabus; a student's progress on them is stored privately.
-const { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, $, $$ } = __hub["lib"];
+const { esc, fmtDate, fmtLong, isISO, relDays, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } = __hub["lib"];
+const { openSubmission } = __hub["views/submit"];
 const { S, allTasks, allAssignments, saveTask, deleteTask, uploadAttachment, isStaff, loadOfficial } = __hub["store"];
 const { editAssessment } = __hub["views/admin"];
 const { taskStatus, TASK_STATUS, DONE_TASK } = __hub["metrics"];
@@ -2867,10 +3205,19 @@ function card(t, today) {
     <div class="kt"><button class="t" style="background:none;border:0;padding:0;text-align:left;font:inherit;cursor:pointer;color:inherit" data-open-task="${esc(tkey(t))}">${esc(t.title)}</button></div>
     <div class="km">${coursePill(t.course_id)}${t.due_date ? `<span class="${st === "overdue" ? "pill bad" : ""}">${fmtDate(t.due_date, { day: "numeric", month: "short" })}</span>` : `<span>No deadline</span>`}<span class="pill ${PRI[t.priority]?.[1] || ""}">${PRI[t.priority]?.[0] || ""}</span></div>
     ${t.completion ? `<div class="meter" style="margin-top:8px"><i style="width:${t.completion}%"></i></div>` : ""}
+    <button class="btn ghost sm" style="margin-top:6px;padding:3px 8px" data-submit-task="${esc(tkey(t))}" title="Prepare submission: make the file and email it to the instructor">${icon.send} Submit</button>
     <label class="sr" for="mv-${esc(tkey(t))}">Move to</label>
     <select id="mv-${esc(tkey(t))}" class="input" style="margin-top:8px;padding:4px 6px;font-size:.8rem" data-move="${esc(tkey(t))}">${["not_started", "in_progress", "completed", "submitted"].map((s) => `<option value="${s}" ${t.status === s ? "selected" : ""}>${TASK_STATUS[s]}</option>`).join("")}</select>
   </div>`;
 }
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest?.("[data-submit-task]");
+  if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const t = findTask(b.dataset.submitTask);
+  if (t) openSubmission(t, () => window.dispatchEvent(new CustomEvent("hub:changed")));
+});
 
 // Delegated handler for the per-card status menu (works on phones without drag and drop).
 document.addEventListener("change", async (e) => {
@@ -2908,8 +3255,9 @@ function openTask(t, after) {
       for (const f of e.target.files) { try { await uploadAttachment(f, { course_id: t.course_id, task_id: t.id }); toast(`${f.name} attached`); } catch (er) { errToast(er); } }
       close(); openTask(findTask(tkey(t)) || t, after);
     });
-    foot.innerHTML = `${t.id && !a ? `<button class="btn danger" data-del style="margin-right:auto">Delete</button>` : ""}<button class="btn" data-cancel>Cancel</button><button class="btn primary" data-save>${isNew ? "Add assignment" : "Save changes"}</button>`;
+    foot.innerHTML = `${t.id && !a ? `<button class="btn danger" data-del style="margin-right:auto">Delete</button>` : ""}<button class="btn" data-cancel>Cancel</button>${isNew ? "" : `<button class="btn" data-submit title="Make a Word, PDF or PowerPoint file and email it to the instructor">${icon.send} Prepare submission</button>`}<button class="btn primary" data-save>${isNew ? "Add assignment" : "Save changes"}</button>`;
     foot.querySelector("[data-cancel]").onclick = close;
+    foot.querySelector("[data-submit]")?.addEventListener("click", () => { close(); openSubmission(findTask(tkey(t)) || t, after); });
     foot.querySelector("[data-del]")?.addEventListener("click", async () => {
       if (!(await confirmDialog("Delete this assignment?"))) return;
       try { await deleteTask(t.id); close(); toast("Task deleted"); after && after(); window.dispatchEvent(new CustomEvent("hub:changed")); } catch (e) { errToast(e); }
@@ -3383,13 +3731,156 @@ async function send() {
 return { initAI };
 })();
 
+__hub["views/notes"] = (function () {
+"use strict";
+// Lecture study notes: a one-page, handwritten-style revision sheet per lecture, built by the
+// AI from the lecture's slides (or its syllabus topics when no slides are available).
+// One note per lecture is shared by the whole class; admins can regenerate it.
+const { esc, openModal, toast, errToast, loadScript, $ } = __hub["lib"];
+const { S, sb, callFunction, session: getSession, isStaff } = __hub["store"];
+const { sessionName, courseName } = __hub["ui"];
+const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+const JSPDF = "https://cdn.jsdelivr.net/npm/jspdf@4.1.0/dist/jspdf.umd.min.js";
+const cache = new Map(); // session_id -> note row (or null when there is none yet)
+
+let fontsLoaded = false;
+function loadFonts() {
+  if (fontsLoaded) return;
+  fontsLoaded = true;
+  const l = document.createElement("link");
+  l.rel = "stylesheet";
+  l.href = "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Patrick+Hand&display=swap";
+  document.head.appendChild(l);
+}
+
+async function getNote(sessionId) {
+  if (cache.has(sessionId)) return cache.get(sessionId);
+  const { data, error } = await sb.from("lecture_notes").select("content, source, generated_at").eq("session_id", sessionId).maybeSingle();
+  if (error) throw error;
+  cache.set(sessionId, data || null);
+  return data || null;
+}
+async function createNote(sessionId, regenerate = false) {
+  const r = await callFunction("hub-ai", { task: "study_note", session_id: sessionId, regenerate });
+  cache.set(sessionId, r.note);
+  return r.note;
+}
+
+const HL = ["#ffe58a", "#ffc2d1", "#b9dcff", "#c7efb8", "#ffd2a6"]; // highlighter colours
+// Box border and fill for each highlighter (plain rgba: the image export can't read color-mix()).
+const BOX = [["#d9b84a", "rgba(255,229,138,.16)"], ["#d98aa1", "rgba(255,194,209,.16)"], ["#86aedb", "rgba(185,220,255,.18)"], ["#93c486", "rgba(199,239,184,.18)"], ["#e0a26a", "rgba(255,210,166,.18)"]];
+const circ = (n) => `<span class="hw-num">${n}</span>`;
+
+// Renders the note as HTML (also used for the image and PDF downloads).
+function noteSheet(content, s) {
+  const secs = content.sections || [];
+  const sec = (x, i) => {
+    const head = `<div class="hw-head">${circ(i + 1)}<span class="hw-hl" style="--hl:${HL[i % HL.length]}">${esc(x.heading)}</span></div>`;
+    let body = "";
+    if (x.type === "compare") {
+      body = `<table class="hw-cmp"><thead><tr><th></th><th class="l">${esc(x.left)}</th><th class="r">${esc(x.right)}</th></tr></thead><tbody>${(x.rows || []).map((r) => `<tr><th>${esc(r[0])}</th><td class="l">${esc(r[1])}</td><td class="r">${esc(r[2])}</td></tr>`).join("")}</tbody></table>`;
+    } else if (x.type === "flow") {
+      body = `<div class="hw-flow-wrap"><div class="hw-flow">${(x.steps || []).map((st, j) => `${j ? `<span class="hw-arrow" aria-hidden="true">↓</span>` : ""}<span class="hw-step">${esc(st)}</span>`).join("")}</div>${x.question ? `<div class="hw-q"><b>Question:</b> “${esc(x.question)}”</div>` : ""}</div>`;
+    } else if (x.type === "terms") {
+      body = `<dl class="hw-terms">${(x.items || []).map((t) => `<div><dt>${esc(t.term)}</dt><dd>${esc(t.def)}</dd></div>`).join("")}</dl>`;
+    } else if (x.type === "example") {
+      body = `${x.text ? `<p class="hw-p">${esc(x.text)}</p>` : ""}<ol class="hw-steps">${(x.steps || []).map((st) => `<li>${esc(st)}</li>`).join("")}</ol>`;
+    } else {
+      body = `${x.text ? `<p class="hw-p hw-quote">“${esc(x.text)}”</p>` : ""}<ul class="hw-ul">${(x.bullets || []).map((b) => `<li>${esc(b)}</li>`).join("")}</ul>`;
+    }
+    const wide = x.type === "compare" || x.type === "flow" || (x.type === "example" && (x.steps || []).length > 3);
+    return `<section class="hw-sec ${wide ? "wide" : ""} t-${esc(x.type)}" style="--hl:${HL[i % HL.length]};--hlb:${BOX[i % BOX.length][0]};--hlf:${BOX[i % BOX.length][1]}">${head}<div class="hw-box">${body}</div></section>`;
+  };
+  return `<article class="hw-note">
+    <header class="hw-title"><h1><span class="a">${esc(content.title || s?.title || "Study note")}</span></h1>
+      <p>${esc(content.subtitle || (s ? `${courseName(s.course_id)} · ${sessionName(s)}` : ""))}</p></header>
+    <div class="hw-grid">${secs.map(sec).join("")}</div>
+    <footer class="hw-foot">
+      ${(content.remember || []).length ? `<div class="hw-remember"><span class="bulb" aria-hidden="true">💡</span><div><b>Remember:</b>${content.remember.map((r) => `<div>${esc(r)}</div>`).join("")}</div></div>` : ""}
+      ${content.one_line ? `<div class="hw-oneline"><b>One-line rule:</b> “${esc(content.one_line)}”</div>` : ""}
+    </footer>
+  </article>`;
+}
+
+async function openStudyNote(sessionId) {
+  loadFonts();
+  const s = getSession(sessionId);
+  if (!s) return;
+  openModal(`Study note · ${sessionName(s)}`, async (body, foot, close) => {
+    body.innerHTML = `<div class="loading">Opening the study note…</div>`;
+    foot.innerHTML = `<button class="btn" data-close-note>Close</button>`;
+    foot.querySelector("[data-close-note]").onclick = close;
+    let note;
+    try { note = await getNote(sessionId); } catch (e) { body.innerHTML = `<div class="empty">${esc(e.message)}</div>`; return; }
+    const show = (n) => {
+      body.innerHTML = `<div class="hw-scroll">${noteSheet(n.content, s)}</div>
+        <p class="small muted" style="margin:10px 0 0">${n.source === "slides" ? "Made by the AI from this lecture's slides." : "Made by the AI from the syllabus topics (the slides weren't available). Check it against your lecture notes."} Shared with the whole class.</p>`;
+      foot.innerHTML = `${isStaff() ? `<button class="btn" data-regen style="margin-right:auto">Regenerate</button>` : ""}
+        <button class="btn" data-ask>Ask the assistant</button><button class="btn" data-png>Save image</button><button class="btn primary" data-pdf>Download PDF</button>`;
+      foot.querySelector("[data-png]").onclick = (e) => exportNote(body, s, "png", e.currentTarget);
+      foot.querySelector("[data-pdf]").onclick = (e) => exportNote(body, s, "pdf", e.currentTarget);
+      foot.querySelector("[data-ask]").onclick = () => { close(); window.dispatchEvent(new CustomEvent("hub:ai", { detail: { course_id: s.course_id, session_id: s.id, mode: "explain" } })); };
+      foot.querySelector("[data-regen]")?.addEventListener("click", () => make(true));
+    };
+    const make = async (regenerate) => {
+      body.innerHTML = `<div class="loading"><strong>Writing the study note…</strong><br>Reading the slides and laying out the page. This takes about 20–40 seconds.</div>`;
+      foot.querySelectorAll("button").forEach((b) => { b.disabled = true; });
+      try { show(await createNote(sessionId, regenerate)); toast("Study note ready"); window.dispatchEvent(new CustomEvent("hub:changed")); }
+      catch (e) { errToast(e); note ? show(note) : empty(); }
+    };
+    const empty = () => {
+      body.innerHTML = `<div class="empty" style="padding:30px 10px"><strong>No study note for this lecture yet.</strong>
+        The AI reads this lecture's slides (or its syllabus topics if the slides aren't available) and writes a one-page handwritten-style revision sheet: the basic idea, comparisons, a step-by-step flow, key terms, an example and a one-line rule. It's shared with the whole class, so it only needs creating once.</div>`;
+      foot.innerHTML = `<button class="btn" data-x>Close</button><button class="btn primary" data-make>Create study note</button>`;
+      foot.querySelector("[data-x]").onclick = close;
+      foot.querySelector("[data-make]").onclick = () => make(false);
+    };
+    note ? show(note) : empty();
+  }, { wide: true });
+}
+
+// Saves the rendered note as a PNG image or an A4 PDF (the page is split if it's long).
+async function exportNote(root, s, kind, btn) {
+  const el = $(".hw-note", root);
+  if (!el) return;
+  btn.disabled = true;
+  try {
+    await loadScript(H2C);
+    if (document.fonts?.ready) await document.fonts.ready;
+    const canvas = await window.html2canvas(el, { scale: 2, backgroundColor: null, useCORS: true });
+    const name = `Study note - ${(s.label || "Lecture")} - ${courseName(s.course_id)}`.replace(/[^\w\s.-]+/g, "").trim();
+    if (kind === "png") {
+      const a = document.createElement("a"); a.href = canvas.toDataURL("image/png"); a.download = `${name}.png`; a.click();
+    } else {
+      await loadScript(JSPDF);
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ unit: "mm", format: "a4" });
+      const pw = 210, ph = 297, m = 8, w = pw - 2 * m;
+      const pageHpx = Math.floor(((ph - 2 * m) / w) * canvas.width);
+      for (let y = 0, i = 0; y < canvas.height; y += pageHpx, i++) {
+        const part = document.createElement("canvas");
+        part.width = canvas.width; part.height = Math.min(pageHpx, canvas.height - y);
+        part.getContext("2d").drawImage(canvas, 0, -y);
+        if (i) pdf.addPage();
+        pdf.addImage(part.toDataURL("image/jpeg", 0.92), "JPEG", m, m, w, (part.height / canvas.width) * w);
+      }
+      pdf.save(`${name}.pdf`);
+    }
+  } catch (e) { errToast(e, "Couldn't create the file"); }
+  finally { btn.disabled = false; }
+}
+
+return { getNote, createNote, noteSheet, openStudyNote };
+})();
+
 __hub["views/study"] = (function () {
 "use strict";
 // Study: lectures waiting to be studied, one card per course, and the study plan.
-const { esc, $ } = __hub["lib"];
-const { S, courseSessions } = __hub["store"];
+const { esc, toast, errToast, $, $$ } = __hub["lib"];
+const { S, sb, courseSessions, isStaff } = __hub["store"];
+const { createNote } = __hub["views/notes"];
 const { courseStats, isStudyTracked } = __hub["metrics"];
-const { cvar, sessionName, sessionWhen, deliveryTag } = __hub["ui"];
+const { cvar, sessionName, sessionWhen, deliveryTag, coursePill } = __hub["ui"];
 const { renderPlan } = __hub["views/analytics"];
 const { pendingLectures, pendingItem, wirePending } = __hub["views/common"];
 const SHOW = { all: false };
@@ -3413,12 +3904,50 @@ function renderStudy(view) {
     </section>
 
     <section class="section">
+      <div class="section-head"><div><h2>Study notes</h2><p>A one-page, handwritten-style revision sheet for each lecture, made by the AI from its slides and shared with the whole class.</p></div>${isStaff() ? `<button class="btn" data-allnotes>Create missing notes</button>` : ""}</div>
+      <div class="sheet flush"><div class="table-wrap" id="notesList"><div class="loading">Loading…</div></div></div>
+    </section>
+
+    <section class="section">
       <div class="section-head"><div><h2>Study plan</h2><p>What to study next, ranked by urgency, and a seven-day plan you can add to your calendar.</p></div></div>
       <div id="studyPlan"></div>
     </section>`;
   $("[data-showall]", view)?.addEventListener("click", () => { SHOW.all = true; renderStudy(view); });
   wirePending(view, { onDone: () => window.dispatchEvent(new CustomEvent("hub:changed")) });
   renderPlan($("#studyPlan", view));
+  drawNotes(view);
+}
+
+const heldLectures = () => S.sessions.filter((s) => isStudyTracked(s) && !s.cancelled && s.scheduled_date && s.scheduled_date <= S.today)
+  .sort((a, b) => b.scheduled_date.localeCompare(a.scheduled_date));
+
+async function drawNotes(view) {
+  const box = $("#notesList", view);
+  if (!box) return;
+  const { data, error } = await sb.from("lecture_notes").select("session_id, source");
+  if (error) { box.innerHTML = `<div class="empty">${esc(error.message)}</div>`; return; }
+  const have = new Map((data || []).map((n) => [n.session_id, n.source]));
+  const list = heldLectures();
+  box.innerHTML = list.length ? `<table class="data"><thead><tr><th>Lecture</th><th>Course</th><th>Note</th><th></th></tr></thead><tbody>${list.map((s) => `<tr>
+    <td><strong>${esc(sessionName(s))}</strong></td><td>${coursePill(s.course_id)}</td>
+    <td>${have.has(s.id) ? `<span class="pill ok">Ready</span>${have.get(s.id) === "topics" ? ` <span class="small muted">from topics</span>` : ""}` : `<span class="pill">Not created yet</span>`}</td>
+    <td style="text-align:right"><button class="btn sm ${have.has(s.id) ? "primary" : ""}" data-study-note="${s.id}">${have.has(s.id) ? "Open" : "Create"}</button></td></tr>`).join("")}</tbody></table>`
+    : `<div class="empty">No lectures have taken place yet.</div>`;
+  $("[data-allnotes]", view)?.addEventListener("click", async (e) => {
+    const missing = list.filter((s) => !have.has(s.id));
+    if (!missing.length) return toast("Every lecture so far has a note.");
+    const b = e.currentTarget; b.disabled = true;
+    let done = 0;
+    for (const s of missing) {
+      b.textContent = `Creating ${done + 1} of ${missing.length}…`;
+      try { await createNote(s.id); done++; } catch (er) { errToast(er); break; }
+      await new Promise((r) => setTimeout(r, 2500)); // stay well inside the free AI rate limits
+    }
+    toast(`${done} study note${done === 1 ? "" : "s"} created`);
+    drawNotes(view);
+    b.disabled = false; b.textContent = "Create missing notes";
+  });
+  void $$;
 }
 
 function courseCard(c) {
@@ -3441,7 +3970,8 @@ __hub["views/projects"] = (function () {
 // Projects: long pieces of work with milestones. Official presentations and research papers
 // from the syllabi appear here automatically; students add their own, and admins can publish
 // a project to the whole class.
-const { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, $, $$ } = __hub["lib"];
+const { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } = __hub["lib"];
+const { openSubmission } = __hub["views/submit"];
 const { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } = __hub["store"];
 const { taskStatus, TASK_STATUS, DONE_TASK } = __hub["metrics"];
 const { cvar, coursePill, infoRequired } = __hub["ui"];
@@ -3471,6 +4001,7 @@ function renderProjects(view) {
   $("[data-new]", view).addEventListener("click", () => openProject({ kind: "project", status: "not_started", priority: "medium", milestones: [] }, () => renderProjects(view)));
   $("[data-publish]", view)?.addEventListener("click", () => editAssessment({ type: "research_paper" }, async () => { await loadOfficial(); window.dispatchEvent(new CustomEvent("hub:changed")); }));
   $$("[data-edit]", view).forEach((b) => b.addEventListener("click", () => openProject(find(b.dataset.edit), () => renderProjects(view))));
+  $$("[data-submit-proj]", view).forEach((b) => b.addEventListener("click", () => openSubmission(find(b.dataset.submitProj), () => renderProjects(view))));
   $$("[data-ms]", view).forEach((cb) => cb.addEventListener("change", async () => {
     const t = find(cb.dataset.ms); const i = Number(cb.dataset.i);
     const m = ms(t).map((x, j) => (j === i ? { ...x, done: cb.checked } : x));
@@ -3497,7 +4028,7 @@ function card(t) {
     ${t.members ? `<div class="small"><strong>Team:</strong> ${esc(t.members)}</div>` : ""}
     <div><div class="meter"><i style="width:${p}%"></i></div><div class="small muted" style="margin-top:4px">${p}% done${ms(t).length ? ` · ${ms(t).filter((x) => x.done).length} of ${ms(t).length} milestones` : ""}</div></div>
     ${ms(t).length ? `<ul class="ms">${ms(t).map((m, i) => `<li class="${m.done ? "done" : ""}"><label><input type="checkbox" data-ms="${esc(tkey(t))}" data-i="${i}" ${m.done ? "checked" : ""}><span>${esc(m.t)}</span></label></li>`).join("")}</ul>` : `<p class="small muted" style="margin:0">No milestones yet. Edit the project to add steps such as "Choose topic", "Draft", "Slides", "Rehearse".</p>`}
-    <div class="foot"><button class="btn sm" data-edit="${esc(tkey(t))}">${a ? "Open" : "Edit"}</button></div>
+    <div class="foot"><button class="btn sm" data-edit="${esc(tkey(t))}">${a ? "Open" : "Edit"}</button><button class="btn sm" data-submit-proj="${esc(tkey(t))}" title="Make a Word, PDF or PowerPoint file and email it to the instructor">${icon.send} Prepare submission</button></div>
   </article>`;
 }
 
@@ -3610,7 +4141,7 @@ function showWelcome() {
   $("[data-ai]", host).addEventListener("click", () => { close(); window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); });
   $("[data-start]", host)?.addEventListener("click", (e) => { close(); window.dispatchEvent(new CustomEvent("hub:open-session", { detail: e.currentTarget.dataset.start })); });
   // "Open" buttons use the app's delegated handlers; close the welcome screen first so the drawer is visible.
-  host.querySelectorAll("[data-open-session],[data-open-task]").forEach((b) => b.addEventListener("click", () => close(), { capture: true }));
+  host.querySelectorAll("[data-open-session],[data-open-task],[data-study-note]").forEach((b) => b.addEventListener("click", () => close(), { capture: true }));
   wirePending(host);
   setTimeout(() => $("[data-enter]", host)?.focus({ preventScroll: true }), 30);
 }
@@ -3637,6 +4168,7 @@ const { renderStudy } = __hub["views/study"];
 const { renderProjects, openProject } = __hub["views/projects"];
 const { maybeWelcome, showWelcome } = __hub["views/welcome"];
 const { pendingLectures } = __hub["views/common"];
+const { openStudyNote } = __hub["views/notes"];
 const { ledgerCells } = __hub["ui"];
 const { isStudyTracked } = __hub["metrics"];
 const ROUTES = {
@@ -3742,6 +4274,8 @@ function wireShell() {
   document.addEventListener("click", (e) => {
     const s = e.target.closest("[data-open-session]");
     if (s) { e.preventDefault(); return openSession(s.dataset.openSession); }
+    const sn = e.target.closest("[data-study-note]");
+    if (sn) { e.preventDefault(); closeDrawer(); return openStudyNote(sn.dataset.studyNote); }
     const t = e.target.closest("[data-open-task]");
     if (t) { e.preventDefault(); return openAny(findTask(t.dataset.openTask)); }
     if (e.target.closest("[data-ai-nav]")) { closeMenu(); return window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); }

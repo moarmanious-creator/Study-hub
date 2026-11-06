@@ -1,12 +1,12 @@
 // Course dashboards (one per course) and the lecture drawer where students record
 // attendance, the study checklist, notes, time and attachments.
-import { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, errToast, debounce, $, $$, md, safeUrl, confirmDialog } from "../lib.js?v=202611061403";
+import { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, errToast, debounce, $, $$, md, safeUrl, confirmDialog } from "../lib.js?v=202611061458";
 import {
   S, course, session, lecturer, lecturerName, courseSessions, saveAttendance, saveProgress, logStudy, uploadAttachment, addLink,
   signedUrl, allTasks, isStaff, uploadOfficialMaterial, addOfficialLink, deleteOfficialMaterial,
-} from "../store.js?v=202611061403";
-import { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } from "../metrics.js?v=202611061403";
-import { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } from "../ui.js?v=202611061403";
+} from "../store.js?v=202611061458";
+import { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } from "../metrics.js?v=202611061458";
+import { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } from "../ui.js?v=202611061458";
 
 let currentTab = "lectures";
 
@@ -157,6 +157,7 @@ export function openSession(id, { onChange } = {}) {
     const links = [...(s.recording_url ? [{ label: "Recording", url: s.recording_url }] : []), ...(s.links || [])];
     body.innerHTML = `
       <div class="block row">${deliveryTag(s.delivery)}${s.location ? `<span class="small muted">${esc(s.location)}</span>` : ""}<span class="small muted">${esc(lecturerName(s.lecturer_id) || "Lecturer not stated")}</span>${coursePill(s.course_id)}</div>
+      ${isStudyTracked(s) ? `<div class="block lecture-note-cta"><div><strong>Study note</strong><div class="small muted">A one-page handwritten-style revision sheet for this lecture, made from its slides.</div></div><button class="btn primary sm" data-study-note="${s.id}">Open study note</button></div>` : ""}
       ${s.info_required?.length ? `<div class="block">${infoRequired(s.info_required)}</div>` : ""}
       ${s.topics?.length || s.readings ? `<div class="block"><h3>Topics</h3>${s.topics?.length ? `<ul style="margin:0;padding-left:18px">${s.topics.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}${s.readings ? `<p class="small" style="margin-top:8px"><strong>Readings:</strong> ${esc(s.readings)}</p>` : ""}${srcRef(s.source_ref)}</div>` : `<div class="block">${srcRef(s.source_ref)}</div>`}
       ${links.length ? `<div class="block"><h3>Links</h3>${links.map((l) => `<a class="btn sm" style="margin:0 6px 6px 0" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div>` : ""}

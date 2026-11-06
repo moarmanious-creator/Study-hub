@@ -1,22 +1,23 @@
 // Student Hub — app shell: session handling, navigation, routing, global search.
-import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611061403";
-import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions, isProject } from "./store.js?v=202611061403";
-import { renderAuth, hideAuth } from "./views/auth.js?v=202611061403";
-import { renderDashboard } from "./views/dashboard.js?v=202611061403";
-import { renderCourse, openSession, openFile } from "./views/course.js?v=202611061403";
-import { renderCalendar, startReminders } from "./views/calendar.js?v=202611061403";
-import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611061403";
-import { renderDocuments, preview } from "./views/documents.js?v=202611061403";
-import { renderAnalytics } from "./views/analytics.js?v=202611061403";
-import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611061403";
-import { renderAccount } from "./views/account.js?v=202611061403";
-import { initAI } from "./views/ai.js?v=202611061403";
-import { renderStudy } from "./views/study.js?v=202611061403";
-import { renderProjects, openProject } from "./views/projects.js?v=202611061403";
-import { maybeWelcome, showWelcome } from "./views/welcome.js?v=202611061403";
-import { pendingLectures } from "./views/common.js?v=202611061403";
-import { ledgerCells } from "./ui.js?v=202611061403";
-import { isStudyTracked } from "./metrics.js?v=202611061403";
+import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611061458";
+import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions, isProject } from "./store.js?v=202611061458";
+import { renderAuth, hideAuth } from "./views/auth.js?v=202611061458";
+import { renderDashboard } from "./views/dashboard.js?v=202611061458";
+import { renderCourse, openSession, openFile } from "./views/course.js?v=202611061458";
+import { renderCalendar, startReminders } from "./views/calendar.js?v=202611061458";
+import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611061458";
+import { renderDocuments, preview } from "./views/documents.js?v=202611061458";
+import { renderAnalytics } from "./views/analytics.js?v=202611061458";
+import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611061458";
+import { renderAccount } from "./views/account.js?v=202611061458";
+import { initAI } from "./views/ai.js?v=202611061458";
+import { renderStudy } from "./views/study.js?v=202611061458";
+import { renderProjects, openProject } from "./views/projects.js?v=202611061458";
+import { maybeWelcome, showWelcome } from "./views/welcome.js?v=202611061458";
+import { pendingLectures } from "./views/common.js?v=202611061458";
+import { openStudyNote } from "./views/notes.js?v=202611061458";
+import { ledgerCells } from "./ui.js?v=202611061458";
+import { isStudyTracked } from "./metrics.js?v=202611061458";
 
 const ROUTES = {
   dashboard: ["Dashboard", renderDashboard],
@@ -121,6 +122,8 @@ function wireShell() {
   document.addEventListener("click", (e) => {
     const s = e.target.closest("[data-open-session]");
     if (s) { e.preventDefault(); return openSession(s.dataset.openSession); }
+    const sn = e.target.closest("[data-study-note]");
+    if (sn) { e.preventDefault(); closeDrawer(); return openStudyNote(sn.dataset.studyNote); }
     const t = e.target.closest("[data-open-task]");
     if (t) { e.preventDefault(); return openAny(findTask(t.dataset.openTask)); }
     if (e.target.closest("[data-ai-nav]")) { closeMenu(); return window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); }

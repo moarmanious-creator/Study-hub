@@ -1,11 +1,12 @@
 // Projects: long pieces of work with milestones. Official presentations and research papers
 // from the syllabi appear here automatically; students add their own, and admins can publish
 // a project to the whole class.
-import { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, $, $$ } from "../lib.js?v=202611061403";
-import { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } from "../store.js?v=202611061403";
-import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061403";
-import { cvar, coursePill, infoRequired } from "../ui.js?v=202611061403";
-import { editAssessment } from "./admin.js?v=202611061403";
+import { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611061458";
+import { openSubmission } from "./submit.js?v=202611061458";
+import { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } from "../store.js?v=202611061458";
+import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061458";
+import { cvar, coursePill, infoRequired } from "../ui.js?v=202611061458";
+import { editAssessment } from "./admin.js?v=202611061458";
 
 const TYPE = { presentation: "Presentation", research_paper: "Research paper" };
 const tkey = (t) => t.id || "a:" + t.assessment_id;
@@ -32,6 +33,7 @@ export function renderProjects(view) {
   $("[data-new]", view).addEventListener("click", () => openProject({ kind: "project", status: "not_started", priority: "medium", milestones: [] }, () => renderProjects(view)));
   $("[data-publish]", view)?.addEventListener("click", () => editAssessment({ type: "research_paper" }, async () => { await loadOfficial(); window.dispatchEvent(new CustomEvent("hub:changed")); }));
   $$("[data-edit]", view).forEach((b) => b.addEventListener("click", () => openProject(find(b.dataset.edit), () => renderProjects(view))));
+  $$("[data-submit-proj]", view).forEach((b) => b.addEventListener("click", () => openSubmission(find(b.dataset.submitProj), () => renderProjects(view))));
   $$("[data-ms]", view).forEach((cb) => cb.addEventListener("change", async () => {
     const t = find(cb.dataset.ms); const i = Number(cb.dataset.i);
     const m = ms(t).map((x, j) => (j === i ? { ...x, done: cb.checked } : x));
@@ -58,7 +60,7 @@ function card(t) {
     ${t.members ? `<div class="small"><strong>Team:</strong> ${esc(t.members)}</div>` : ""}
     <div><div class="meter"><i style="width:${p}%"></i></div><div class="small muted" style="margin-top:4px">${p}% done${ms(t).length ? ` · ${ms(t).filter((x) => x.done).length} of ${ms(t).length} milestones` : ""}</div></div>
     ${ms(t).length ? `<ul class="ms">${ms(t).map((m, i) => `<li class="${m.done ? "done" : ""}"><label><input type="checkbox" data-ms="${esc(tkey(t))}" data-i="${i}" ${m.done ? "checked" : ""}><span>${esc(m.t)}</span></label></li>`).join("")}</ul>` : `<p class="small muted" style="margin:0">No milestones yet. Edit the project to add steps such as "Choose topic", "Draft", "Slides", "Rehearse".</p>`}
-    <div class="foot"><button class="btn sm" data-edit="${esc(tkey(t))}">${a ? "Open" : "Edit"}</button></div>
+    <div class="foot"><button class="btn sm" data-edit="${esc(tkey(t))}">${a ? "Open" : "Edit"}</button><button class="btn sm" data-submit-proj="${esc(tkey(t))}" title="Make a Word, PDF or PowerPoint file and email it to the instructor">${icon.send} Prepare submission</button></div>
   </article>`;
 }
 

@@ -497,3 +497,62 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
 .proj .ms input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--nile); flex: none; }
 .proj .ms .done span { text-decoration: line-through; color: var(--ink-3); }
 .proj .foot { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; flex-wrap: wrap; }
+
+/* ── Handwritten study note (fixed light "paper" in both themes) ── */
+.hw-scroll { overflow-x: auto; border-radius: var(--r-md); }
+.hw-note { --ink-hw: #1f2a44; --pen-blue: #2d5b9a; --pen-pink: #c0436b; --paper-hw: #fdfbf4; --line: #dde6f3;
+  min-width: 640px; color: var(--ink-hw); font: 17px/1.45 "Patrick Hand", "Segoe Print", "Comic Sans MS", cursive;
+  background-color: var(--paper-hw); background-image: linear-gradient(90deg, transparent 38px, #f2c4c4 38px, #f2c4c4 40px, transparent 40px), repeating-linear-gradient(transparent 0 27px, var(--line) 27px 28px);
+  padding: 22px 26px 26px 54px; border-radius: 6px; box-shadow: inset 0 0 0 1px #ece6d6; }
+.hw-note h1, .hw-note .hw-head, .hw-note .hw-cmp thead th, .hw-note dt, .hw-note b { font-family: "Caveat", "Segoe Print", cursive; }
+.hw-title { text-align: center; margin-bottom: 14px; }
+.hw-title h1 { font-size: 2.6rem; line-height: 1.05; color: var(--ink-hw); font-weight: 700; }
+.hw-title h1 .a { background: linear-gradient(transparent 55%, #ffc2d1 55%, #ffc2d1 90%, transparent 90%); padding: 0 8px; }
+.hw-title p { margin: 4px 0 0; font-family: "Caveat", cursive; font-size: 1.45rem; color: var(--pen-blue); }
+.hw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
+.hw-sec.wide { grid-column: 1 / -1; }
+.hw-head { display: flex; align-items: center; gap: 8px; font-size: 1.65rem; font-weight: 700; margin-bottom: 4px; }
+.hw-num { width: 30px; height: 30px; border: 2px solid var(--pen-blue); border-radius: 50%; display: grid; place-items: center; font-size: 1.15rem; color: var(--pen-blue); flex: none; }
+.hw-hl { background: linear-gradient(transparent 35%, var(--hl) 35%, var(--hl) 92%, transparent 92%); padding: 0 6px; transform: rotate(-.6deg); display: inline-block; }
+.hw-box { border: 2px solid var(--hlb); border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px; padding: 10px 14px; background: var(--hlf); }
+.hw-p { margin: 0 0 4px; }
+.hw-quote { text-align: center; font-family: "Caveat", cursive; font-size: 1.35rem; color: var(--pen-pink); }
+.hw-ul { margin: 0; padding-left: 20px; }
+.hw-ul li::marker { content: "• "; color: var(--pen-pink); }
+.hw-cmp { width: 100%; border-collapse: collapse; }
+.hw-cmp th, .hw-cmp td { border: 1.5px solid #9fb6d6; padding: 3px 8px; text-align: left; vertical-align: top; font-weight: 400; }
+.hw-cmp thead th { font-size: 1.4rem; font-weight: 700; }
+.hw-cmp thead th.l, .hw-cmp td.l { background: rgba(255, 194, 209, .28); }
+.hw-cmp thead th.r, .hw-cmp td.r { background: rgba(185, 220, 255, .32); }
+.hw-cmp tbody th { color: var(--pen-blue); width: 22%; }
+.hw-flow-wrap { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.hw-flow { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1 1 280px; }
+.hw-step { border: 2px solid var(--pen-pink); border-radius: 4px; padding: 2px 14px; background: rgba(255, 194, 209, .25); text-align: center; min-width: 60%; }
+.hw-arrow { color: var(--pen-blue); font-size: 1.1rem; line-height: 1; }
+.hw-q { flex: 1 1 180px; border: 2px dashed var(--pen-pink); border-radius: 12px; padding: 10px 12px; color: var(--ink-hw); }
+.hw-q b { color: var(--pen-pink); font-size: 1.3rem; display: block; }
+.hw-terms { margin: 0; display: grid; gap: 6px; }
+.hw-terms dt { font-size: 1.4rem; font-weight: 700; color: var(--pen-blue); display: inline; }
+.hw-terms dt::after { content: " — "; }
+.hw-terms dd { display: inline; margin: 0; }
+.hw-steps { margin: 0; padding-left: 0; list-style: none; counter-reset: s; }
+.hw-steps li { counter-increment: s; display: flex; gap: 8px; align-items: baseline; }
+.hw-steps li::before { content: counter(s); width: 22px; height: 22px; border: 1.5px solid var(--pen-pink); color: var(--pen-pink); border-radius: 50%; display: inline-grid; place-items: center; font-size: .85rem; flex: none; }
+.hw-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px 18px; margin-top: 18px; }
+.hw-remember { display: flex; gap: 10px; border: 2px solid #e8b931; border-radius: 14px 255px 14px 225px / 225px 14px 255px 14px; background: rgba(255, 229, 138, .35); padding: 10px 14px; }
+.hw-remember b, .hw-oneline b { font-size: 1.45rem; color: #a3660b; display: block; }
+.hw-remember .bulb { font-size: 1.6rem; }
+.hw-oneline { border: 2px solid #9fb6d6; border-radius: 255px 14px 225px 14px / 14px 225px 14px 255px; background: rgba(185, 220, 255, .3); padding: 10px 14px; }
+.hw-oneline b { color: var(--pen-blue); }
+.lecture-note-cta { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; border: 1px dashed var(--gold); background: var(--brass-2); border-radius: var(--r-md); padding: 12px 14px; }
+
+/* Submission builder */
+.sub-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 820px) { .sub-grid { grid-template-columns: 1fr; } }
+.sub-grid h3 { margin-bottom: 8px; }
+.sub-grid textarea[name=content] { min-height: 260px; font-family: var(--sans); }
+.sub-grid textarea[name=email_body] { min-height: 200px; }
+.fmt-pick { display: flex; gap: 8px; flex-wrap: wrap; }
+.fmt-pick label { display: flex; gap: 8px; align-items: center; border: 1px solid var(--rule); border-radius: var(--r-md); padding: 8px 12px; cursor: pointer; background: var(--sheet); font-weight: 600; }
+.fmt-pick input { accent-color: var(--nile); }
+.fmt-pick label:has(input:checked) { border-color: var(--nile); box-shadow: 0 0 0 1px var(--nile); }

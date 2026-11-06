@@ -1,6 +1,6 @@
 // Data layer: Supabase client, loading, and every write the app makes.
 // All reads and writes go through row-level security; nothing personal is kept in the browser.
-import { todayISO, loadScript, uid } from "./lib.js?v=202611061403";
+import { todayISO, loadScript, uid } from "./lib.js?v=202611061458";
 
 const cfg = window.MLEA_CONFIG || {};
 export const configured = !!(cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && window.supabase);

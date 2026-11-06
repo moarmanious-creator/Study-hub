@@ -1,9 +1,9 @@
 // Welcome screen: shown once a day on opening the Hub. A personal greeting, then one simple
 // list of lectures that have taken place but aren't studied yet, and the next deadlines.
-import { esc, fmtDate, fmtLong, relDays, $ } from "../lib.js?v=202611061403";
-import { S } from "../store.js?v=202611061403";
-import { coursePill, cvar } from "../ui.js?v=202611061403";
-import { CREST, firstName, greeting, pendingLectures, pendingItem, dueSoon, wirePending } from "./common.js?v=202611061403";
+import { esc, fmtDate, fmtLong, relDays, $ } from "../lib.js?v=202611061458";
+import { S } from "../store.js?v=202611061458";
+import { coursePill, cvar } from "../ui.js?v=202611061458";
+import { CREST, firstName, greeting, pendingLectures, pendingItem, dueSoon, wirePending } from "./common.js?v=202611061458";
 
 const key = (k) => `mlea_${k}_${S.user?.id || "anon"}`;
 const read = (k) => { try { return localStorage.getItem(key(k)); } catch { return null; } };
@@ -64,7 +64,7 @@ export function showWelcome() {
   $("[data-ai]", host).addEventListener("click", () => { close(); window.dispatchEvent(new CustomEvent("hub:ai", { detail: {} })); });
   $("[data-start]", host)?.addEventListener("click", (e) => { close(); window.dispatchEvent(new CustomEvent("hub:open-session", { detail: e.currentTarget.dataset.start })); });
   // "Open" buttons use the app's delegated handlers; close the welcome screen first so the drawer is visible.
-  host.querySelectorAll("[data-open-session],[data-open-task]").forEach((b) => b.addEventListener("click", () => close(), { capture: true }));
+  host.querySelectorAll("[data-open-session],[data-open-task],[data-study-note]").forEach((b) => b.addEventListener("click", () => close(), { capture: true }));
   wirePending(host);
   setTimeout(() => $("[data-enter]", host)?.focus({ preventScroll: true }), 30);
 }
