@@ -1,10 +1,10 @@
 // Staff areas: Students & access (admin), Academic data (admin + coordinator),
 // Announcements, Cohort dashboard and exports. Personal student records are never shown here;
 // cohort figures come from an aggregate database function.
-import { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } from "../lib.js?v=202611061520";
-import { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial, addOfficialLink } from "../store.js?v=202611061520";
-import { DELIVERY } from "../metrics.js?v=202611061520";
-import { coursePill, sessionLabel, chart, css, courseColor, infoRequired } from "../ui.js?v=202611061520";
+import { esc, fmtDate, toast, errToast, openModal, confirmDialog, readForm, download, toCSV, md, $, $$ } from "../lib.js?v=202611070657";
+import { S, sb, isAdmin, isStaff, callFunction, loadOfficial, course, lecturerName, extractText, chunk, exportOfficial, addOfficialLink } from "../store.js?v=202611070657";
+import { DELIVERY } from "../metrics.js?v=202611070657";
+import { coursePill, sessionLabel, chart, css, courseColor, infoRequired } from "../ui.js?v=202611070657";
 
 const notAllowed = (view) => { view.innerHTML = `<div class="empty"><strong>Staff only.</strong>This page is for the programme admin and coordinators.</div>`; };
 

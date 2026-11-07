@@ -1,12 +1,12 @@
 // Projects: long pieces of work with milestones. Official presentations and research papers
 // from the syllabi appear here automatically; students add their own, and admins can publish
 // a project to the whole class.
-import { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611061520";
-import { openSubmission } from "./submit.js?v=202611061520";
-import { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } from "../store.js?v=202611061520";
-import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611061520";
-import { cvar, coursePill, infoRequired } from "../ui.js?v=202611061520";
-import { editAssessment } from "./admin.js?v=202611061520";
+import { esc, fmtDate, fmtLong, relDays, isISO, openModal, readForm, toast, errToast, confirmDialog, icon, $, $$ } from "../lib.js?v=202611070657";
+import { openSubmission } from "./submit.js?v=202611070657";
+import { S, allProjects, saveTask, deleteTask, isStaff, loadOfficial } from "../store.js?v=202611070657";
+import { taskStatus, TASK_STATUS, DONE_TASK } from "../metrics.js?v=202611070657";
+import { cvar, coursePill, infoRequired } from "../ui.js?v=202611070657";
+import { editAssessment } from "./admin.js?v=202611070657";
 
 const TYPE = { presentation: "Presentation", research_paper: "Research paper" };
 const tkey = (t) => t.id || "a:" + t.assessment_id;

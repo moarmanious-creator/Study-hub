@@ -1,7 +1,7 @@
 // Shared view components: the progress ledger, labels, charts, info-required blocks.
-import { esc, fmtDate, fmtTime, isISO } from "./lib.js?v=202611061520";
-import { S, course, source, lecturerName, courseSessions } from "./store.js?v=202611061520";
-import { sessionState, isStudyTracked, CORE, ATT, DELIVERY } from "./metrics.js?v=202611061520";
+import { esc, fmtDate, fmtTime, isISO } from "./lib.js?v=202611070657";
+import { S, course, source, lecturerName, courseSessions } from "./store.js?v=202611070657";
+import { sessionState, isStudyTracked, CORE, ATT, DELIVERY } from "./metrics.js?v=202611070657";
 
 // Theme-aware course colour: the CSS token for known courses (adjusted for dark mode), else the stored hex.
 export const cvar = (cid) => `--course:var(--c-${String(cid).replace(/[^\w-]/g, "")}, ${course(cid)?.color || "var(--nile)"})`;

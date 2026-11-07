@@ -667,6 +667,9 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
 .hw-full .hw-md code, .hw-full .hw-md pre { font-family: inherit; background: rgba(255, 229, 138, .3); padding: 0 4px; border-radius: 3px; }
 .hw-full .hw-md pre { padding: 8px 12px; white-space: pre-wrap; }
 .hw-full .hw-md blockquote { margin: 6px 0 12px; padding: 6px 12px; border-left: 3px solid #e8b931; background: rgba(255, 229, 138, .25); }
+.lp-attach { border-style: dashed; border-color: var(--gold); }
+.lp-attach.over { background: var(--brass-2); }
+.lp-attach .plist button.t { background: none; border: 0; padding: 0; cursor: pointer; color: inherit; font-weight: 600; text-align: left; }
 
 </style>
 <script>
@@ -4451,8 +4454,8 @@ __hub["views/lecture"] = (function () {
 "use strict";
 // Lecture page: everything for one lecture on one simple page. Opening a slide marks
 // "slides read", opening a reading marks "readings done", opening a recording marks it watched.
-const { esc, fmtDate, relDays, fmtMinutes, toast, errToast, debounce, safeUrl, isISO, $, $$ } = __hub["lib"];
-const { S, session: getSession, course: getCourse, courseSessions, saveProgress, saveAttendance, logStudy, isStaff, allAssignments, allProjects, lecturerName } = __hub["store"];
+const { esc, fmtDate, relDays, fmtMinutes, fmtBytes, toast, errToast, debounce, safeUrl, isISO, confirmDialog, $, $$ } = __hub["lib"];
+const { S, session: getSession, course: getCourse, courseSessions, saveProgress, saveAttendance, logStudy, isStaff, allAssignments, allProjects, lecturerName, uploadAttachment, addLink, deleteAttachment, uploadOfficialMaterial, addOfficialLink, deleteOfficialMaterial } = __hub["store"];
 const { sessionState, CHECKLIST, CORE, ATT, isStudyTracked, taskStatus, DONE_TASK } = __hub["metrics"];
 const { sessionLabel, sessionWhen, deliveryTag, cvar, infoRequired } = __hub["ui"];
 const { openSession } = __hub["views/course"];
@@ -4505,6 +4508,8 @@ function materialLink(s, m, cls = "mat") {
     : `<a class="${cls}" href="#" data-official-file="${m.fileId}" ${attrs}>`;
 }
 
+const ATTACH = { who: "all" }; // admins: share new uploads with all students by default
+
 const STEPS = [["attended_or_watched", "Attended or watched"], ["reviewed_slides", "Slides read"], ["read_materials", "Readings done"], ["prepared_notes", "Notes made"], ["understood_concepts", "Understood"]];
 
 function renderLecture(view, id) {
@@ -4520,6 +4525,8 @@ function renderLecture(view, id) {
   const tracked = isStudyTracked(s);
   const done = CORE.filter((k) => p[k]).length;
   const mats = lectureMaterials(s);
+  const mine = S.attachments.filter((a) => a.session_id === s.id);
+  const shared = S.materials.filter((m) => m.session_id === s.id && !m.assessment_id);
   const seen = opened();
   // Deadlines for this course up to the next lecture (or the next two weeks if there's none).
   const nextLecture = list.find((x) => x.scheduled_date && x.scheduled_date > S.today);
@@ -4554,9 +4561,29 @@ function renderLecture(view, id) {
             const k = KIND[m.kind];
             const isDone = m.kind === "slides" ? p.reviewed_slides && seen.has(m.key) : m.kind === "reading" ? p.read_materials && seen.has(m.key) : m.kind === "recording" ? att.recording_watched || att.status === "recording" : seen.has(m.key);
             return `${materialLink(s, m)}<span class="mi" aria-hidden="true">${k.icon}</span><span class="mt"><b>${esc(m.title)}</b><small>${k.label}${m.required ? " · required" : ""}</small></span><span class="pill ${isDone ? "ok" : ""}">${isDone ? k.done : "Open"}</span></a>`;
-          }).join("")}</div>` : `<p class="muted small" style="margin:0">No slides or materials shared for this lecture yet.${isStaff() ? " Add them with “Manage shared files” below." : ""}</p>`}
+          }).join("")}</div>` : `<p class="muted small" style="margin:0">No slides or materials shared for this lecture yet.${isStaff() ? " Add them below with “Attach files & links”." : ""}</p>`}
           ${s.topics?.length ? `<h3 style="margin-top:16px">Topics</h3><ul class="lp-topics">${s.topics.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
           ${s.readings ? `<p class="small" style="margin:8px 0 0"><strong>Readings:</strong> ${esc(s.readings)}</p>` : ""}
+        </section>
+
+        <section class="sheet lp-attach" data-drop>
+          <h3>Attach files &amp; links</h3>
+          <p class="small muted" style="margin:4px 0 10px">Word, PDF, PowerPoint, Excel, images or any link (Google Drive, YouTube, articles). Drag files here or use the buttons.</p>
+          ${isStaff() ? `<div class="seg" role="group" aria-label="Who can see it" style="margin-bottom:10px"><button type="button" data-who="all" aria-pressed="${ATTACH.who === "all"}">Share with all students</button><button type="button" data-who="me" aria-pressed="${ATTACH.who === "me"}">Only me</button></div>` : ""}
+          <div class="row">
+            <label class="btn primary">⬆ Upload files<input type="file" multiple hidden data-attach-file accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.heic,.txt,.md"></label>
+            <button class="btn" type="button" data-attach-link>🔗 Add a link</button>
+          </div>
+          <form class="form-grid" data-linkform hidden style="margin-top:10px">
+            <label class="field wide"><span>Link</span><input class="input" type="url" name="url" required placeholder="https://"></label>
+            <label class="field wide"><span>Name</span><input class="input" name="name" maxlength="160" placeholder="e.g. Lecture slides, Week 3 reading"></label>
+            <div class="row wide"><button class="btn primary sm" type="submit">Save link</button><button class="btn sm" type="button" data-linkcancel>Cancel</button></div>
+          </form>
+          <div class="small muted" data-attach-status style="margin-top:8px"></div>
+          ${mine.length ? `<h3 style="margin-top:14px;font-size:1rem">My files for this lecture <span class="muted small">(only you can see these)</span></h3>
+          <ul class="plist">${mine.map((a) => `<li><span class="bar"></span><div><button class="t" data-my-file="${a.id}">${esc(a.name)}</button><div class="d">${a.kind === "link" ? "Link" : fmtBytes(a.size_bytes)}</div></div><button class="btn ghost sm danger" data-del-mine="${a.id}" aria-label="Delete ${esc(a.name)}">Delete</button></li>`).join("")}</ul>` : ""}
+          ${isStaff() && shared.length ? `<details style="margin-top:12px"><summary class="small">Remove a shared file or link (${shared.length})</summary>
+          <ul class="plist">${shared.map((m) => `<li><span class="bar"></span><div><div class="t">${esc(m.title)}</div><div class="d">${m.url ? "Link" : fmtBytes(m.size_bytes)} · all students</div></div><button class="btn ghost sm danger" data-del-shared="${m.id}">Remove</button></li>`).join("")}</ul></details>` : ""}
         </section>
 
         ${tracked ? `<section class="sheet lp-note">
@@ -4599,7 +4626,7 @@ function renderLecture(view, id) {
         ${tracked ? `<details class="sheet lp-more"><summary>After studying</summary>
           ${CHECKLIST.slice(5).map(([k, l]) => `<label class="check"><input type="checkbox" data-chk="${k}" ${p[k] ? "checked" : ""}> ${esc(l)}</label>`).join("")}
         </details>` : ""}
-        <button class="btn ghost sm" data-manage>${isStaff() ? "Manage shared files · " : ""}My files &amp; more details</button>
+        <button class="btn ghost sm" data-manage>More details (time, revision date)</button>
       </aside>
     </div>
 
@@ -4633,6 +4660,55 @@ function renderLecture(view, id) {
     prompt: { explain: `Explain ${sessionLabel(s)} (${s.title}) in simple English.`, summarize: `Summarise the slides of ${sessionLabel(s)} (${s.title}) as a structured outline.`, mcq: `Quiz me with 8 multiple-choice questions on ${sessionLabel(s)} (${s.title}).`, exam: `Write exam-style practice questions with model answers for ${sessionLabel(s)} (${s.title}).` }[b.dataset.ai],
   } }))));
   $("[data-manage]", view).addEventListener("click", () => openSession(s.id, { onChange: again }));
+
+  // Attach files & links: admins choose all students or only me; students' files are private.
+  const status = (t) => { const el = $("[data-attach-status]", view); if (el) el.textContent = t; };
+  const forAll = () => isStaff() && ATTACH.who === "all";
+  const upload = async (files) => {
+    let done = 0;
+    for (const f of files) {
+      if (f.size > 50 * 1048576) { toast(`${f.name} is over 50 MB`, "err"); continue; }
+      status(`Uploading ${f.name}…`);
+      try {
+        if (forAll()) await uploadOfficialMaterial(f, { course_id: s.course_id, session_id: s.id, title: f.name });
+        else await uploadAttachment(f, { course_id: s.course_id, session_id: s.id });
+        done++;
+      } catch (er) { errToast(er); }
+    }
+    status("");
+    if (done) toast(forAll() ? `${done === 1 ? "File" : done + " files"} shared with all students` : `${done === 1 ? "File" : done + " files"} added`);
+    window.dispatchEvent(new CustomEvent("hub:changed"));
+  };
+  $$("[data-who]", view).forEach((b) => b.addEventListener("click", () => { ATTACH.who = b.dataset.who; again(); }));
+  $("[data-attach-file]", view).addEventListener("change", (e) => { const fl = [...e.target.files]; e.target.value = ""; upload(fl); });
+  const drop = $("[data-drop]", view);
+  drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); if (e.dataTransfer?.files?.length) upload([...e.dataTransfer.files]); });
+  const lf = $("[data-linkform]", view);
+  $("[data-attach-link]", view).addEventListener("click", () => { lf.hidden = false; lf.url.focus(); });
+  $("[data-linkcancel]", view).addEventListener("click", () => { lf.hidden = true; });
+  lf.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const url = lf.url.value.trim(), name = lf.name.value.trim() || "Lecture link";
+    if (!/^https?:\/\//i.test(url)) return toast("Links must start with http:// or https://", "err");
+    try {
+      if (forAll()) await addOfficialLink({ course_id: s.course_id, session_id: s.id, url, title: name });
+      else await addLink({ name, url, course_id: s.course_id, session_id: s.id });
+      toast(forAll() ? "Link shared with all students" : "Link added");
+      window.dispatchEvent(new CustomEvent("hub:changed"));
+    } catch (er) { errToast(er); }
+  });
+  $$("[data-del-mine]", view).forEach((b) => b.addEventListener("click", async () => {
+    const a = S.attachments.find((x) => x.id === b.dataset.delMine); if (!a) return;
+    if (!(await confirmDialog(`Delete "${a.name}"?`))) return;
+    try { await deleteAttachment(a); toast("Deleted"); again(); } catch (er) { errToast(er); }
+  }));
+  $$("[data-del-shared]", view).forEach((b) => b.addEventListener("click", async () => {
+    const m = S.materials.find((x) => x.id === b.dataset.delShared); if (!m) return;
+    if (!(await confirmDialog(`Remove "${m.title}" for every student?`, { ok: "Remove", danger: true }))) return;
+    try { await deleteOfficialMaterial(m); toast("Removed"); again(); } catch (er) { errToast(er); }
+  }));
 }
 
 return { markOpened, lectureMaterials, materialLink, renderLecture };

@@ -1,10 +1,10 @@
 // Main student dashboard: ledger, figures, charts, priorities, upcoming items.
-import { esc, fmtDate, fmtLong, fmtMinutes, relDays, daysBetween, addDays, isISO, md, icon } from "../lib.js?v=202611061520";
-import { S, allTasks, allProjects } from "../store.js?v=202611061520";
-import { greeting, firstName, pendingLectures, dueSoon } from "./common.js?v=202611061520";
+import { esc, fmtDate, fmtLong, fmtMinutes, relDays, daysBetween, addDays, isISO, md, icon } from "../lib.js?v=202611070657";
+import { S, allTasks, allProjects } from "../store.js?v=202611070657";
+import { greeting, firstName, pendingLectures, dueSoon } from "./common.js?v=202611070657";
 
-import { programmeStats, priorities, recommendations, weeklyActivity, taskStatus, FORMULAS, TASK_STATUS } from "../metrics.js?v=202611061520";
-import { courseName, cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, coursePill, deliveryTag, chart, courseColor, css, sessionWhen } from "../ui.js?v=202611061520";
+import { programmeStats, priorities, recommendations, weeklyActivity, taskStatus, FORMULAS, TASK_STATUS } from "../metrics.js?v=202611070657";
+import { courseName, cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, coursePill, deliveryTag, chart, courseColor, css, sessionWhen } from "../ui.js?v=202611070657";
 
 export function priorityItem(p) {
   const s = p.session, t = p.task;

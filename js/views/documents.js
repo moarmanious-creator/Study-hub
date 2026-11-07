@@ -1,7 +1,7 @@
 // Personal document repository (private) and official course materials (shared), plus saved notes.
-import { esc, fmtDate, fmtBytes, openModal, toast, errToast, confirmDialog, readForm, md, $, $$, safeUrl } from "../lib.js?v=202611061520";
-import { S, isStaff, uploadAttachment, addLink, updateAttachment, deleteAttachment, signedUrl, uploadOfficialMaterial, deleteOfficialMaterial, saveNote, deleteNote, session, course } from "../store.js?v=202611061520";
-import { coursePill, sessionLabel, sessionName } from "../ui.js?v=202611061520";
+import { esc, fmtDate, fmtBytes, openModal, toast, errToast, confirmDialog, readForm, md, $, $$, safeUrl } from "../lib.js?v=202611070657";
+import { S, isStaff, uploadAttachment, addLink, updateAttachment, deleteAttachment, signedUrl, uploadOfficialMaterial, deleteOfficialMaterial, saveNote, deleteNote, session, course } from "../store.js?v=202611070657";
+import { coursePill, sessionLabel, sessionName } from "../ui.js?v=202611070657";
 
 const UI = { tab: "mine", q: "", course: "all", folder: "all" };
 const EXT_COLOR = { PDF: "#a8432f", DOC: "#2f5d8a", DOCX: "#2f5d8a", PPT: "#a3561d", PPTX: "#a3561d", XLS: "#3f7a52", XLSX: "#3f7a52", PNG: "#7a4e9a", JPG: "#7a4e9a", JPEG: "#7a4e9a", LINK: "#1f5c7a" };

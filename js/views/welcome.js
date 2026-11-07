@@ -1,10 +1,10 @@
 // Welcome page (#/welcome): the first page each day. A personal greeting, what's waiting to be
 // studied, the next deadlines and the latest alerts, with one tap to each part of the Hub.
-import { esc, fmtDate, fmtLong, relDays, icon, $ } from "../lib.js?v=202611061520";
-import { S } from "../store.js?v=202611061520";
-import { coursePill, cvar } from "../ui.js?v=202611061520";
-import { CREST, firstName, greeting, pendingLectures, pendingItem, dueSoon, wirePending } from "./common.js?v=202611061520";
-import { alerts } from "./notify.js?v=202611061520";
+import { esc, fmtDate, fmtLong, relDays, icon, $ } from "../lib.js?v=202611070657";
+import { S } from "../store.js?v=202611070657";
+import { coursePill, cvar } from "../ui.js?v=202611070657";
+import { CREST, firstName, greeting, pendingLectures, pendingItem, dueSoon, wirePending } from "./common.js?v=202611070657";
+import { alerts } from "./notify.js?v=202611070657";
 
 const key = (k) => `mlea_${k}_${S.user?.id || "anon"}`;
 const read = (k) => { try { return localStorage.getItem(key(k)); } catch { return null; } };

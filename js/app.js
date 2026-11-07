@@ -1,25 +1,25 @@
 // Student Hub — app shell: session handling, navigation, routing, global search.
-import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611061520";
-import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions, isProject } from "./store.js?v=202611061520";
-import { renderAuth, hideAuth } from "./views/auth.js?v=202611061520";
-import { renderDashboard } from "./views/dashboard.js?v=202611061520";
-import { renderCourse, openSession, openFile } from "./views/course.js?v=202611061520";
-import { renderCalendar, startReminders } from "./views/calendar.js?v=202611061520";
-import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611061520";
-import { renderDocuments, preview } from "./views/documents.js?v=202611061520";
-import { renderAnalytics } from "./views/analytics.js?v=202611061520";
-import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611061520";
-import { renderAccount } from "./views/account.js?v=202611061520";
-import { initAI } from "./views/ai.js?v=202611061520";
-import { renderStudy } from "./views/study.js?v=202611061520";
-import { renderProjects, openProject } from "./views/projects.js?v=202611061520";
-import { maybeWelcome, renderWelcome } from "./views/welcome.js?v=202611061520";
-import { renderLecture, markOpened } from "./views/lecture.js?v=202611061520";
-import { initNotifications, registerWorker } from "./views/notify.js?v=202611061520";
-import { pendingLectures } from "./views/common.js?v=202611061520";
-import { openStudyNote } from "./views/notes.js?v=202611061520";
-import { ledgerCells } from "./ui.js?v=202611061520";
-import { isStudyTracked } from "./metrics.js?v=202611061520";
+import { esc, $, $$, icon, initials, toast, errToast, todayISO, closeDrawer } from "./lib.js?v=202611070657";
+import { S, sb, configured, loadAll, loadProfile, loadPersonal, isAdmin, isStaff, courseSessions, isProject } from "./store.js?v=202611070657";
+import { renderAuth, hideAuth } from "./views/auth.js?v=202611070657";
+import { renderDashboard } from "./views/dashboard.js?v=202611070657";
+import { renderCourse, openSession, openFile } from "./views/course.js?v=202611070657";
+import { renderCalendar, startReminders } from "./views/calendar.js?v=202611070657";
+import { renderTasks, openTask, findTask } from "./views/tasks.js?v=202611070657";
+import { renderDocuments, preview } from "./views/documents.js?v=202611070657";
+import { renderAnalytics } from "./views/analytics.js?v=202611070657";
+import { renderStudents, renderAcademicData, renderAnnouncements, renderCohort } from "./views/admin.js?v=202611070657";
+import { renderAccount } from "./views/account.js?v=202611070657";
+import { initAI } from "./views/ai.js?v=202611070657";
+import { renderStudy } from "./views/study.js?v=202611070657";
+import { renderProjects, openProject } from "./views/projects.js?v=202611070657";
+import { maybeWelcome, renderWelcome } from "./views/welcome.js?v=202611070657";
+import { renderLecture, markOpened } from "./views/lecture.js?v=202611070657";
+import { initNotifications, registerWorker } from "./views/notify.js?v=202611070657";
+import { pendingLectures } from "./views/common.js?v=202611070657";
+import { openStudyNote } from "./views/notes.js?v=202611070657";
+import { ledgerCells } from "./ui.js?v=202611070657";
+import { isStudyTracked } from "./metrics.js?v=202611070657";
 
 const ROUTES = {
   welcome: ["Welcome", renderWelcome],

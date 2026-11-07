@@ -649,3 +649,6 @@ details.more summary { cursor: pointer; color: var(--nile); font-weight: 500; }
 .hw-full .hw-md code, .hw-full .hw-md pre { font-family: inherit; background: rgba(255, 229, 138, .3); padding: 0 4px; border-radius: 3px; }
 .hw-full .hw-md pre { padding: 8px 12px; white-space: pre-wrap; }
 .hw-full .hw-md blockquote { margin: 6px 0 12px; padding: 6px 12px; border-left: 3px solid #e8b931; background: rgba(255, 229, 138, .25); }
+.lp-attach { border-style: dashed; border-color: var(--gold); }
+.lp-attach.over { background: var(--brass-2); }
+.lp-attach .plist button.t { background: none; border: 0; padding: 0; cursor: pointer; color: inherit; font-weight: 600; text-align: left; }

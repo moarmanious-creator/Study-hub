@@ -1,6 +1,6 @@
 // Progress calculations. Pure functions: they take the data and return numbers, so the
 // formulas shown to students are exactly the ones used here (see FORMULAS) and can be tested.
-import { daysBetween, addDays, isISO } from "./lib.js?v=202611061520";
+import { daysBetween, addDays, isISO } from "./lib.js?v=202611070657";
 
 export const ATT = {
   physical: "Attended physically",

@@ -2,10 +2,10 @@
 // revision sheet, and full notes detailed enough to study from instead of the slides. The AI builds
 // both from the lecture's slides (or its syllabus topics when no slides are available); admins can
 // regenerate them.
-import { esc, md, openModal, toast, errToast, loadScript, $, $$ } from "../lib.js?v=202611061520";
-import { S, sb, callFunction, session as getSession, isStaff } from "../store.js?v=202611061520";
-import { sessionName, courseName } from "../ui.js?v=202611061520";
-import { makeFile } from "./submit.js?v=202611061520";
+import { esc, md, openModal, toast, errToast, loadScript, $, $$ } from "../lib.js?v=202611070657";
+import { S, sb, callFunction, session as getSession, isStaff } from "../store.js?v=202611070657";
+import { sessionName, courseName } from "../ui.js?v=202611070657";
+import { makeFile } from "./submit.js?v=202611070657";
 
 const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
 const JSPDF = "https://cdn.jsdelivr.net/npm/jspdf@4.1.0/dist/jspdf.umd.min.js";

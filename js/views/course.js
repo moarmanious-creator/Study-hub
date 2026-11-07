@@ -1,14 +1,14 @@
 // Course dashboards (one per course) and the lecture drawer where students record
 // attendance, the study checklist, notes, time and attachments.
-import { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, errToast, debounce, $, $$, md, safeUrl, confirmDialog } from "../lib.js?v=202611061520";
+import { esc, fmtDate, fmtLong, fmtMinutes, fmtBytes, isISO, openDrawer, toast, errToast, debounce, $, $$, md, safeUrl, confirmDialog } from "../lib.js?v=202611070657";
 import {
   S, course, session, lecturer, lecturerName, courseSessions, saveAttendance, saveProgress, logStudy, uploadAttachment, addLink,
   signedUrl, allTasks, isStaff, uploadOfficialMaterial, addOfficialLink, deleteOfficialMaterial,
-} from "../store.js?v=202611061520";
-import { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } from "../metrics.js?v=202611061520";
-import { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } from "../ui.js?v=202611061520";
+} from "../store.js?v=202611070657";
+import { courseStats, sessionState, isStudyTracked, CHECKLIST, ATT, FORMULAS, taskStatus, TASK_STATUS, remainingMinutes } from "../metrics.js?v=202611070657";
+import { cvar, ledgerCells, ledgerKey, sessionLabel, sessionName, sessionWhen, deliveryTag, attPill, studyPill, srcRef, infoRequired, rateRow, coursePill } from "../ui.js?v=202611070657";
 
-import { materialKind } from "./materials.js?v=202611061520";
+import { materialKind } from "./materials.js?v=202611070657";
 // Attributes that make opening a lecture's material tick the matching study step (see lecture.js).
 const markAttrs = (m) => (m.session_id && !m.assessment_id ? `data-mark="${materialKind(m.title, m.kind)}" data-sid="${m.session_id}" data-key="m:${m.id}"` : "");
 

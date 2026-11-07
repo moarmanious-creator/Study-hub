@@ -1,11 +1,11 @@
 // Study: lectures waiting to be studied, one card per course, and the study plan.
-import { esc, toast, errToast, $, $$ } from "../lib.js?v=202611061520";
-import { S, sb, courseSessions, isStaff } from "../store.js?v=202611061520";
-import { createNote } from "./notes.js?v=202611061520";
-import { courseStats, isStudyTracked } from "../metrics.js?v=202611061520";
-import { cvar, sessionName, sessionWhen, deliveryTag, coursePill } from "../ui.js?v=202611061520";
-import { renderPlan } from "./analytics.js?v=202611061520";
-import { pendingLectures, pendingItem, wirePending } from "./common.js?v=202611061520";
+import { esc, toast, errToast, $, $$ } from "../lib.js?v=202611070657";
+import { S, sb, courseSessions, isStaff } from "../store.js?v=202611070657";
+import { createNote } from "./notes.js?v=202611070657";
+import { courseStats, isStudyTracked } from "../metrics.js?v=202611070657";
+import { cvar, sessionName, sessionWhen, deliveryTag, coursePill } from "../ui.js?v=202611070657";
+import { renderPlan } from "./analytics.js?v=202611070657";
+import { pendingLectures, pendingItem, wirePending } from "./common.js?v=202611070657";
 
 const SHOW = { all: false };
 export function renderStudy(view) {

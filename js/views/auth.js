@@ -1,6 +1,6 @@
 // Sign-in, account creation (open to anyone with the link), password reset and set-password screens.
-import { esc, $ } from "../lib.js?v=202611061520";
-import { sb, siteUrl } from "../store.js?v=202611061520";
+import { esc, $ } from "../lib.js?v=202611070657";
+import { sb, siteUrl } from "../store.js?v=202611070657";
 
 const art = () => {
   const rows = [[1, 1, .5, 1, 0, .3, 0, 0], [1, .5, 1, 1, 1, 0, 0, 0], [1, 1, 1, .5, .3, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0]];
